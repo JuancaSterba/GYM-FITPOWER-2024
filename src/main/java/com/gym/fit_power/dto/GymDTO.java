@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class GymDTO {
 
     @JsonIgnore
-    Long id
+    Long id;
 
     String code;
     String domain;
