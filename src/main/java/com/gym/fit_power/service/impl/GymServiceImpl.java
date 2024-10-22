@@ -4,10 +4,6 @@ import com.gym.fit_power.dto.GymDTO;
 import com.gym.fit_power.model.Gym;
 import com.gym.fit_power.repository.GymRepository;
 import com.gym.fit_power.service.GymService;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +37,7 @@ public class GymServiceImpl implements GymService {
             newGym.setUpdatedAt(new GregorianCalendar());
             return toDTO(repository.save(newGym));
         } catch (Exception e) {
-            newErrorLog("Could not save the new gym " + gymDTO.getCode() + ". Error:", e);
+            newErrorLog(gymCouldNotBE(gymDTO.getCode()) + "saved. Error:", e);
         }
         return null;
     }
@@ -52,7 +48,7 @@ public class GymServiceImpl implements GymService {
             newInfoLog("Searching the gym with id: " + id);
             return toDTO(repository.findById(id).orElseThrow());
         } catch (Exception e) {
-            newErrorLog(ERROR_SEARCH, e);
+            newErrorLog(SEARCH_ERROR, e);
         }
         return null;
     }
@@ -63,7 +59,7 @@ public class GymServiceImpl implements GymService {
             return toDTO(repository.findAll().stream()
                     .filter(gym -> gym.getCode().equals(code)).findFirst().orElseThrow());
         } catch (Exception e) {
-            newErrorLog(ERROR_SEARCH, e);
+            newErrorLog(SEARCH_ERROR, e);
 
         }
         return null;
@@ -79,7 +75,7 @@ public class GymServiceImpl implements GymService {
             }
             return response;
         } catch (Exception e) {
-            newErrorLog(ERROR_SEARCH, e);
+            newErrorLog(SEARCH_ERROR, e);
         }
         return new ArrayList<>();
     }
@@ -97,7 +93,7 @@ public class GymServiceImpl implements GymService {
             oldGym.setUpdatedAt(new GregorianCalendar());
             return toDTO(repository.save(oldGym));
         } catch (Exception e) {
-            newErrorLog("The gym " + gymDTO.getCode() + " could not be updated. Error:", e);
+            newErrorLog(gymCouldNotBE(gymDTO.getCode()) + "updated. Error:", e);
         }
         return null;
     }
@@ -110,7 +106,7 @@ public class GymServiceImpl implements GymService {
             entity.setActive(false);
             return toDTO(repository.save(entity));
         } catch (Exception e) {
-            newErrorLog("The gym " + gymDTO.getCode() + " could not be disabled. Error:", e);
+            newErrorLog(gymCouldNotBE(gymDTO.getCode()) + "disabled. Error:", e);
         }
         return null;
     }
@@ -123,7 +119,7 @@ public class GymServiceImpl implements GymService {
             entity.setActive(true);
             return toDTO(repository.save(entity));
         } catch (Exception e) {
-            newErrorLog("The gym " + gymDTO.getCode() + " could not be enabled. Error:", e);
+            newErrorLog(gymCouldNotBE(gymDTO.getCode()) + "enabled. Error:", e);
         }
         return null;
     }
@@ -153,6 +149,10 @@ public class GymServiceImpl implements GymService {
         entity.setUpdatedAt(gym.getUpdatedAt().getTime().toString());
         entity.setActive(gym.getActive());
         return entity;
+    }
+
+    private String gymCouldNotBE(String code){
+        return "The gym " + code + " could not be";
     }
 
     private void newInfoLog(String description) {
