@@ -2,14 +2,17 @@ package com.gym.fit_power.service.impl;
 
 import com.gym.fit_power.dto.request.TrainerRequestDto;
 import com.gym.fit_power.dto.response.TrainerResponseDto;
+import com.gym.fit_power.exception.DuplicatedTrainerException;
+import com.gym.fit_power.exception.TrainerNotFoundException;
+import com.gym.fit_power.exception.TrainerUpdateException;
 import com.gym.fit_power.model.Trainer;
 import com.gym.fit_power.repository.TrainerRepository;
 import com.gym.fit_power.service.TrainerService;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +26,56 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    public Trainer toEntity(TrainerRequestDto dto) {
+    public List<TrainerResponseDto> findAll() {
+        return trainerRepository
+                .findAll()
+                .stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public TrainerResponseDto findByDni(String dni) throws TrainerNotFoundException {
+        Optional<Trainer> trainer = trainerRepository.findByDni(dni);
+        return trainer.map(this::toDto).orElseThrow(() -> new TrainerNotFoundException("Trainer with DNI " + dni + " not found."));
+    }
+
+    @Override
+    @Transactional
+    public TrainerResponseDto save(TrainerRequestDto trainerRequestDto) throws DuplicatedTrainerException {
+        if (trainerRepository.existsByDni(trainerRequestDto.getDni())) {
+            throw new DuplicatedTrainerException();
+        }
+        Trainer trainer = toEntity(trainerRequestDto);
+        trainer = trainerRepository.save(trainer);
+        return toDto(trainer);
+    }
+
+    @Override
+    @Transactional
+    public TrainerResponseDto update(String dni, TrainerRequestDto trainerRequestDto) throws TrainerUpdateException {
+        if (!trainerRepository.existsByDni(dni)) {
+            throw new TrainerUpdateException();
+        }
+        Trainer trainer = toEntity(trainerRequestDto);
+        trainer.setDni(dni);
+        trainer = trainerRepository.save(trainer);
+        return toDto(trainer);
+    }
+
+    @Override
+    @Transactional
+    public void delete(String dni) throws TrainerNotFoundException {
+        Optional<Trainer> trainer = trainerRepository.findByDni(dni);
+        if (trainer.isEmpty()) {
+            throw new TrainerNotFoundException();
+        }
+        trainer.get().setEnabled(false);
+        trainerRepository.save(trainer.get());
+    }
+
+    private Trainer toEntity(TrainerRequestDto dto) {
         Trainer trainer = new Trainer();
         trainer.setDni(dto.getDni());
         trainer.setName(dto.getName());
@@ -31,13 +83,13 @@ public class TrainerServiceImpl implements TrainerService {
         trainer.setEmail(dto.getEmail());
         trainer.setPhoneNumber(dto.getPhoneNumber());
         trainer.setSpeciality(dto.getSpeciality());
-        LocalDate birthDate = LocalDate.parse(dto.getBirthDate());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate birthDate = LocalDate.parse(dto.getBirthDate(), formatter);
         trainer.setBirthDate(birthDate);
         return trainer;
     }
 
-    @Override
-    public TrainerResponseDto toDto(Trainer trainer) {
+    private TrainerResponseDto toDto(Trainer trainer) {
         TrainerResponseDto trainerResponseDto = new TrainerResponseDto();
         trainerResponseDto.setId(trainer.getId());
         trainerResponseDto.setDni(trainer.getDni());
@@ -52,46 +104,4 @@ public class TrainerServiceImpl implements TrainerService {
         return trainerResponseDto;
     }
 
-    @Override
-    public List<TrainerResponseDto> toDtos(List<Trainer> trainers) {
-        return trainers.stream().map(this::toDto).toList();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public TrainerResponseDto findByDni(String dni) throws EntityNotFoundException {
-        Optional<Trainer> trainer = trainerRepository.findByDni(dni);
-        return trainer.map(this::toDto).orElseThrow(EntityNotFoundException::new);
-    }
-
-    @Override
-    @Transactional
-    public TrainerResponseDto save(TrainerRequestDto trainerRequestDto) {
-        Trainer trainer = toEntity(trainerRequestDto);
-        trainer = trainerRepository.save(trainer);
-        return toDto(trainer);
-    }
-
-    @Override
-    @Transactional
-    public TrainerResponseDto update(String dni, TrainerRequestDto trainerRequestDto) throws EntityNotFoundException {
-        if (!trainerRepository.existsByDni(dni)) {
-            throw new EntityNotFoundException();
-        }
-        Trainer trainer = toEntity(trainerRequestDto);
-        trainer.setDni(dni);
-        trainer = trainerRepository.save(trainer);
-        return toDto(trainer);
-    }
-
-    @Override
-    @Transactional
-    public void delete(String dni) throws EntityNotFoundException {
-        Optional<Trainer> trainer = trainerRepository.findByDni(dni);
-        if (trainer.isEmpty()) {
-            throw new EntityNotFoundException();
-        }
-        trainer.get().setEnabled(false);
-        trainerRepository.save(trainer.get());
-    }
 }

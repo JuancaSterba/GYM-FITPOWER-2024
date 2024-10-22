@@ -39,7 +39,7 @@ public class TrainerRequestDto {
     private String speciality;
 
     @NotBlank(message = "{birthDate.notBlank}")
-    @Pattern(regexp = "^\\d{1,2}/\\d{1,2}/\\d{4}$", message = "{birthDate.invalid}")
+    @Pattern(regexp = "^\\d{1,2}-\\d{1,2}-\\d{4}$", message = "{birthDate.invalid}")
     private String birthDate;
 
 }
