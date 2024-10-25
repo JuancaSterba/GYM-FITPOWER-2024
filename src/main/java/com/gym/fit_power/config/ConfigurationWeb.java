@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -36,16 +38,14 @@ public class ConfigurationWeb {
                                 .policyDirectives("frame-ancestors 'self'")
                         )
                 )
-                .authorizeRequests(auth -> auth
+                .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/h2-console/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .formLogin(form -> form
-                        .permitAll()
+                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll
                 )
-                .logout(logout -> logout
-                        .permitAll() 
+                .logout(LogoutConfigurer::permitAll
                 );
 
         return http.build();
