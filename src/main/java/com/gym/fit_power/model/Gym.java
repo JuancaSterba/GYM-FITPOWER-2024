@@ -26,6 +26,6 @@ public class Gym {
     String phone;
     GregorianCalendar createdAt;
     GregorianCalendar updatedAt;
-    Boolean active;
+    Boolean enabled;
 
 }

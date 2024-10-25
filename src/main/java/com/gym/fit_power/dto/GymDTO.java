@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
 @Data
 @NoArgsConstructor
 public class GymDTO {
@@ -19,6 +18,6 @@ public class GymDTO {
     String phone;
     String createdAt;
     String updatedAt;
-    Boolean active;
+    Boolean enabled;
 
 }
