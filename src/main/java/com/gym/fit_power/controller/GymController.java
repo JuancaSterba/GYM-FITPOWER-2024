@@ -1,18 +1,17 @@
 package com.gym.fit_power.controller;
 
-import com.gym.fit_power.dto.GymDTO;
-import lombok.extern.slf4j.Slf4j;
+import java.net.URI;
+import java.util.List;
 import org.slf4j.Logger;
+import java.util.ArrayList;
 import org.slf4j.LoggerFactory;
-import com.gym.fit_power.service.impl.GymServiceImpl;
+import lombok.extern.slf4j.Slf4j;
+import java.net.URISyntaxException;
+import com.gym.fit_power.dto.GymDTO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
+import com.gym.fit_power.service.impl.GymServiceImpl;
 
 import static com.gym.fit_power.constant.GymConstants.*;
 
@@ -92,7 +91,7 @@ public class GymController {
         if (dto == null) {
             newErrorLog("disabling", notFoundDescription(code));
             return ResponseEntity.badRequest().headers(newHeader(ERR404, notFoundDescription(code))).body(null);
-        } else if (Boolean.FALSE.equals(dto.getActive())) {
+        } else if (Boolean.FALSE.equals(dto.getEnabled())) {
             newErrorLog("disabling", genericDescription(code) + "is already disabled");
             return ResponseEntity.badRequest()
                     .headers(newHeader("DISABLE_ERROR", genericDescription(code)
@@ -111,7 +110,7 @@ public class GymController {
         if (dto == null) {
             newErrorLog("enabling", notFoundDescription(code));
             return ResponseEntity.badRequest().headers(newHeader(ERR404, notFoundDescription(code))).body(null);
-        } else if (Boolean.TRUE.equals(dto.getActive())) {
+        } else if (Boolean.TRUE.equals(dto.getEnabled())) {
             newErrorLog("enabling", genericDescription(code) + "is already enabled");
             return ResponseEntity.badRequest()
                     .headers(newHeader("ENABLE_ERROR", genericDescription(code)

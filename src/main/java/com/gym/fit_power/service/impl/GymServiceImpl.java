@@ -1,18 +1,17 @@
 package com.gym.fit_power.service.impl;
 
-import com.gym.fit_power.dto.GymDTO;
-import com.gym.fit_power.model.Gym;
-import com.gym.fit_power.repository.GymRepository;
-import com.gym.fit_power.service.GymService;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataAccessException;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.List;
+import org.slf4j.Logger;
+import java.util.ArrayList;
+import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import com.gym.fit_power.model.Gym;
+import java.util.GregorianCalendar;
+import com.gym.fit_power.dto.GymDTO;
+import com.gym.fit_power.service.GymService;
+import org.springframework.stereotype.Service;
+import com.gym.fit_power.repository.GymRepository;
+import org.springframework.dao.DataAccessException;
 
 import static com.gym.fit_power.constant.GymConstants.*;
 
@@ -32,7 +31,7 @@ public class GymServiceImpl implements GymService {
         try {
             Gym newGym = toEntity(gymDTO);
             newInfoLog("Save the new gym: " + newGym.getCode());
-            newGym.setActive(true);
+            newGym.setEnabled(true);
             newGym.setCreatedAt(new GregorianCalendar());
             newGym.setUpdatedAt(new GregorianCalendar());
             return toDTO(repository.save(newGym));
@@ -103,7 +102,7 @@ public class GymServiceImpl implements GymService {
         try {
             newInfoLog("Disabling the gym with code " + gymDTO.getCode());
             Gym entity = toEntity(gymDTO);
-            entity.setActive(false);
+            entity.setEnabled(false);
             return toDTO(repository.save(entity));
         } catch (Exception e) {
             newErrorLog(gymCouldNotBE(gymDTO.getCode()) + "disabled. Error:", e);
@@ -116,7 +115,7 @@ public class GymServiceImpl implements GymService {
         try {
             newInfoLog("Enabling the gym with code " + gymDTO.getCode());
             Gym entity = toEntity(gymDTO);
-            entity.setActive(true);
+            entity.setEnabled(true);
             return toDTO(repository.save(entity));
         } catch (Exception e) {
             newErrorLog(gymCouldNotBE(gymDTO.getCode()) + "enabled. Error:", e);
@@ -132,7 +131,7 @@ public class GymServiceImpl implements GymService {
         entity.setAddress(dto.getAddress());
         entity.setMail(dto.getMail());
         entity.setPhone(dto.getPhone());
-        entity.setActive(dto.getActive());
+        entity.setEnabled(dto.getEnabled());
         return entity;
     }
 
@@ -147,7 +146,7 @@ public class GymServiceImpl implements GymService {
         entity.setPhone(gym.getPhone());
         entity.setCreatedAt(gym.getCreatedAt().getTime().toString());
         entity.setUpdatedAt(gym.getUpdatedAt().getTime().toString());
-        entity.setActive(gym.getActive());
+        entity.setEnabled(gym.getEnabled());
         return entity;
     }
 
