@@ -1,18 +1,17 @@
 package com.gym.fit_power.controller;
 
-import com.gym.fit_power.dto.ClientDTO;
-import com.gym.fit_power.service.impl.ClientServiceImpl;
-import lombok.extern.slf4j.Slf4j;
+import java.net.URI;
+import java.util.List;
 import org.slf4j.Logger;
+import java.util.ArrayList;
 import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import java.net.URISyntaxException;
+import com.gym.fit_power.dto.ClientDTO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
+import com.gym.fit_power.service.impl.ClientServiceImpl;
 
 import static com.gym.fit_power.constant.ClientConstants.*;
 

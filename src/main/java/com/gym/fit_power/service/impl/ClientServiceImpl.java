@@ -1,16 +1,16 @@
 package com.gym.fit_power.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import com.gym.fit_power.model.Gym;
 import com.gym.fit_power.model.Client;
 import com.gym.fit_power.dto.ClientDTO;
-import com.gym.fit_power.repository.ClientRepository;
-import com.gym.fit_power.repository.GymRepository;
-import com.gym.fit_power.service.ClientService;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import com.gym.fit_power.service.ClientService;
+import com.gym.fit_power.repository.GymRepository;
+import org.springframework.dao.DataAccessException;
+import com.gym.fit_power.repository.ClientRepository;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
