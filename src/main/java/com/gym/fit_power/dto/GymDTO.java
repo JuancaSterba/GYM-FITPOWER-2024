@@ -9,15 +9,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class GymDTO {
 
     @JsonIgnore
-    Long id;
+    private Long id;
 
-    String code;
-    String domain;
-    String address;
-    String mail;
-    String phone;
-    String createdAt;
-    String updatedAt;
-    Boolean enabled;
+    private String code;
+    private String domain;
+    private String address;
+    private String mail;
+    private String phone;
+    private String createdAt;
+    private String updatedAt;
+    private Boolean enabled;
 
 }
