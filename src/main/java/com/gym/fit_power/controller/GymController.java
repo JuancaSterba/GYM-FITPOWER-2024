@@ -63,9 +63,9 @@ public class GymController {
         newInfoLog("Get all gyms");
         List<GymDTO> response = new ArrayList<>(service.readAll());
         if (response.isEmpty()) {
-            errorSearch("There are no directors in the database");
+            errorSearch("There are no gyms in the database");
             return ResponseEntity.badRequest()
-                    .headers(newHeader(ERR404, "There are no directors in the database")).body(null);
+                    .headers(newHeader(ERR404, "There are no gyms in the database")).body(null);
         }
         correctSearch();
         return ResponseEntity.ok().headers(newHeader("FOUND", SUCCESSFUL)).body(response);
@@ -74,8 +74,8 @@ public class GymController {
     @PutMapping(value = CODE)
     public ResponseEntity<GymDTO> update(@PathVariable(value = "code") String code, @RequestBody GymDTO newGym) {
         newInfoLog("Update gym with code: " + code);
-        GymDTO oldDirector = service.readByCode(code);
-        if (oldDirector == null) {
+        GymDTO oldGym = service.readByCode(code);
+        if (oldGym == null) {
             newErrorLog("updating", notFoundDescription(code));
             return ResponseEntity.badRequest().headers(newHeader(ERR404, notFoundDescription(code))).body(null);
         }
@@ -99,7 +99,7 @@ public class GymController {
                     .body(dto);
         }
         GymDTO response = service.disable(dto);
-        newInfoLog("Director disabled");
+        newInfoLog("Gym disabled");
         return ResponseEntity.ok().headers(newHeader("DISABLED", SUCCESSFUL)).body(response);
     }
 
@@ -118,7 +118,7 @@ public class GymController {
                     .body(dto);
         }
         GymDTO response = service.enable(dto);
-        newInfoLog("Director enabled");
+        newInfoLog("Gym enabled");
         return ResponseEntity.ok().headers(newHeader("ENABLED", SUCCESSFUL)).body(response);
     }
 
