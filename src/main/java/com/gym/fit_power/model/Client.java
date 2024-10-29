@@ -24,6 +24,10 @@ public class Client {
     @ManyToOne
     private Gym assignedGym;
 
+    @ManyToOne
+    @JoinColumn(name = "nutritionist_id")
+    private Nutritionist nutritionist;
+
     private String name;
     private String lastname;
     private String email;

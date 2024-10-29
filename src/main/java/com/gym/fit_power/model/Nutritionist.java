@@ -1,28 +1,32 @@
 package com.gym.fit_power.model;
 
-
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
+import java.util.List;
+import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import java.util.GregorianCalendar;
 
-@Entity
 @Data
-@AllArgsConstructor
+@Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "nutritionists")
 public class Nutritionist {
+
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     private String name;
     private String lastname;
 
-    @Column (unique = true)
+    @Column(unique = true)
     private String cuit;
+
+    @OneToMany(mappedBy = "nutritionist")
+    private List<Client> clients;
 
     private String email;
     private String phone;
