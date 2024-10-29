@@ -65,6 +65,10 @@ public class Routine {
     @JoinColumn(name = "trainer_id", nullable = false)
     private Trainer trainer;
 
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customer;
+
     @PrePersist
     private void prePersist() {
         createdAt = LocalDate.now();
