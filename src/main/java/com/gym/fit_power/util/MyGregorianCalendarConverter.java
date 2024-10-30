@@ -2,12 +2,13 @@ package com.gym.fit_power.util;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
+import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
-
+@Component
 @Converter (autoApply = true)
 public class MyGregorianCalendarConverter implements AttributeConverter<GregorianCalendar,String> {
 
