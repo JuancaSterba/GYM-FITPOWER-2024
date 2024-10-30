@@ -7,12 +7,12 @@ import java.util.List;
 
 public interface NutriService {
 
-    ResponseNutri craate (RequestNutri requestNutri);
+    ResponseNutri create (RequestNutri requestNutri);
     ResponseNutri readOne (String cuit);
     List<ResponseNutri> readAll ();
-    ResponseNutri update (String code);
-    ResponseNutri disable (String code);
-    ResponseNutri enable (String code);
+    ResponseNutri update (String cuit);
+    ResponseNutri disable (String cuit);
+    ResponseNutri enable (String cuit);
 
 
 }
