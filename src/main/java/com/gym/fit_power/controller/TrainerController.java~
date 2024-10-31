@@ -2,6 +2,7 @@ package com.gym.fit_power.controller;
 
 import com.gym.fit_power.dto.request.TrainerRequestDto;
 import com.gym.fit_power.dto.response.TrainerResponseDto;
+import com.gym.fit_power.exception.TrainerNotFoundException;
 import com.gym.fit_power.service.TrainerService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;

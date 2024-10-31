@@ -45,7 +45,7 @@ public class TrainerServiceImpl implements TrainerService {
     @Transactional
     public TrainerResponseDto save(TrainerRequestDto trainerRequestDto) throws DuplicatedTrainerException {
         if (trainerRepository.existsByDni(trainerRequestDto.getDni())) {
-            throw new DuplicatedTrainerException();
+            throw new DuplicatedTrainerException("Trainer with DNI " + trainerRequestDto.getDni() + " already exists.");
         }
         Trainer trainer = toEntity(trainerRequestDto);
         trainer = trainerRepository.save(trainer);
@@ -56,7 +56,7 @@ public class TrainerServiceImpl implements TrainerService {
     @Transactional
     public TrainerResponseDto update(String dni, TrainerRequestDto trainerRequestDto) throws TrainerUpdateException {
         if (!trainerRepository.existsByDni(dni)) {
-            throw new TrainerUpdateException();
+            throw new TrainerUpdateException("No trainer found with DNI " + dni + " for update.");
         }
         Trainer trainer = toEntity(trainerRequestDto);
         trainer.setDni(dni);
@@ -69,7 +69,7 @@ public class TrainerServiceImpl implements TrainerService {
     public void delete(String dni) throws TrainerNotFoundException {
         Optional<Trainer> trainer = trainerRepository.findByDni(dni);
         if (trainer.isEmpty()) {
-            throw new TrainerNotFoundException();
+            throw new TrainerNotFoundException("No trainer found with DNI " + dni + " for deletion.");
         }
         trainer.get().setEnabled(false);
         trainerRepository.save(trainer.get());
