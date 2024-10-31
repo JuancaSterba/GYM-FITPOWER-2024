@@ -15,17 +15,17 @@ public class Gym {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Column(unique = true)
-    String code;
+    private String code;
 
-    String domain;
-    String address;
-    String mail;
-    String phone;
-    GregorianCalendar createdAt;
-    GregorianCalendar updatedAt;
-    Boolean enabled;
+    private String domain;
+    private String address;
+    private String mail;
+    private String phone;
+    private GregorianCalendar createdAt;
+    private GregorianCalendar updatedAt;
+    private Boolean enabled;
 
 }
