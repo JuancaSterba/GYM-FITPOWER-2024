@@ -18,7 +18,6 @@ public class RequestNutri {
     private String cuit;
     private String email;
     private String phone;
-    private String speciality;
-    private String birthdate;
+
 
 }

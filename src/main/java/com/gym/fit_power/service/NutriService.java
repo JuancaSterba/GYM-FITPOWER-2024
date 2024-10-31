@@ -8,11 +8,12 @@ import java.util.List;
 public interface NutriService {
 
     ResponseNutri create (RequestNutri requestNutri);
-    ResponseNutri readOne (String cuit);
+    ResponseNutri readOne (Long id);
     List<ResponseNutri> readAll ();
-    ResponseNutri update (String cuit);
-    ResponseNutri disable (String cuit);
-    ResponseNutri enable (String cuit);
+    ResponseNutri update (Long id , RequestNutri requestNutri);
+    ResponseNutri disable (Long id);
+    ResponseNutri enable (Long id );
+    ResponseNutri findByCuit ( String cuit );
 
 
 }

@@ -1,72 +1,124 @@
 package com.gym.fit_power.service.impl;
 
+
 import com.gym.fit_power.dto.request.RequestNutri;
 import com.gym.fit_power.dto.response.ResponseNutri;
+import com.gym.fit_power.exception.EntityNotFoundException;
+import com.gym.fit_power.exception.SaveNutritionistException;
 import com.gym.fit_power.model.Nutritionist;
 import com.gym.fit_power.repository.NutriRepository;
 import com.gym.fit_power.service.NutriService;
-import com.gym.fit_power.util.MyGregorianCalendarConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.GregorianCalendar;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
+
+import static com.gym.fit_power.constant.NutritinistConstants.*;
+
 
 @Service
 @Slf4j
 public class NutriServiceImpl implements NutriService {
     private final NutriRepository nutriRepository;
     protected static final Logger logger = LoggerFactory.getLogger(NutriServiceImpl.class);
-    private final MyGregorianCalendarConverter converter;
 
-    public NutriServiceImpl(NutriRepository nutriRepository, MyGregorianCalendarConverter converter) {
+
+    public NutriServiceImpl(NutriRepository nutriRepository) {
         this.nutriRepository = nutriRepository;
-        this.converter = new MyGregorianCalendarConverter();
+
     }
 
 
     @Override
+    @Transactional
     public ResponseNutri create(RequestNutri requestNutri) {
-        Nutritionist nutritionist = toEntity(requestNutri);
-        ResponseNutri responseNutri = toDTO(nutriRepository.save(nutritionist));
-        return responseNutri;
+        ResponseNutri response = null;
+        try {
+            response = toDTO(nutriRepository.save(toEntity(requestNutri)));
+            logger.info(CREATE_SUCCESFULLY, "{}" + requestNutri.getName());
+        } catch (Exception e) {
+            throw new SaveNutritionistException("Error al guardar al nutricinista");
+        }
+        return response;
     }
 
     @Override
-    public ResponseNutri readOne(String cuit) {
-        Nutritionist nutri = nutriRepository.findAll().stream()
-                .filter(nutritionist -> nutritionist.getCuit().equals(cuit))
-                .findFirst().orElse(null);
+    @Transactional
+    public ResponseNutri readOne(Long id) {
+        Optional<Nutritionist>nutriOptional = nutriRepository.findById(id);
+        Nutritionist nutri = nutriOptional.orElseThrow(()->{
+            String message = ERR404 + id;
+            return new EntityNotFoundException(message);
+        });
         return toDTO(nutri);
     }
 
     @Override
+    @Transactional
     public List<ResponseNutri> readAll() {
-        return nutriRepository.findAll().stream()
+        List<Nutritionist>nutris = nutriRepository.findAll();
+        return nutris
+                .stream()
                 .map(this::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
-    public ResponseNutri update(String cuit) {
-        Nutritionist nutri = nutriRepository.findAll().stream()
-                .filter(nutritionist -> nutritionist.getCuit().equals(cuit))
-                .findFirst()
-                .orElse(null);
+    @Transactional
+    public ResponseNutri update(Long id, RequestNutri requestNutri) {
+        Nutritionist nutriUpdate;
+        Optional<Nutritionist>nutriOptional = nutriRepository.findById(id);
+        Nutritionist nutri = nutriOptional.orElseThrow(()->{
+            String message = ERR404 + id;
+            return new EntityNotFoundException(message);
+        });
 
-        return null;
+        nutriUpdate = toEntity(requestNutri);
+        nutri.setName(nutriUpdate.getName());
+        nutri.setLastname(nutriUpdate.getLastname());
+        nutri.setPhone(nutriUpdate.getPhone());
+        nutri.setEmail(nutriUpdate.getEmail());
+
+        nutriRepository.save(nutri);
+        logger.info("{} {}",CREATE_SUCCESFULLY,nutri.getName());
+
+        return toDTO(nutriUpdate);
     }
 
     @Override
-    public ResponseNutri disable(String code) {
-        return null;
+    @Transactional
+    public ResponseNutri disable(Long id) {
+        Optional<Nutritionist>nutritOptional = nutriRepository.findById(id);
+        Nutritionist nutri = nutritOptional.orElseThrow(()->{
+            String message = ERR404 + id;
+            return new EntityNotFoundException(message);
+        });
+        nutri.setEnabled(false);
+        nutriRepository.save(nutri);
+        logger.info("{} {}",SUCCESSFUL,nutri.getName());
+        return toDTO(nutri);
     }
 
     @Override
-    public ResponseNutri enable(String code) {
+    public ResponseNutri enable(Long id) {
+        Optional<Nutritionist>nutritOptional = nutriRepository.findById(id);
+        Nutritionist nutri = nutritOptional.orElseThrow(()->{
+            String message = ERR404 + id;
+            return new EntityNotFoundException(message);
+        });
+        nutri.setEnabled(true);
+        nutriRepository.save(nutri);
+        logger.info("{} {}",SUCCESSFUL,nutri.getName());
+        return toDTO(nutri);
+    }
+
+    @Override
+    public ResponseNutri findByCuit(String cuit) {
         return null;
     }
 
@@ -77,27 +129,20 @@ public class NutriServiceImpl implements NutriService {
         nutri.setCuit(requestNutri.getCuit());
         nutri.setPhone(requestNutri.getPhone());
         nutri.setEmail(requestNutri.getEmail());
-        nutri.setSpeciality(requestNutri.getSpeciality());
-        String birthday = requestNutri.getBirthdate();
-        GregorianCalendar birthday1 = converter.convertToEntityAttribute(birthday);
-        nutri.setBirthdate(birthday1);
+        nutri.setCreatedAt(LocalDate.now());
         return nutri;
     }
 
     private ResponseNutri toDTO(Nutritionist nutri) {
-        ResponseNutri nutri1 = new ResponseNutri();
-        nutri1.setName(nutri.getName());
-        nutri1.setLastname(nutri.getLastname());
-        nutri1.setCuit(nutri.getCuit());
-        nutri1.setPhone(nutri.getPhone());
-        nutri1.setEmail(nutri.getEmail());
-        nutri1.setSpeciality(nutri.getSpeciality());
-        nutri1.setBirthdate(nutri.getBirthdate().toString());
-        GregorianCalendar craeteAt = nutri.getCreatedAt();
-        nutri1.setCreatedAt(craeteAt.toString());
-        GregorianCalendar updateAt = nutri.getUpdatedAt();
-        nutri1.setUpdatedAt(updateAt.toString());
+        ResponseNutri response = new ResponseNutri();
+        response.setName(nutri.getName());
+        response.setLastname(nutri.getLastname());
+        response.setCuit(nutri.getCuit());
+        response.setPhone(nutri.getPhone());
+        response.setEmail(nutri.getEmail());
+        response.setCreatedAt(nutri.getCreatedAt().toString());
+        return response;
 
-        return nutri1;
     }
+
 }
