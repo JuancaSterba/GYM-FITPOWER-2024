@@ -2,10 +2,10 @@ package com.gym.fit_power.model;
 
 import lombok.Data;
 import java.util.List;
+import java.time.LocalDate;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import java.util.GregorianCalendar;
 
 @Data
 @Entity
@@ -24,24 +24,17 @@ public class Client {
     @ManyToOne
     private Gym assignedGym;
 
-    @ManyToOne
-    @JoinColumn(name = "nutritionist_id")
-    private Nutritionist nutritionist;
+    @OneToMany(mappedBy = "client")
+    private List<Routine> routines;
+
+    @OneToMany(mappedBy = "client")
+    private List<NutritionPlan> plans;
 
     private String name;
     private String lastname;
     private String email;
     private String phone;
-    private String genre;
-    private String physicalComposition;
-    private Float weight;
-    private Float height;
-    private String corpulence;
-    private List<String> allergies;
-    private GregorianCalendar birthDate;
-    private GregorianCalendar createdAt;
-    private GregorianCalendar updatedAt;
+    private LocalDate birthDate;
     private Boolean enabled;
-
 
 }
