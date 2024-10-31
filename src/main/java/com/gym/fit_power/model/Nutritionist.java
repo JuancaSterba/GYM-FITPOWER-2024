@@ -6,6 +6,8 @@ import lombok.Data;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+
+import java.time.LocalDate;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -25,13 +27,9 @@ public class Nutritionist {
 
     @Column(unique = true)
     private String cuit;
-
     private String email;
     private String phone;
-    private String speciality;
-    private GregorianCalendar birthdate;
-    private GregorianCalendar createdAt;
-    private GregorianCalendar updatedAt;
+    private LocalDate createdAt;
     private Boolean enabled;
 
 

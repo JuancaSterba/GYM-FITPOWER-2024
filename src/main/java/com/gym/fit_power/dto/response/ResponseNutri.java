@@ -20,8 +20,6 @@ public class ResponseNutri {
     private String cuit;
     private String email;
     private String phone;
-    private String speciality;
-    private String birthdate;
     private String createdAt;
-    private String updatedAt;
+
 }
