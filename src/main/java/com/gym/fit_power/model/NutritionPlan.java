@@ -25,6 +25,8 @@ public class NutritionPlan {
     private Float dailyFats;
     private Float desiredWeight;
     private Boolean enabled;
+
+    @ManyToOne
     private Nutritionist nutritionist;
 
     @ManyToOne
