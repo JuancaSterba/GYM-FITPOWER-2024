@@ -15,13 +15,13 @@ import java.util.List;
 import static com.gym.fit_power.constant.NutritinistConstants.*;
 
 @RestController
-@RequestMapping("/Nutritinist")
-public class NutritinistController {
+@RequestMapping("/Nutritionist")
+public class NutritionistController {
 
     private final NutriService service;
-    protected static final Logger logger = LoggerFactory.getLogger(NutritinistController.class);
+    protected static final Logger logger = LoggerFactory.getLogger(NutritionistController.class);
 
-    public NutritinistController(NutriService service) {
+    public NutritionistController(NutriService service) {
         this.service = service;
     }
 

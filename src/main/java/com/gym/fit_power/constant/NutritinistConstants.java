@@ -11,6 +11,7 @@ public class NutritinistConstants {
     public static final String UPDATE = "The user is being updated---";
     public static final String DISABLE = "The user is being disabled---";
     public static final String ENABLED = "The user is being enabled---";
+    public static final String CREATE_NUTRIPLAN = "The nutrition plan is being created";
 
 
 }
