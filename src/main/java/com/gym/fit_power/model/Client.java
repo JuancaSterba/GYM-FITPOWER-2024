@@ -22,6 +22,7 @@ public class Client {
     private String cuit;
 
     @ManyToOne
+    @JoinColumn(nullable = false)
     private Gym assignedGym;
 
     @OneToMany(mappedBy = "client")

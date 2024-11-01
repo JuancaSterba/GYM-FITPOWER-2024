@@ -11,10 +11,10 @@ public interface ServiceCRUD<REQUEST, RESPONSE> {
 
     List<RESPONSE> readAll() throws DataAccessException;
 
-    RESPONSE update(REQUEST request) throws DataAccessException;
+    RESPONSE update(Long id, REQUEST request) throws DataAccessException;
 
-    RESPONSE disable(REQUEST request) throws DataAccessException;
+    RESPONSE disable(Long id) throws DataAccessException;
 
-    RESPONSE enable(REQUEST request) throws DataAccessException;
+    RESPONSE enable(Long id) throws DataAccessException;
 
 }

@@ -19,15 +19,7 @@ public class ClientDTO {
     private String lastname;
     private String email;
     private String phone;
-    private String genre;
-    private String physicalComposition;
-    private Float weight;
-    private Float height;
-    private String corpulence;
-    private List<String> allergies;
     private String birthDate;
-    private String createdAt;
-    private String updatedAt;
     private Boolean enabled;
 
 }
