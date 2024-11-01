@@ -21,7 +21,6 @@ public class ClientController {
 
     private final ClientServiceImpl service;
     public static final String CUIT = "/{cuit}";
-    public static final String CHANGE = CUIT + "/change";
     public static final String RESOURCE = "/api/clients";
     private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
 
@@ -97,7 +96,7 @@ public class ClientController {
         return ResponseEntity.ok().headers(newHeader("UPDATED", SUCCESSFUL)).body(response);
     }
 
-    @PutMapping(value = CHANGE + "/{gymCode}")
+    @PutMapping(value = CUIT + "/{gymCode}")
     public ResponseEntity<ClientDTO> changeGym(@PathVariable(value = "cuit") String clientCuit,
                                                @PathVariable(value = "gymCode") String gymCode) {
         newInfoLog("Change the gym of the client " + clientCuit);
