@@ -10,14 +10,11 @@ public class GymDTO {
 
     @JsonIgnore
     private Long id;
-
-    private String code;
+    
     private String domain;
     private String address;
     private String mail;
     private String phone;
-    private String createdAt;
-    private String updatedAt;
     private Boolean enabled;
 
 }
