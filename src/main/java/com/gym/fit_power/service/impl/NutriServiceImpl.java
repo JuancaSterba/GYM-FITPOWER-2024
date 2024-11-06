@@ -42,7 +42,7 @@ public class NutriServiceImpl implements NutriService {
             response = toDTO(nutriRepository.save(toEntity(requestNutri)));
             logger.info(CREATE_SUCCESFULLY, "{}" + requestNutri.getName());
         } catch (Exception e) {
-            throw new SaveEntityException("Error al guardar al usuaria");
+            throw new SaveEntityException("Failed to save entity");
         }
         return response;
     }

@@ -12,6 +12,7 @@ public class NutritinistConstants {
     public static final String DISABLE = "The user is being disabled---";
     public static final String ENABLED = "The user is being enabled---";
     public static final String CREATE_NUTRIPLAN = "The nutrition plan is being created";
-
-
+    public static final String CREATE_NUTRIDIARYLOG ="has been successfully created in nutrition diary";
+    public static final String ERROR_UPDATE = "error updating entity";
+    public static final String SUCESSFULLY_UPDATE = "The entity was successfully updated";
 }
