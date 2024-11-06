@@ -1,9 +1,5 @@
 package com.gym.fit_power.service.impl;
 
-import com.gym.fit_power.model.Nutritionist;
-import com.gym.fit_power.model.Trainer;
-import com.gym.fit_power.repository.NutriRepository;
-import com.gym.fit_power.repository.TrainerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -29,17 +25,12 @@ public class ClientServiceImpl implements ClientService {
 
     GymRepository gymRepository;
     ClientRepository clientRepository;
-    TrainerRepository trainerRepository;
-    NutriRepository nutritionistRepository;
     MyGregorianCalendarConverter converter = new MyGregorianCalendarConverter();
     protected static final Logger logger = LoggerFactory.getLogger(ClientServiceImpl.class);
 
-    public ClientServiceImpl(ClientRepository clientRepository, GymRepository gymRepository,
-                             TrainerRepository trainerRepository, NutriRepository nutriRepository) {
+    public ClientServiceImpl(ClientRepository clientRepository, GymRepository gymRepository) {
         this.gymRepository = gymRepository;
         this.clientRepository = clientRepository;
-        this.trainerRepository = trainerRepository;
-        this.nutritionistRepository = nutriRepository;
     }
 
     @Override
@@ -80,23 +71,6 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<ClientDTO> readByGym(String gymCode) {
-        try {
-            List<ClientDTO> response = new ArrayList<>();
-            newInfoLog("Searching all clients on the gym: " + gymCode);
-            for (Client client : clientRepository.findAll()) {
-                if (client.getAssignedGym().getCode().equals(gymCode)) {
-                    response.add(toDTO(client));
-                }
-            }
-            return response;
-        } catch (Exception e) {
-            newErrorLog(SEARCH_ERROR, e);
-        }
-        return new ArrayList<>();
-    }
-
-    @Override
     public List<ClientDTO> readAll() throws DataAccessException {
         try {
             List<ClientDTO> response = new ArrayList<>();
@@ -130,14 +104,14 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public ClientDTO changeGym(String clientCuit, String gymCode) {
+    public ClientDTO changeGym(String clientCuit, String gymAddress) {
         try {
             newInfoLog("Change the gym of client: " + clientCuit);
             Client client = toEntity(readByCuit(clientCuit));
-            if (client.getAssignedGym().getCode().equals(gymCode)) {
+            if (client.getAssignedGym().getAddress().equals(gymAddress)) {
                 throw new Exception(); //TODO manejo de excepciones
             } else {
-                client.setAssignedGym(verifyGym(gymCode));
+                client.setAssignedGym(verifyGym(gymAddress));
                 clientRepository.save(client);
             }
         } catch (Exception e) {
@@ -180,8 +154,7 @@ public class ClientServiceImpl implements ClientService {
         entity.setLastname(dto.getLastname());
         entity.setEmail(dto.getEmail());
         entity.setPhone(dto.getPhone());
-        entity.setBirthDate(LocalDate.now());
-        //TODO se requiere conversion
+        entity.setBirthDate(LocalDate.now());//TODO se requiere conversion
         return entity;
     }
 
@@ -200,9 +173,9 @@ public class ClientServiceImpl implements ClientService {
         return dto;
     }
 
-    private Gym verifyGym(String gymCode) {
+    private Gym verifyGym(String address) {
         for (Gym gym : gymRepository.findAll()) {
-            if (gym.getCode().equals(gymCode)) {
+            if (gym.getAddress().equals(address)) {
                 return gym;
             }
         }

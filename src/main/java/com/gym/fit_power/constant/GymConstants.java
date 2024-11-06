@@ -11,6 +11,5 @@ public class GymConstants {
     public static final String SEARCH_CORRECT = "Gym/s found correctly";
     public static final String SUCCESSFUL = "The task was completed successfully";
     public static final String ERROR_WHILE = "CONTROLLER -- An error occurred while {} a gym: {}";
-    public static final String WITH_CODE = "gym with code ";
 
 }

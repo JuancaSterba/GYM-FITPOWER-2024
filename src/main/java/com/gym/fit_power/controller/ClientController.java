@@ -57,27 +57,15 @@ public class ClientController {
         return ResponseEntity.ok().headers(newHeader(FOUND, SUCCESSFUL)).body(response);
     }
 
-    @GetMapping(value = "/{gymCode}")
-    public ResponseEntity<List<ClientDTO>> readByGym(@PathVariable(value = "gymCode") String gymCode) {
-        newInfoLog("Get all clients from a Gym " + gymCode);
-        List<ClientDTO> response = new ArrayList<>(service.readByGym(gymCode));
-        if (response.isEmpty()) {
-            errorSearch(noClients("in the gym", gymCode));
-            return ResponseEntity.badRequest()
-                    .headers(newHeader(ERR404, noClients("in the gym", gymCode))).body(null);
-        }
-        correctSearch();
-        return ResponseEntity.ok().headers(newHeader(FOUND, SUCCESSFUL)).body(response);
-    }
-
     @GetMapping(value = "")
     public ResponseEntity<List<ClientDTO>> readAll() {
         newInfoLog("Get all client");
         List<ClientDTO> response = new ArrayList<>(service.readAll());
         if (response.isEmpty()) {
-            errorSearch(noClients("in the database", ""));
+            String message = "there are no clients in the database";
+            errorSearch(message);
             return ResponseEntity.badRequest()
-                    .headers(newHeader(ERR404, noClients("in the database", ""))).body(null);
+                    .headers(newHeader(ERR404, message)).body(null);
         }
         correctSearch();
         return ResponseEntity.ok().headers(newHeader(FOUND, SUCCESSFUL)).body(response);
@@ -183,10 +171,6 @@ public class ClientController {
 
     private String updatedDescription(String cuit) {
         return genericDescription(cuit) + "is updated";
-    }
-
-    private String noClients(String where, String id) {
-        return NO_CLIENTS + where + " " + id;
     }
 
 }
