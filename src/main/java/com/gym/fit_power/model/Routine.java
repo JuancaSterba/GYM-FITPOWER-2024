@@ -13,6 +13,8 @@ import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -45,6 +47,9 @@ public class Routine {
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
+
+    @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ExerciseSet> exerciseSets = new ArrayList<>();
 
     @PrePersist
     private void prePersist() {
