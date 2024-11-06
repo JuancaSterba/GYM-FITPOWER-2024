@@ -32,7 +32,7 @@ public class NutritionPlan {
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
-    @OneToMany(mappedBy = "nutrition_plan")
+    @OneToMany(mappedBy = "nutritionPlan")
     private List<NutritionDiary> logNutri;
 
 

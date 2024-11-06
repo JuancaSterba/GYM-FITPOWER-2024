@@ -17,6 +17,10 @@ public class ExerciseSet {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "routine_id")
+    private Routine routine;
+
+    @ManyToOne
     @JoinColumn(name = "exercise_id")
     private Exercise exercise;
 
