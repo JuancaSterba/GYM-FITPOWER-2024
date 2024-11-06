@@ -1,7 +1,6 @@
 package com.gym.fit_power.dto;
 
 import lombok.Data;
-import java.util.List;
 import lombok.NoArgsConstructor;
 import com.gym.fit_power.model.Gym;
 import com.fasterxml.jackson.annotation.JsonIgnore;
