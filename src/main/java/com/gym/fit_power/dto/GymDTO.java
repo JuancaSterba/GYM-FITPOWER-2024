@@ -10,7 +10,7 @@ public class GymDTO {
 
     @JsonIgnore
     private Long id;
-    
+
     private String domain;
     private String address;
     private String mail;
