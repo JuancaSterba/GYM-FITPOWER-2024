@@ -2,11 +2,16 @@ package com.gym.fit_power.controller;
 
 import java.net.URI;
 import java.util.List;
+
 import org.slf4j.Logger;
+
 import java.util.ArrayList;
+
 import org.slf4j.LoggerFactory;
 import lombok.extern.slf4j.Slf4j;
+
 import java.net.URISyntaxException;
+
 import com.gym.fit_power.dto.GymDTO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +26,7 @@ import static com.gym.fit_power.constant.GymConstants.*;
 public class GymController {
 
     private final GymServiceImpl service;
-    public static final String CODE = "/{code}";
+    public static final String ADDRESS = "/{address}";
     public static final String RESOURCE = "/api/gyms";
     private static final Logger logger = LoggerFactory.getLogger(GymController.class);
 
@@ -33,26 +38,26 @@ public class GymController {
     public ResponseEntity<GymDTO> create(@RequestBody GymDTO request) throws URISyntaxException {
         newInfoLog("Creating new gym: " + request);
         GymDTO response;
-        if (service.readByCode(request.getCode()) != null) {
-            newErrorLog("creating", genericDescription(request.getCode()) + " already exist");
+        if (service.readByAddress(request.getAddress()) != null) {
+            newErrorLog("creating", genericDescription(request.getDomain()) + " already exist");
             return ResponseEntity.badRequest()
-                    .headers(newHeader("CREATE_ERROR", genericDescription(request.getCode())
+                    .headers(newHeader("CREATE_ERROR", genericDescription(request.getDomain())
                             + "already exist"))
                     .body(request);
         }
         response = service.create(request);
-        URI uri = new URI("/api/gyms/" + response.getCode());
-        newInfoLog(WITH_CODE + request.getCode() + " is created");
+        URI uri = new URI("/api/gyms/" + response.getAddress());
+        newInfoLog(request.getDomain() + " is created");
         return ResponseEntity.ok().headers(newHeader("CREATED", SUCCESSFUL)).location(uri).body(response);
     }
 
-    @GetMapping(value = CODE)
-    public ResponseEntity<GymDTO> readOne(@PathVariable(value = "code") String code) {
-        newInfoLog("Get gym with code: " + code);
-        GymDTO response = service.readByCode(code);
+    @GetMapping(value = ADDRESS)
+    public ResponseEntity<GymDTO> readOne(@PathVariable(value = "address") String address) {
+        newInfoLog("Get a gym at the address: " + address);
+        GymDTO response = service.readByAddress(address);
         if (response == null) {
-            errorSearch(notFoundDescription(code));
-            return ResponseEntity.badRequest().headers(newHeader(ERR404, notFoundDescription(code))).body(null);
+            errorSearch(notFoundDescription(address));
+            return ResponseEntity.badRequest().headers(newHeader(ERR404, notFoundDescription(address))).body(null);
         }
         correctSearch();
         return ResponseEntity.ok().headers(newHeader("FOUND", SUCCESSFUL)).body(response);
@@ -71,53 +76,54 @@ public class GymController {
         return ResponseEntity.ok().headers(newHeader("FOUND", SUCCESSFUL)).body(response);
     }
 
-    @PutMapping(value = CODE)
-    public ResponseEntity<GymDTO> update(@PathVariable(value = "code") String code, @RequestBody GymDTO newGym) {
-        newInfoLog("Update gym with code: " + code);
-        GymDTO oldGym = service.readByCode(code);
+    @PutMapping(value = ADDRESS)
+    public ResponseEntity<GymDTO> update(@PathVariable(value = "address") String address, @RequestBody GymDTO newGym) {
+        newInfoLog("Update gym with address: " + address);
+        GymDTO oldGym = service.readByAddress(address);
         if (oldGym == null) {
-            newErrorLog("updating", notFoundDescription(code));
-            return ResponseEntity.badRequest().headers(newHeader(ERR404, notFoundDescription(code))).body(null);
+            newErrorLog("updating", notFoundDescription(address));
+            return ResponseEntity.badRequest().headers(newHeader(ERR404, notFoundDescription(address))).body(null);
         }
-        GymDTO response = service.update(newGym);
-        newInfoLog(WITH_CODE + code + " is updated");
+        GymDTO response = service.update(oldGym.getId(), newGym);
+        newInfoLog(oldGym.getDomain() + " is updated");
         return ResponseEntity.ok().headers(newHeader("UPDATED", SUCCESSFUL)).body(response);
     }
 
-    @DeleteMapping(value = CODE)
-    public ResponseEntity<GymDTO> disable(@PathVariable(value = "code") String code) {
-        newInfoLog("Disabling gym with code: " + code);
-        GymDTO dto = service.readByCode(code);
-        if (dto == null) {
-            newErrorLog("disabling", notFoundDescription(code));
-            return ResponseEntity.badRequest().headers(newHeader(ERR404, notFoundDescription(code))).body(null);
-        } else if (Boolean.FALSE.equals(dto.getEnabled())) {
-            newErrorLog("disabling", genericDescription(code) + "is already disabled");
+    @DeleteMapping(value = ADDRESS)
+    public ResponseEntity<GymDTO> disable(@PathVariable(value = "address") String address) {
+        GymDTO dto = service.readByAddress(address);
+        newInfoLog("Disabling gym " + dto.getDomain());
+        if (service.readByAddress(address) == null) {
+            newErrorLog("disabling", notFoundDescription(address));
+            return ResponseEntity.badRequest().headers(newHeader(ERR404, notFoundDescription(address))).body(null);
+        }
+        if (Boolean.FALSE.equals(dto.getEnabled())) {
+            newErrorLog("disabling", genericDescription(address) + "is already disabled");
             return ResponseEntity.badRequest()
-                    .headers(newHeader("DISABLE_ERROR", genericDescription(code)
+                    .headers(newHeader("DISABLE_ERROR", genericDescription(address)
                             + "is already disabled"))
                     .body(dto);
         }
-        GymDTO response = service.disable(dto);
+        GymDTO response = service.disable(dto.getId());
         newInfoLog("Gym disabled");
         return ResponseEntity.ok().headers(newHeader("DISABLED", SUCCESSFUL)).body(response);
     }
 
-    @PatchMapping(value = CODE)
-    public ResponseEntity<GymDTO> enable(@PathVariable(value = "code") String code) {
-        newInfoLog("Enabling gym with code: " + code);
-        GymDTO dto = service.readByCode(code);
+    @PatchMapping(value = ADDRESS)
+    public ResponseEntity<GymDTO> enable(@PathVariable(value = "address") String address) {
+        GymDTO dto = service.readByAddress(address);
+        newInfoLog("Enabling gym with address: " + address);
         if (dto == null) {
-            newErrorLog("enabling", notFoundDescription(code));
-            return ResponseEntity.badRequest().headers(newHeader(ERR404, notFoundDescription(code))).body(null);
+            newErrorLog("enabling", notFoundDescription(address));
+            return ResponseEntity.badRequest().headers(newHeader(ERR404, notFoundDescription(address))).body(null);
         } else if (Boolean.TRUE.equals(dto.getEnabled())) {
-            newErrorLog("enabling", genericDescription(code) + "is already enabled");
+            newErrorLog("enabling", genericDescription(address) + "is already enabled");
             return ResponseEntity.badRequest()
-                    .headers(newHeader("ENABLE_ERROR", genericDescription(code)
+                    .headers(newHeader("ENABLE_ERROR", genericDescription(address)
                             + "is already enabled"))
                     .body(dto);
         }
-        GymDTO response = service.enable(dto);
+        GymDTO response = service.enable(dto.getId());
         newInfoLog("Gym enabled");
         return ResponseEntity.ok().headers(newHeader("ENABLED", SUCCESSFUL)).body(response);
     }
@@ -144,8 +150,8 @@ public class GymController {
         return headers;
     }
 
-    private String genericDescription(String code) {
-        return WITH_CODE + code + " ";
+    private String genericDescription(String domain) {
+        return "the gym" + domain + " ";
     }
 
     private String notFoundDescription(String code) {

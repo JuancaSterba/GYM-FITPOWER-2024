@@ -1,8 +1,11 @@
 package com.gym.fit_power.service.impl;
 
 import java.util.List;
+
 import org.slf4j.Logger;
+
 import java.util.ArrayList;
+
 import org.slf4j.LoggerFactory;
 import lombok.extern.slf4j.Slf4j;
 import com.gym.fit_power.model.Gym;
@@ -30,6 +33,9 @@ public class GymServiceImpl implements GymService {
         Gym newGym = toEntity(gymDTO);
         try {
             newInfoLog("Save the new gym: " + newGym.getDomain());
+            if (Boolean.TRUE.equals(verifyAddress(newGym.getAddress()))) {
+                throw new Exception("no se admite dirección repetida");//TODO manejo de excepciones
+            }
             newGym.setEnabled(true);
             return toDTO(repository.save(newGym));
         } catch (Exception e) {
@@ -43,6 +49,17 @@ public class GymServiceImpl implements GymService {
         try {
             newInfoLog("Searching the gym with id: " + id);
             return toDTO(repository.findById(id).orElseThrow());
+        } catch (Exception e) {
+            newErrorLog(SEARCH_ERROR, e);
+        }
+        return null;
+    }
+
+    public GymDTO readByAddress(String address) throws DataAccessException {
+        try {
+            newInfoLog("Searching the gym at the address " + address);
+            return toDTO(repository.findAll().stream()
+                    .filter(gym -> gym.getAddress().equals(address)).findFirst().orElseThrow());
         } catch (Exception e) {
             newErrorLog(SEARCH_ERROR, e);
         }
@@ -70,13 +87,17 @@ public class GymServiceImpl implements GymService {
         try {
             newInfoLog("Updating the gym " + oldGym.getDomain());
             Gym newGym = toEntity(gymDTO);
+            if (Boolean.TRUE.equals(verifyAddress(newGym.getAddress())) &&
+                    !oldGym.getAddress().equals(newGym.getAddress())) {
+                throw new Exception("no se admite dirección repetida");//TODO manejo de excepciones
+            }
             oldGym.setDomain(newGym.getDomain());
             oldGym.setAddress(newGym.getAddress());
             oldGym.setMail(newGym.getMail());
             oldGym.setPhone(newGym.getPhone());
             return toDTO(repository.save(oldGym));
         } catch (Exception e) {
-            newErrorLog(gymCouldNotBE(gymDTO.getCode()) + "updated. Error:", e);
+            newErrorLog(gymCouldNotBE(oldGym.getDomain()) + "updated. Error:", e);
         }
         return null;
     }
@@ -130,7 +151,16 @@ public class GymServiceImpl implements GymService {
         return entity;
     }
 
-    private String gymCouldNotBE(String code){
+    private Boolean verifyAddress(String address) {
+        for (Gym gym : repository.findAll()) {
+            if (gym.getAddress().equals(address)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private String gymCouldNotBE(String code) {
         return "The gym " + code + " could not be";
     }
 
