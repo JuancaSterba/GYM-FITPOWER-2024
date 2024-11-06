@@ -9,13 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TrainerResponseDto {
     private Long id;
-    private String dni;
+    private String cuit;
     private String name;
     private String lastname;
     private String email;
     private String phoneNumber;
-    private String speciality;
-    private String birthDate;
     private String createdAt;
     private boolean enabled;
 }

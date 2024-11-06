@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "routines")
 public class Routine {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -28,35 +29,11 @@ public class Routine {
 
     @NotNull
     @NotEmpty
-    @Size(min = 3, max = 20)
-    @Pattern(regexp = "^[a-zA-Z0-9]+$")
-    private String code;
-
-    @NotNull
-    @NotEmpty
-    @Size(min = 3, max = 50)
-    private String name;
-
-    @NotNull
-    @NotEmpty
-    @Size(min = 10, max = 200)
-    private String description;
-
-    @NotNull
-    @NotEmpty
     @Size(min = 10, max = 200)
     private String goals;
 
-    @NotNull
-    @NotEmpty
-    @Pattern(regexp = "^(Fácil|Medio|Difícil)$")
-    private String difficulty;
-
     @Column(name = "created_at")
     private LocalDate createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDate updatedAt;
 
     @NotNull
     private boolean active;

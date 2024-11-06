@@ -36,16 +36,16 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     @Transactional(readOnly = true)
-    public TrainerResponseDto findByDni(String dni) throws TrainerNotFoundException {
-        Optional<Trainer> trainer = trainerRepository.findByDni(dni);
-        return trainer.map(this::toDto).orElseThrow(() -> new TrainerNotFoundException("Trainer with DNI " + dni + " not found."));
+    public TrainerResponseDto findByCuit(String cuit) throws TrainerNotFoundException {
+        Optional<Trainer> trainer = trainerRepository.findByCuit(cuit);
+        return trainer.map(this::toDto).orElseThrow(() -> new TrainerNotFoundException("Trainer with CUIT " + cuit + " not found."));
     }
 
     @Override
     @Transactional
     public TrainerResponseDto save(TrainerRequestDto trainerRequestDto) throws DuplicatedTrainerException {
-        if (trainerRepository.existsByDni(trainerRequestDto.getDni())) {
-            throw new DuplicatedTrainerException("Trainer with DNI " + trainerRequestDto.getDni() + " already exists.");
+        if (trainerRepository.existsByCuit(trainerRequestDto.getCuit())) {
+            throw new DuplicatedTrainerException("Trainer with CUIT " + trainerRequestDto.getCuit() + " already exists.");
         }
         Trainer trainer = toEntity(trainerRequestDto);
         trainer = trainerRepository.save(trainer);
@@ -54,22 +54,22 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     @Transactional
-    public TrainerResponseDto update(String dni, TrainerRequestDto trainerRequestDto) throws TrainerUpdateException {
-        if (!trainerRepository.existsByDni(dni)) {
-            throw new TrainerUpdateException("No trainer found with DNI " + dni + " for update.");
+    public TrainerResponseDto update(String cuit, TrainerRequestDto trainerRequestDto) throws TrainerUpdateException {
+        if (!trainerRepository.existsByCuit(cuit)) {
+            throw new TrainerUpdateException("No trainer found with CUIT " + cuit + " for update.");
         }
         Trainer trainer = toEntity(trainerRequestDto);
-        trainer.setDni(dni);
+        trainer.setCuit(cuit);
         trainer = trainerRepository.save(trainer);
         return toDto(trainer);
     }
 
     @Override
     @Transactional
-    public void delete(String dni) throws TrainerNotFoundException {
-        Optional<Trainer> trainer = trainerRepository.findByDni(dni);
+    public void delete(String cuit) throws TrainerNotFoundException {
+        Optional<Trainer> trainer = trainerRepository.findByCuit(cuit);
         if (trainer.isEmpty()) {
-            throw new TrainerNotFoundException("No trainer found with DNI " + dni + " for deletion.");
+            throw new TrainerNotFoundException("No trainer found with DNI " + cuit + " for deletion.");
         }
         trainer.get().setEnabled(false);
         trainerRepository.save(trainer.get());
@@ -77,28 +77,22 @@ public class TrainerServiceImpl implements TrainerService {
 
     private Trainer toEntity(TrainerRequestDto dto) {
         Trainer trainer = new Trainer();
-        trainer.setDni(dto.getDni());
+        trainer.setCuit(dto.getCuit());
         trainer.setName(dto.getName());
         trainer.setLastname(dto.getLastname());
         trainer.setEmail(dto.getEmail());
         trainer.setPhoneNumber(dto.getPhoneNumber());
-        trainer.setSpeciality(dto.getSpeciality());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        LocalDate birthDate = LocalDate.parse(dto.getBirthDate(), formatter);
-        trainer.setBirthDate(birthDate);
         return trainer;
     }
 
     private TrainerResponseDto toDto(Trainer trainer) {
         TrainerResponseDto trainerResponseDto = new TrainerResponseDto();
         trainerResponseDto.setId(trainer.getId());
-        trainerResponseDto.setDni(trainer.getDni());
+        trainerResponseDto.setCuit(trainer.getCuit());
         trainerResponseDto.setName(trainer.getName());
         trainerResponseDto.setLastname(trainer.getLastname());
         trainerResponseDto.setEmail(trainer.getEmail());
         trainerResponseDto.setPhoneNumber(trainer.getPhoneNumber());
-        trainerResponseDto.setSpeciality(trainer.getSpeciality());
-        trainerResponseDto.setBirthDate(trainer.getBirthDate().toString());
         trainerResponseDto.setCreatedAt(trainer.getCreatedAt().toString());
         trainerResponseDto.setEnabled(trainer.isEnabled());
         return trainerResponseDto;

@@ -1,15 +1,16 @@
 package com.gym.fit_power.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,7 +28,7 @@ public class Trainer {
     @Column(unique = true)
     @NotNull
     @NotBlank
-    private String dni;
+    private String cuit;
 
     @NotNull
     @NotBlank
@@ -45,20 +46,8 @@ public class Trainer {
     @Pattern(regexp = "^\\d{10}$")
     private String phoneNumber;
 
-    @NotNull
-    @NotBlank
-    @Size(min = 2, max = 50)
-    private String speciality;
-
-    @Column(name = "birth_date")
-    @Past
-    private LocalDate birthDate;
-
     @Column(name = "created_at")
     private LocalDate createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDate updatedAt;
 
     @NotNull
     private boolean enabled;

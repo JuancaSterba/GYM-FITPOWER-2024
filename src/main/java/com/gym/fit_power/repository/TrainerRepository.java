@@ -8,8 +8,8 @@ import java.util.Optional;
 
 @Repository
 public interface TrainerRepository extends JpaRepository<Trainer, Long> {
-    Optional<Trainer> findByDni(String dni);
-    boolean existsByDni(String dni);
+    Optional<Trainer> findByCuit(String cuit);
+    boolean existsByCuit(String cuit);
     Optional<Trainer> findByEmail(String email);
     boolean existsByEmail(String email);
 }

@@ -10,8 +10,8 @@ import java.util.List;
 
 public interface TrainerService {
     List<TrainerResponseDto> findAll();
-    TrainerResponseDto findByDni(String dni) throws TrainerNotFoundException;
+    TrainerResponseDto findByCuit(String cuit) throws TrainerNotFoundException;
     TrainerResponseDto save(TrainerRequestDto trainerRequestDto) throws DuplicatedTrainerException;
-    TrainerResponseDto update(String dni, TrainerRequestDto trainerRequestDto) throws TrainerUpdateException;
-    void delete(String dni) throws TrainerNotFoundException;
+    TrainerResponseDto update(String cuit, TrainerRequestDto trainerRequestDto) throws TrainerUpdateException;
+    void delete(String cuit) throws TrainerNotFoundException;
 }
