@@ -5,7 +5,9 @@ import com.gym.fit_power.dto.response.ExerciseSetResponseDto;
 import com.gym.fit_power.model.Exercise;
 import com.gym.fit_power.model.ExerciseSet;
 import com.gym.fit_power.model.Routine;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ExerciseSetMapper {
 
     public static ExerciseSetResponseDto toDto(ExerciseSet exerciseSet) {

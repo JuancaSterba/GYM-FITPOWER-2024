@@ -13,10 +13,12 @@ import com.gym.fit_power.repository.ExerciseRepository;
 import com.gym.fit_power.repository.ExerciseSetRepository;
 import com.gym.fit_power.repository.RoutineRepository;
 import com.gym.fit_power.service.ExerciseSetService;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service
 public class ExerciseSetServiceImpl implements ExerciseSetService {
 
     private final ExerciseSetRepository exerciseSetRepository;

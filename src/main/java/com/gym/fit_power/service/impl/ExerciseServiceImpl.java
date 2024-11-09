@@ -9,11 +9,13 @@ import com.gym.fit_power.mapper.ExerciseMapper;
 import com.gym.fit_power.model.Exercise;
 import com.gym.fit_power.repository.ExerciseRepository;
 import com.gym.fit_power.service.ExerciseService;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ExerciseServiceImpl implements ExerciseService {
 
     private final ExerciseRepository exerciseRepository;
@@ -55,7 +57,7 @@ public class ExerciseServiceImpl implements ExerciseService {
                 .ifPresent(exercise -> {
                     throw new DuplicatedExerciseException("Exercise with name " + exerciseRequestDto.getName() + " already exists.");
                 });
-        Exercise newExercise = exerciseMapper.toEntity(exerciseRequestDto);
+        Exercise newExercise = ExerciseMapper.toEntity(exerciseRequestDto);
         newExercise = exerciseRepository.save(newExercise);
         return exerciseMapper.toDto(newExercise);
     }
@@ -65,7 +67,7 @@ public class ExerciseServiceImpl implements ExerciseService {
     public ExerciseResponseDto update(String name, ExerciseRequestDto exerciseRequestDto) throws ExerciseUpdateException {
         Exercise exercise = exerciseRepository.findByName(name)
                 .orElseThrow(() -> new ExerciseUpdateException("Exercise with name " + name + " not found."));
-        Exercise updatedExercise = exerciseMapper.toEntity(exerciseRequestDto);
+        Exercise updatedExercise = ExerciseMapper.toEntity(exerciseRequestDto);
         updatedExercise.setId(exercise.getId());
         updatedExercise = exerciseRepository.save(updatedExercise);
         return exerciseMapper.toDto(updatedExercise);
