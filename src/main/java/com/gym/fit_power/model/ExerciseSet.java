@@ -3,11 +3,13 @@ package com.gym.fit_power.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name = "exercise_sets")
 public class ExerciseSet {
@@ -26,7 +28,7 @@ public class ExerciseSet {
     private int sets;
 
     @NotNull
-    @Min(0)
+    @Min(1)
     private int restInMinutes;
 
     @ManyToOne

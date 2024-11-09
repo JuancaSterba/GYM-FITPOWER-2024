@@ -1,10 +1,7 @@
 package com.gym.fit_power.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,24 +22,24 @@ public class Trainer {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(unique = true)
-    @NotNull
     @NotBlank
+    @Column(unique = true)
     private String cuit;
 
-    @NotNull
     @NotBlank
     private String name;
 
-    @NotNull
     @NotBlank
     private String lastname;
 
-    @Column(unique = true)
     @Email
+    @NotBlank
+    @Size(min = 3, max = 50)
+    @Column(unique = true)
     private String email;
 
     @Column(name = "phone_number")
+    @NotBlank
     @Pattern(regexp = "^\\d{10}$")
     private String phoneNumber;
 

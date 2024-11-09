@@ -11,8 +11,6 @@ import com.gym.fit_power.service.TrainerService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +24,7 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<TrainerResponseDto> findAll() {
         return trainerRepository
                 .findAll()
@@ -44,35 +43,37 @@ public class TrainerServiceImpl implements TrainerService {
     @Override
     @Transactional
     public TrainerResponseDto save(TrainerRequestDto trainerRequestDto) throws DuplicatedTrainerException {
-        if (trainerRepository.existsByCuit(trainerRequestDto.getCuit())) {
-            throw new DuplicatedTrainerException("Trainer with CUIT " + trainerRequestDto.getCuit() + " already exists.");
-        }
-        Trainer trainer = toEntity(trainerRequestDto);
-        trainer = trainerRepository.save(trainer);
-        return toDto(trainer);
+        trainerRepository.findByCuit(trainerRequestDto.getCuit())
+                .ifPresent(trainer -> {
+                    throw new DuplicatedTrainerException("Trainer with CUIT " + trainerRequestDto.getCuit() + " already exists.");
+                });
+        Trainer newTrainer = toEntity(trainerRequestDto);
+        newTrainer = trainerRepository.save(newTrainer);
+        return toDto(newTrainer);
     }
 
     @Override
     @Transactional
     public TrainerResponseDto update(String cuit, TrainerRequestDto trainerRequestDto) throws TrainerUpdateException {
-        if (!trainerRepository.existsByCuit(cuit)) {
-            throw new TrainerUpdateException("No trainer found with CUIT " + cuit + " for update.");
-        }
-        Trainer trainer = toEntity(trainerRequestDto);
-        trainer.setCuit(cuit);
-        trainer = trainerRepository.save(trainer);
-        return toDto(trainer);
+        Trainer trainer = trainerRepository.findByCuit(cuit)
+                .orElseThrow(() -> new TrainerUpdateException("No trainer found with CUIT " + cuit + " for update."));
+
+        Trainer updatedTrainer = toEntity(trainerRequestDto);
+        updatedTrainer.setCuit(cuit);
+        updatedTrainer.setId(trainer.getId());
+
+        trainerRepository.save(updatedTrainer);
+
+        return toDto(updatedTrainer);
     }
 
     @Override
     @Transactional
     public void delete(String cuit) throws TrainerNotFoundException {
-        Optional<Trainer> trainer = trainerRepository.findByCuit(cuit);
-        if (trainer.isEmpty()) {
-            throw new TrainerNotFoundException("No trainer found with DNI " + cuit + " for deletion.");
-        }
-        trainer.get().setEnabled(false);
-        trainerRepository.save(trainer.get());
+        Trainer trainer = trainerRepository.findByCuit(cuit)
+                .orElseThrow(() -> new TrainerNotFoundException("No trainer found with DNI " + cuit + " for deletion."));
+        trainer.setEnabled(false);
+        trainerRepository.save(trainer);
     }
 
     private Trainer toEntity(TrainerRequestDto dto) {

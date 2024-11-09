@@ -1,14 +1,8 @@
 package com.gym.fit_power.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.*;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
@@ -20,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name = "routines")
 public class Routine {
@@ -29,8 +24,7 @@ public class Routine {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @NotNull
-    @NotEmpty
+    @NotBlank
     @Size(min = 10, max = 200)
     private String goals;
 
@@ -50,6 +44,9 @@ public class Routine {
 
     @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ExerciseSet> exerciseSets = new ArrayList<>();
+
+    @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TrainingDiary> trainingDiaries = new ArrayList<>();
 
     @PrePersist
     private void prePersist() {
