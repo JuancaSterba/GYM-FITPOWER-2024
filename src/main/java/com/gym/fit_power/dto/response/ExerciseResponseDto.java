@@ -1,19 +1,20 @@
 package com.gym.fit_power.dto.response;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TrainerResponseDto {
+@Builder
+public class ExerciseResponseDto {
+
     private Long id;
-    private String cuit;
     private String name;
-    private String lastname;
-    private String email;
-    private String phoneNumber;
-    private String createdAt;
+    private String description;
+    private String muscleGroup;
     private boolean enabled;
+
 }

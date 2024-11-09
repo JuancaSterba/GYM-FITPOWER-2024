@@ -3,6 +3,7 @@ package com.gym.fit_power.controller;
 import com.gym.fit_power.dto.request.TrainerRequestDto;
 import com.gym.fit_power.dto.response.TrainerResponseDto;
 import com.gym.fit_power.service.TrainerService;
+import com.gym.fit_power.util.ResponseUtils;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +22,7 @@ public class TrainerController {
 
     private final TrainerService trainerService;
 
-    public TrainerController(TrainerService trainerService) {
+    public TrainerController(TrainerService trainerService, ResponseUtils responseUtils) {
         this.trainerService = trainerService;
     }
 
@@ -34,43 +34,36 @@ public class TrainerController {
         return ResponseEntity.ok(trainers); // Devolver la lista de entrenadores
     }
 
-    @GetMapping("/{dni}")
-    public ResponseEntity<TrainerResponseDto> findByDni(@PathVariable String dni) {
-        log.info("Buscando entrenador con DNI: {}", dni); // Log de búsqueda
-        TrainerResponseDto trainer = trainerService.findByDni(dni);
+    @GetMapping("/{cuit}")
+    public ResponseEntity<TrainerResponseDto> findByDni(@PathVariable String cuit) {
+        log.info("Buscando entrenador con CUIT: {}", cuit); // Log de búsqueda
+        TrainerResponseDto trainer = trainerService.findByCuit(cuit);
         log.info("Entrenador encontrado: {}", trainer); // Log del resultado
         return ResponseEntity.ok(trainer); // Devolver el entrenador encontrado
     }
 
     @PostMapping
-    public ResponseEntity<TrainerResponseDto> save(@Valid @RequestBody TrainerRequestDto trainerRequestDto) {
-        log.info("Intentando crear entrenador con DNI: {}", trainerRequestDto.getDni()); // Log de creación
+    public ResponseEntity<TrainerResponseDto> save(@RequestBody @Valid TrainerRequestDto trainerRequestDto) {
+        log.info("Intentando crear entrenador con CUIT: {}", trainerRequestDto.getCuit()); // Log de creación
         TrainerResponseDto createdTrainer = trainerService.save(trainerRequestDto);
         log.info("Entrenador creado con éxito: {}", createdTrainer); // Log de éxito
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTrainer); // Devolver el objeto creado
     }
 
-    @PutMapping("/{dni}")
-    public ResponseEntity<TrainerResponseDto> update(@PathVariable String dni, @Valid @RequestBody TrainerRequestDto trainerRequestDto) {
-        log.info("Actualizando entrenador con DNI: {}", dni); // Log de actualización
-        TrainerResponseDto updatedTrainer = trainerService.update(dni, trainerRequestDto);
+    @PutMapping("/{cuit}")
+    public ResponseEntity<TrainerResponseDto> update(@PathVariable String cuit, @RequestBody @Valid TrainerRequestDto trainerRequestDto) {
+        log.info("Actualizando entrenador con CUIT: {}", cuit); // Log de actualización
+        TrainerResponseDto updatedTrainer = trainerService.update(cuit, trainerRequestDto);
         log.info("Entrenador actualizado con éxito: {}", updatedTrainer); // Log de éxito
         return ResponseEntity.ok(updatedTrainer); // Devolver el objeto actualizado
     }
 
-    @DeleteMapping("/{dni}")
-    public ResponseEntity<Map<String, String>> delete(@PathVariable String dni) {
-        log.info("Eliminando entrenador con DNI: {}", dni); // Log de eliminación
-        trainerService.delete(dni);
+    @DeleteMapping("/{cuit}")
+    public ResponseEntity<Map<String, String>> delete(@PathVariable String cuit) {
+        log.info("Eliminando entrenador con CUIT: {}", cuit); // Log de eliminación
+        trainerService.delete(cuit);
         log.info("Entrenador eliminado con éxito."); // Log de éxito
-        return createSuccessResponse("Entrenador eliminado con éxito."); // Devolver mensaje de éxito
-    }
-
-    private ResponseEntity<Map<String, String>> createSuccessResponse(String message) {
-        return ResponseEntity.ok(Map.of(
-                "timestamp", LocalDateTime.now().toString(),
-                "message", message
-        ));
+        return ResponseUtils.createSuccessResponse("Entrenador eliminado con éxito."); // Devolver mensaje de éxito
     }
 
 }
