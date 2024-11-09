@@ -4,7 +4,6 @@ import lombok.Data;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import java.util.GregorianCalendar;
 
 @Data
 @Entity
@@ -18,14 +17,11 @@ public class Gym {
     private Long id;
 
     @Column(unique = true)
-    private String code;
+    private String address;
 
     private String domain;
-    private String address;
     private String mail;
     private String phone;
-    private GregorianCalendar createdAt;
-    private GregorianCalendar updatedAt;
     private Boolean enabled;
 
 }

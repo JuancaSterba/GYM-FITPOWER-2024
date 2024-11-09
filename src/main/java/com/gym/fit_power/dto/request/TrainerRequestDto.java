@@ -34,5 +34,5 @@ public class TrainerRequestDto {
     @NotBlank(message = "{phoneNumber.notBlank}")
     @Pattern(regexp = "^\\d{10}$", message = "{phoneNumber.invalid}")
     private String phoneNumber;
-
+  
 }

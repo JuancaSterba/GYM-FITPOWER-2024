@@ -29,6 +29,5 @@ public class RoutineRequestDto {
     private List<ExerciseSetRequestDto> exerciseSets;
 
     private List<TrainingDiaryRequestDto> trainingDiaries;
-
-
+  
 }

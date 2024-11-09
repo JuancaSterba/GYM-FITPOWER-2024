@@ -1,12 +1,14 @@
 package com.gym.fit_power.service.impl;
 
 import java.util.List;
+
 import org.slf4j.Logger;
+
 import java.util.ArrayList;
+
 import org.slf4j.LoggerFactory;
 import lombok.extern.slf4j.Slf4j;
 import com.gym.fit_power.model.Gym;
-import java.util.GregorianCalendar;
 import com.gym.fit_power.dto.GymDTO;
 import com.gym.fit_power.service.GymService;
 import org.springframework.stereotype.Service;
@@ -28,15 +30,16 @@ public class GymServiceImpl implements GymService {
 
     @Override
     public GymDTO create(GymDTO gymDTO) throws DataAccessException {
+        Gym newGym = toEntity(gymDTO);
         try {
-            Gym newGym = toEntity(gymDTO);
-            newInfoLog("Save the new gym: " + newGym.getCode());
+            newInfoLog("Save the new gym: " + newGym.getDomain());
+            if (Boolean.TRUE.equals(verifyAddress(newGym.getAddress()))) {
+                throw new Exception("no se admite dirección repetida");//TODO manejo de excepciones
+            }
             newGym.setEnabled(true);
-            newGym.setCreatedAt(new GregorianCalendar());
-            newGym.setUpdatedAt(new GregorianCalendar());
             return toDTO(repository.save(newGym));
         } catch (Exception e) {
-            newErrorLog(gymCouldNotBE(gymDTO.getCode()) + "saved. Error:", e);
+            newErrorLog(gymCouldNotBE(newGym.getDomain()) + "saved. Error:", e);
         }
         return null;
     }
@@ -52,14 +55,13 @@ public class GymServiceImpl implements GymService {
         return null;
     }
 
-    public GymDTO readByCode(String code) throws DataAccessException {
+    public GymDTO readByAddress(String address) throws DataAccessException {
         try {
-            newInfoLog("Searching the gym with code: " + code);
+            newInfoLog("Searching the gym at the address " + address);
             return toDTO(repository.findAll().stream()
-                    .filter(gym -> gym.getCode().equals(code)).findFirst().orElseThrow());
+                    .filter(gym -> gym.getAddress().equals(address)).findFirst().orElseThrow());
         } catch (Exception e) {
             newErrorLog(SEARCH_ERROR, e);
-
         }
         return null;
     }
@@ -80,45 +82,48 @@ public class GymServiceImpl implements GymService {
     }
 
     @Override
-    public GymDTO update(GymDTO gymDTO) throws DataAccessException {
+    public GymDTO update(Long id, GymDTO gymDTO) throws DataAccessException {
+        Gym oldGym = toEntity(readOne(id));
         try {
-            newInfoLog("Updating the gym with code: " + gymDTO.getCode());
-            Gym oldGym = toEntity(readByCode(gymDTO.getCode()));
+            newInfoLog("Updating the gym " + oldGym.getDomain());
             Gym newGym = toEntity(gymDTO);
+            if (Boolean.TRUE.equals(verifyAddress(newGym.getAddress())) &&
+                    !oldGym.getAddress().equals(newGym.getAddress())) {
+                throw new Exception("no se admite dirección repetida");//TODO manejo de excepciones
+            }
             oldGym.setDomain(newGym.getDomain());
             oldGym.setAddress(newGym.getAddress());
             oldGym.setMail(newGym.getMail());
             oldGym.setPhone(newGym.getPhone());
-            oldGym.setUpdatedAt(new GregorianCalendar());
             return toDTO(repository.save(oldGym));
         } catch (Exception e) {
-            newErrorLog(gymCouldNotBE(gymDTO.getCode()) + "updated. Error:", e);
+            newErrorLog(gymCouldNotBE(oldGym.getDomain()) + "updated. Error:", e);
         }
         return null;
     }
 
     @Override
-    public GymDTO disable(GymDTO gymDTO) throws DataAccessException {
+    public GymDTO disable(Long id) throws DataAccessException {
+        Gym entity = toEntity(readOne(id));
         try {
-            newInfoLog("Disabling the gym with code " + gymDTO.getCode());
-            Gym entity = toEntity(gymDTO);
+            newInfoLog("Disabling the gym " + entity.getDomain());
             entity.setEnabled(false);
             return toDTO(repository.save(entity));
         } catch (Exception e) {
-            newErrorLog(gymCouldNotBE(gymDTO.getCode()) + "disabled. Error:", e);
+            newErrorLog(gymCouldNotBE(entity.getDomain()) + "disabled. Error:", e);
         }
         return null;
     }
 
     @Override
-    public GymDTO enable(GymDTO gymDTO) throws DataAccessException {
+    public GymDTO enable(Long id) throws DataAccessException {
+        Gym entity = toEntity(readOne(id));
         try {
-            newInfoLog("Enabling the gym with code " + gymDTO.getCode());
-            Gym entity = toEntity(gymDTO);
+            newInfoLog("Enabling the gym " + entity.getDomain());
             entity.setEnabled(true);
             return toDTO(repository.save(entity));
         } catch (Exception e) {
-            newErrorLog(gymCouldNotBE(gymDTO.getCode()) + "enabled. Error:", e);
+            newErrorLog(gymCouldNotBE(entity.getDomain()) + "enabled. Error:", e);
         }
         return null;
     }
@@ -126,7 +131,6 @@ public class GymServiceImpl implements GymService {
     @Override
     public Gym toEntity(GymDTO dto) {
         Gym entity = new Gym();
-        entity.setCode(dto.getCode());
         entity.setDomain(dto.getDomain());
         entity.setAddress(dto.getAddress());
         entity.setMail(dto.getMail());
@@ -139,18 +143,24 @@ public class GymServiceImpl implements GymService {
     public GymDTO toDTO(Gym gym) {
         GymDTO entity = new GymDTO();
         entity.setId(gym.getId());
-        entity.setCode(gym.getCode());
         entity.setDomain(gym.getDomain());
         entity.setAddress(gym.getAddress());
         entity.setMail(gym.getMail());
         entity.setPhone(gym.getPhone());
-        entity.setCreatedAt(gym.getCreatedAt().getTime().toString());
-        entity.setUpdatedAt(gym.getUpdatedAt().getTime().toString());
         entity.setEnabled(gym.getEnabled());
         return entity;
     }
 
-    private String gymCouldNotBE(String code){
+    private Boolean verifyAddress(String address) {
+        for (Gym gym : repository.findAll()) {
+            if (gym.getAddress().equals(address)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private String gymCouldNotBE(String code) {
         return "The gym " + code + " could not be";
     }
 
