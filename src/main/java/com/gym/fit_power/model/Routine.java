@@ -39,8 +39,8 @@ public class Routine {
     private Trainer trainer;
 
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
+    @JoinColumn(name = "client_id", nullable = false)
+    private Client client;
 
     @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ExerciseSet> exerciseSets = new ArrayList<>();
