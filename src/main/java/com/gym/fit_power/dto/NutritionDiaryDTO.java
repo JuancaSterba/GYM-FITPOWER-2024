@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
 public class NutritionDiaryDTO {
     @JsonIgnore
     private Long id;
-    @JsonIgnore
-    private Long idNutritionPlan;
     private String updateAt;
     private String breakfast;
     private String lunch;
