@@ -19,7 +19,13 @@ public class RoutineMapper {
                 .exerciseSets(routine.getExerciseSets()
                         .stream()
                         .map(ExerciseSetMapper::toDto)
-                        .toList())
+                        .toList()
+                )
+                .trainingDiaries(routine.getTrainingDiaries()
+                        .stream()
+                        .map(TrainingDiaryMapper::toDto)
+                        .toList()
+                )
                 .build();
     }
 

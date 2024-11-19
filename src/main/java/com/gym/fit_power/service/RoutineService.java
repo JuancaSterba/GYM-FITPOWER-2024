@@ -6,5 +6,5 @@ import com.gym.fit_power.dto.response.RoutineResponseDto;
 public interface RoutineService {
     RoutineResponseDto save(RoutineRequestDto routineRequestDto, String trainerCuit, String clientCuit);
     RoutineResponseDto findClientActiveRoutine(String clientCuit);
-    void disableRoutine(Long routineId);
+    void disableActiveRoutine(Long routineId);
 }

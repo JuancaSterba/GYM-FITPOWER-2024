@@ -15,7 +15,4 @@ public class TrainingDiaryRequestDto {
     @Size(min = 3, max = 500, message = "{comentary.size.invalid}")
     private String comentary;
 
-    @NotBlank(message = "{routineId.notBlank}")
-    private Long routineId;
-
 }

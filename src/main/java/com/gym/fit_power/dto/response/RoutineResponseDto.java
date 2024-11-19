@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class RoutineResponseDto {
-
     private Long id;
     private String goals;
     private String createdAt;
@@ -20,5 +19,5 @@ public class RoutineResponseDto {
     private String trainerCuit;
     private String clientCuit;
     private List<ExerciseSetResponseDto> exerciseSets;
-//    private List<TrainingDiaryResponseDto> trainingDiaries;
+    private List<TrainingDiaryResponseDto> trainingDiaries;
 }
