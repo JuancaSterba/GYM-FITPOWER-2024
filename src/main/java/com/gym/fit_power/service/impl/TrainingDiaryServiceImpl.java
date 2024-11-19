@@ -11,6 +11,7 @@ import com.gym.fit_power.repository.TrainingDiaryRepository;
 import com.gym.fit_power.service.TrainingDiaryService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,4 +36,13 @@ public class TrainingDiaryServiceImpl implements TrainingDiaryService {
         trainingDiary.setRoutine(routine.get()); // Asigna el ID de la rutina al objeto TrainingDiary
         return TrainingDiaryMapper.toDto(trainingDiaryRepository.save(trainingDiary));
     }
+
+    @Override
+    public List<TrainingDiaryResponseDto> findByRoutineId(Long routineId) {
+        return trainingDiaryRepository.findByRoutineId(routineId)
+                .stream()
+                .map(TrainingDiaryMapper::toDto)
+                .toList();
+    }
+
 }
