@@ -2,6 +2,7 @@ package com.gym.fit_power.service.impl;
 
 import com.gym.fit_power.dto.request.TrainingDiaryRequestDto;
 import com.gym.fit_power.dto.response.TrainingDiaryResponseDto;
+import com.gym.fit_power.exception.RoutineNotFoundException;
 import com.gym.fit_power.mapper.TrainingDiaryMapper;
 import com.gym.fit_power.model.Routine;
 import com.gym.fit_power.model.TrainingDiary;
@@ -28,7 +29,7 @@ public class TrainingDiaryServiceImpl implements TrainingDiaryService {
     public TrainingDiaryResponseDto save(TrainingDiaryRequestDto trainingDiaryRequestDto) {
         Optional<Routine> routine = routineRepository.findById(trainingDiaryRequestDto.getRoutineId());
         if (routine.isEmpty()) {
-            throw new RuntimeException("Routine not found");
+            throw new RoutineNotFoundException("Routine not found");
         }
         TrainingDiary trainingDiary = TrainingDiaryMapper.toEntity(trainingDiaryRequestDto);
         trainingDiary.setRoutine(routine.get()); // Asigna el ID de la rutina al objeto TrainingDiary
