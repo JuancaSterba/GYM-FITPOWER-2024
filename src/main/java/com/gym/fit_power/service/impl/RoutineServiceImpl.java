@@ -6,6 +6,8 @@ import com.gym.fit_power.dto.request.RoutineRequestDto;
 import com.gym.fit_power.dto.request.TrainerRequestDto;
 import com.gym.fit_power.dto.response.RoutineResponseDto;
 import com.gym.fit_power.dto.response.TrainerResponseDto;
+import com.gym.fit_power.exception.EntityNotFoundException;
+import com.gym.fit_power.exception.RoutineNotFoundException;
 import com.gym.fit_power.exception.TrainerNotFoundException;
 import com.gym.fit_power.mapper.ExerciseSetMapper;
 import com.gym.fit_power.mapper.RoutineMapper;
@@ -82,11 +84,11 @@ public class RoutineServiceImpl implements RoutineService {
                 .filter(c -> c.getCuit().equals(clientCuit))
                 .findFirst();
         if (client.isEmpty()) {
-            throw new TrainerNotFoundException("Client with CUIT " + clientCuit + " not found.");
+            throw new EntityNotFoundException("Client with CUIT " + clientCuit + " not found.");
         }
         Optional<Routine> routine = routineRepository.findByClientAndActiveTrue(client.get());
         if (routine.isEmpty()) {
-            throw new TrainerNotFoundException("Routine not found.");
+            throw new RoutineNotFoundException("Routine not found.");
         }
         return RoutineMapper.toDto(routine.get());
     }
