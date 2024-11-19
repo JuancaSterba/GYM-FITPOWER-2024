@@ -1,0 +1,4 @@
+package com.gym.fit_power.mapper;
+
+public class TrainingDiaryMapper {
+}
