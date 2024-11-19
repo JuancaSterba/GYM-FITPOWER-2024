@@ -17,8 +17,8 @@ public class RoutineResponseDto {
     private String goals;
     private String createdAt;
     private boolean active;
-    private String trainerDni;
-    private String customerDni;
+    private String trainerCuit;
+    private String clientCuit;
     private List<ExerciseSetResponseDto> exerciseSets;
 //    private List<TrainingDiaryResponseDto> trainingDiaries;
 }
