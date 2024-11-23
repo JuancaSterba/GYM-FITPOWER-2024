@@ -25,7 +25,7 @@ public class ClientEventsNotification{
                     createdEvent.getId(), createdEvent.getData().toString());
             mailSender.send(createdEvent.getData().getEmail(),
                     "Bienvenido a FitPower!!",
-                    "Se ha recibido la solicitud de creación para un nuevo cliente de la aplicación FitPower\n" +
+                    "Se ha recibido la solicitud de creación para un nuevo cliente en la aplicación FitPower\n" +
                             "si desconoce esta solicitud por favor comuníquese con el servicio técnico.");
         }
     }
