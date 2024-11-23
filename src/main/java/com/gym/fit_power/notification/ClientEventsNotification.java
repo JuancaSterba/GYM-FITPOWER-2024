@@ -17,9 +17,10 @@ public class ClientEventsNotification{
     public void consumer(Event<?> event) {
         if (event.getClass().isAssignableFrom(ClientCreatedEvent.class)) {
             ClientCreatedEvent createdEvent = (ClientCreatedEvent) event;
-            log.info("Received Customer created event .... with Id={}, data={}",
+            log.info("Received created event for client with Id={}, data={}",
                     createdEvent.getId(),
                     createdEvent.getData().toString());
+
         }
     }
 }
