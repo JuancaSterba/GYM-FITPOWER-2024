@@ -2,6 +2,8 @@ package com.gym.fit_power.service;
 
 import com.gym.fit_power.dto.NutriPlanDTO;
 
+import java.util.List;
+
 
 public interface NutriPlanService {
 
@@ -9,9 +11,11 @@ public interface NutriPlanService {
 
     NutriPlanDTO readOne(Long id);
 
-    NutriPlanDTO disable(Long id);
+    List<NutriPlanDTO> readByClient(String clientCuit);
 
-    NutriPlanDTO enable(Long id);
+    NutriPlanDTO readPlanActiveByClient(String clientCuit);
+
+    NutriPlanDTO readPlanByClient(String clientCuit, Long id);
 
 
 }

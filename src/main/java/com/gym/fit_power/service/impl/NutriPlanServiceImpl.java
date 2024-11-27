@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static com.gym.fit_power.constant.NutritinistConstants.SUCCESSFUL;
@@ -42,15 +43,21 @@ public class NutriPlanServiceImpl implements NutriPlanService {
     @Override
     @Transactional
     public NutriPlanDTO create(NutriPlanDTO request) {
+        NutriPlanDTO response = null;
         try {
             NutritionPlan nutritionPlan = toEntity(request);
             nutritionPlan.setLogNutri(new ArrayList<>());
-            NutriPlanDTO response = toDTO(repository.save(nutritionPlan));
-            logger.info(SUCCESSFUL);
-            return response;
-        } catch (Exception e) {
+                for (NutritionPlan plan :nutritionPlan.getClient().getPlans()){
+                    plan.setEnabled(false);
+                }
+                response = toDTO(repository.save(nutritionPlan));
+                logger.info(SUCCESSFUL);
+
+        } catch (RuntimeException e) {
             throw new SaveEntityException(e.getMessage());
         }
+
+        return response;
     }
 
     @Override
@@ -62,25 +69,18 @@ public class NutriPlanServiceImpl implements NutriPlanService {
     }
 
 
-    @Override
-    @Transactional
-    public NutriPlanDTO disable(Long id) {
-        Optional<NutritionPlan> nutritionPlanOptional = repository.findById(id);
-        NutritionPlan nutritionPlan = nutritionPlanOptional.orElseThrow(EntityNotFoundException::new);
-        nutritionPlan.setEnabled(false);
-        repository.save(nutritionPlan);
-        return toDTO(nutritionPlan);
+    public List<NutriPlanDTO> readByClient(String clientCuit) {
+        return List.of();
     }
 
-    @Override
-    @Transactional
-    public NutriPlanDTO enable(Long id) {
-        Optional<NutritionPlan> nutritionPlanOptional = repository.findById(id);
-        NutritionPlan nutritionPlan = nutritionPlanOptional.orElseThrow(EntityNotFoundException::new);
-        nutritionPlan.setEnabled(true);
-        repository.save(nutritionPlan);
-        return toDTO(nutritionPlan);
+    public NutriPlanDTO readPlanActiveByClient(String clientCuit) {
+        return null;
     }
+
+    public NutriPlanDTO readPlanByClient(String clientCuit, Long id) {
+        return null;
+    }
+
 
     private NutritionPlan toEntity(NutriPlanDTO request) {
         NutritionPlan nutriP = new NutritionPlan();
@@ -119,4 +119,6 @@ public class NutriPlanServiceImpl implements NutriPlanService {
         return response;
 
     }
+
+
 }

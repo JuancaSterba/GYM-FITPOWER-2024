@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static com.gym.fit_power.constant.NutritinistConstants.CREATE_NUTRIPLAN;
-import static com.gym.fit_power.constant.NutritinistConstants.FINDONE;
+
 
 @RestController
 @RequestMapping("/NutririonPlan")
@@ -30,33 +30,6 @@ public class NutritionPlanController {
         }
         NutriPlanDTO response = service.create(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
-    }
-
-    @GetMapping("/readOnePlan/{id}")
-    public ResponseEntity<NutriPlanDTO> readOneNutriPlan(@PathVariable Long id){
-        logger.info(FINDONE+ "{} ",id);
-        if (service.readOne(id) != null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        NutriPlanDTO response = service.readOne(id);
-        return new ResponseEntity<>(response,HttpStatus.OK);
-    }
-    @PatchMapping("/disablePlan/{id}")
-    public ResponseEntity<NutriPlanDTO> disablePlan(@PathVariable Long id){
-        if (service.readOne(id) != null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        NutriPlanDTO response = service.disable(id);
-        return new ResponseEntity<>(response,HttpStatus.OK);
-    }
-
-    @PatchMapping("/enablePlan/{id}")
-    public ResponseEntity<NutriPlanDTO> enablePlan(@PathVariable Long id){
-        if (service.readOne(id) != null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        NutriPlanDTO response = service.enable(id);
-        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
 

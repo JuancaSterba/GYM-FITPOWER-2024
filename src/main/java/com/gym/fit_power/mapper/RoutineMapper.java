@@ -13,7 +13,7 @@ public class RoutineMapper {
                 .id(routine.getId())
                 .goals(routine.getGoals())
                 .createdAt(routine.getCreatedAt().toString())
-                .active(routine.isActive())
+
                 .trainerCuit(routine.getTrainer().getCuit())
                 .clientCuit(routine.getClient().getCuit())
                 .exerciseSets(routine.getExerciseSets()
