@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long>{
-
+Client findByCuit(String cuit);
 }

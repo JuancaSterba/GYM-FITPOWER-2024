@@ -5,8 +5,10 @@ import com.gym.fit_power.dto.NutritionDiaryDTO;
 import com.gym.fit_power.exception.EntityNotFoundException;
 import com.gym.fit_power.exception.EntityUpdateException;
 import com.gym.fit_power.exception.SaveEntityException;
+import com.gym.fit_power.model.Client;
 import com.gym.fit_power.model.NutritionDiary;
 import com.gym.fit_power.model.NutritionPlan;
+import com.gym.fit_power.repository.ClientRepository;
 import com.gym.fit_power.repository.NutritioDiaryRepository;
 import com.gym.fit_power.repository.NutritionPlanRepository;
 import com.gym.fit_power.service.NutritionDiaryService;
@@ -15,57 +17,84 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.gym.fit_power.constant.NutritinistConstants.*;
 
 @Service
 @Slf4j
-public class NutritionDiaryServiceImpl implements NutritionDiaryService{
+public class NutritionDiaryServiceImpl implements NutritionDiaryService {
     private final NutritioDiaryRepository repository;
     private final NutritionPlanRepository nutritionPlanRepository;
+    private final ClientRepository clientRepository;
     protected static final Logger logger = LoggerFactory.getLogger(NutritionDiaryServiceImpl.class);
 
-    public NutritionDiaryServiceImpl(NutritioDiaryRepository repository, NutritionPlanRepository nutritionPlanRepository) {
+    public NutritionDiaryServiceImpl(NutritioDiaryRepository repository, NutritionPlanRepository nutritionPlanRepository, ClientRepository clientRepository) {
         this.repository = repository;
         this.nutritionPlanRepository = nutritionPlanRepository;
+        this.clientRepository = clientRepository;
     }
 
-    @Override
-    public NutritionDiaryDTO create(NutritionDiaryDTO request) {
-        NutritionDiaryDTO nutritionDiaryDTO;
-        try {
-            nutritionDiaryDTO = toDto(repository.save(toEntity(request)));
-            logger.info("{} {}",CREATE_NUTRIDIARYLOG , request.getId());
-        } catch (Exception e) {
-            throw new SaveEntityException();
-        }
-        return nutritionDiaryDTO;
-    }
 
     @Override
-    public NutritionDiaryDTO update(Long id, NutritionDiaryDTO request) {
+    public NutritionDiaryDTO update(String cuit, NutritionDiaryDTO request) {
         try {
-            NutritionDiary nutritionDiary = repository.findById(id)
-                    .orElseThrow(EntityNotFoundException::new);
-
+            //buscar el plan activo del cliente
+            Client client = clientRepository.findByCuit(cuit);
+            NutritionPlan nutritionPlanActive = client.getPlans().stream()
+                    .filter(NutritionPlan::getEnabled)
+                    .findFirst()
+                    .orElseThrow();
+            //busca si existe un plan del dia de la fecha y si no existe lo crea
+            NutritionDiary log = nutritionPlanActive.getLogNutri().stream()
+                    .filter(nd -> nd.getUpdateAt().toLocalDate().equals(LocalDate.now()))
+                    .findFirst()
+                    .orElse(new NutritionDiary());
+            //setea los datos
             NutritionDiary nutritionDiaryUpdate = toEntity(request);
-            nutritionDiary.setUpdateAt(LocalDateTime.now());  // Actualiza la fecha de modificación
-            nutritionDiary.setBreakfast(nutritionDiaryUpdate.getBreakfast());
-            nutritionDiary.setLunch(nutritionDiaryUpdate.getLunch());
-            nutritionDiary.setSnacks(nutritionDiaryUpdate.getSnacks());
-            nutritionDiary.setDinner(nutritionDiaryUpdate.getDinner());
-            nutritionDiary.setActualWeight(nutritionDiaryUpdate.getActualWeight()); // Corrige este valor
-            nutritionDiary.setNutritionPlan(nutritionDiaryUpdate.getNutritionPlan());
-            repository.save(nutritionDiary);
+            log.setUpdateAt(LocalDateTime.now());
+            log.setBreakfast(nutritionDiaryUpdate.getBreakfast());
+            log.setLunch(nutritionDiaryUpdate.getLunch());
+            log.setSnacks(nutritionDiaryUpdate.getSnacks());
+            log.setDinner(nutritionDiaryUpdate.getDinner());
+            log.setActualWeight(nutritionDiaryUpdate.getActualWeight());
+            log.setNutritionPlan(nutritionDiaryUpdate.getNutritionPlan());
+            repository.save(log);
             logger.info(SUCESSFULLY_UPDATE);
-            return toDto(nutritionDiary);
+            return toDto(log);
         } catch (Exception e) {
             throw new EntityUpdateException(e.getMessage());
         }
     }
 
-    private NutritionDiary toEntity (NutritionDiaryDTO request){
+    @Override
+    public List<NutritionDiaryDTO> readByNutritionPlan(String cuit, Long id) {
+        Client client = clientRepository.findByCuit(cuit);
+        NutritionPlan nutritionPlan = client.getPlans().stream()
+                .filter(nutritionPlan1 -> nutritionPlan1.getId().equals(id))
+                .findFirst()
+                .orElseThrow();
+        
+       return nutritionPlan.getLogNutri().stream()
+                .map(this::toDto)
+                .toList();
+    }
+    
+    @Override
+    public List<NutritionDiaryDTO> readByClientActivePlan(String clientCuit) {
+        Client client = clientRepository.findByCuit(clientCuit);
+        return client.getPlans().stream()
+                .filter(NutritionPlan::getEnabled)
+                .findFirst()
+                .orElseThrow().getLogNutri().stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    private NutritionDiary toEntity(NutritionDiaryDTO request) {
         NutritionDiary nutritionDiary = new NutritionDiary();
         nutritionDiary.setUpdateAt(LocalDateTime.now());
         nutritionDiary.setBreakfast(request.getBreakfast());
@@ -82,7 +111,7 @@ public class NutritionDiaryServiceImpl implements NutritionDiaryService{
         return nutritionDiary;
     }
 
-    private NutritionDiaryDTO toDto (NutritionDiary nutritionDiary){
+    private NutritionDiaryDTO toDto(NutritionDiary nutritionDiary) {
         NutritionDiaryDTO nutritionDiaryDTO = new NutritionDiaryDTO();
         nutritionDiaryDTO.setId(nutritionDiary.getId());
         nutritionDiaryDTO.setUpdateAt(nutritionDiary.getUpdateAt().toString());
@@ -94,4 +123,4 @@ public class NutritionDiaryServiceImpl implements NutritionDiaryService{
         return nutritionDiaryDTO;
     }
 
-    }
+}

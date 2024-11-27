@@ -16,4 +16,5 @@ public class NutritinistConstants {
     public static final String ERROR_UPDATE = "error updating entity";
     public static final String SUCESSFULLY_UPDATE = "The entity was successfully updated";
     public static final String ERROR_SAVE = "The entity could not be saved";
+    public static final String ERROR_NUTRIPLAN = "This client does not have a nutrition plan.";
 }

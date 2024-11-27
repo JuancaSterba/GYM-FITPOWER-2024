@@ -21,7 +21,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import static com.gym.fit_power.constant.NutritinistConstants.ERROR_NUTRIPLAN;
 import static com.gym.fit_power.constant.NutritinistConstants.SUCCESSFUL;
 
 @Service
@@ -47,11 +49,11 @@ public class NutriPlanServiceImpl implements NutriPlanService {
         try {
             NutritionPlan nutritionPlan = toEntity(request);
             nutritionPlan.setLogNutri(new ArrayList<>());
-                for (NutritionPlan plan :nutritionPlan.getClient().getPlans()){
-                    plan.setEnabled(false);
-                }
-                response = toDTO(repository.save(nutritionPlan));
-                logger.info(SUCCESSFUL);
+            for (NutritionPlan plan : nutritionPlan.getClient().getPlans()) {
+                plan.setEnabled(false);
+            }
+            response = toDTO(repository.save(nutritionPlan));
+            logger.info(SUCCESSFUL);
 
         } catch (RuntimeException e) {
             throw new SaveEntityException(e.getMessage());
@@ -70,15 +72,45 @@ public class NutriPlanServiceImpl implements NutriPlanService {
 
 
     public List<NutriPlanDTO> readByClient(String clientCuit) {
-        return List.of();
+        Client client = clientRepository.findByCuit(clientCuit);
+        if (client.getPlans().isEmpty()) {
+            logger.error(ERROR_NUTRIPLAN);
+            return new ArrayList<>();
+
+        }
+        List<NutriPlanDTO> responses = new ArrayList<>();
+        for (NutritionPlan nt : repository.findAll()) {
+            if (nt.getClient().getPlans().equals(client.getPlans())) {
+                responses = nt.getClient().getPlans().stream()
+                        .map(this::toDTO)
+                        .toList();
+            }
+        }
+        return responses;
     }
 
     public NutriPlanDTO readPlanActiveByClient(String clientCuit) {
-        return null;
+        Client client = clientRepository.findByCuit(clientCuit);
+        if (client.getPlans().isEmpty()) {
+            logger.error(ERROR_NUTRIPLAN);
+            return null;
+        }
+        return toDTO(client.getPlans().stream()
+                .filter(NutritionPlan::getEnabled)
+                .findFirst()
+                .orElseThrow());
     }
 
     public NutriPlanDTO readPlanByClient(String clientCuit, Long id) {
-        return null;
+        Client client = clientRepository.findByCuit(clientCuit);
+        if (client.getPlans().isEmpty()) {
+            logger.error(ERROR_NUTRIPLAN);
+            return null;
+        }
+        return toDTO(client.getPlans().stream()
+                .filter(nutritionPlan -> nutritionPlan.getId().equals(id))
+                .findFirst()
+                .orElseThrow());
     }
 
 

@@ -2,9 +2,11 @@ package com.gym.fit_power.service;
 
 import com.gym.fit_power.dto.NutritionDiaryDTO;
 
+import java.util.List;
+
 public interface NutritionDiaryService {
-
-    NutritionDiaryDTO create (NutritionDiaryDTO request);
-    NutritionDiaryDTO update (Long id,NutritionDiaryDTO request);
-
+    
+    NutritionDiaryDTO update (String cuit,NutritionDiaryDTO request);
+    List<NutritionDiaryDTO> readByClientActivePlan(String clientCuit);
+    public List<NutritionDiaryDTO> readByNutritionPlan(String cuit, Long id);
 }

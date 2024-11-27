@@ -212,32 +212,27 @@ public class ClientController {
         return new ResponseEntity<>(nutritionPlanService.readPlanByClient(clientCuit, ID), HttpStatus.OK);
     }
 
-    /*
-    <<<<<<<<<<<<<<< NUTRITION-DIARY >>>>>>>>>>>>>>>
 
-    @PostMapping(CUIT + "/nutrition_plans/active/diary")
-    public ResponseEntity<NutritionDiaryDTO> createNutritionDiary(@PathVariable(value = "cuit") String clientCuit,
-                                                                  @Valid @RequestBody NutritionDiaryDTO request) {
-        return new ResponseEntity<>(nutritionDiaryService.create(clientCuit, request), HttpStatus.CREATED);
-    }
+
 
     @PutMapping(CUIT + "/nutrition_plans/active/diary")
-    public ResponseEntity<NutritionDiaryDTO> updateNutritionDiary(@PathVariable(value = "cuit") String clientCuit,
-                                                                  @RequestBody NutritionDiaryDTO request) {
+    public ResponseEntity<NutritionDiaryDTO> updateOrCreateNutritionDiary(
+            @PathVariable(value = "cuit") String clientCuit,
+            @RequestBody NutritionDiaryDTO request) {
         return new ResponseEntity<>(nutritionDiaryService.update(clientCuit, request), HttpStatus.OK);
     }
 
     @GetMapping(CUIT + "/nutrition_plans/{ID}/diary")
     public ResponseEntity<List<NutritionDiaryDTO>> viewNutriPlanDiary(@PathVariable(value = "cuit") String clientCuit,
-                                                                      @PathVariable(value = "ID") String ID) {
-        return new ResponseEntity<>(nutritionDiaryService.readByNutritionPlan(ID), HttpStatus.OK);
+                                                                      @PathVariable(value = "ID") Long ID) {
+        return new ResponseEntity<>(nutritionDiaryService.readByNutritionPlan(clientCuit, ID), HttpStatus.OK);
     }
 
     @GetMapping(CUIT + "/nutrition_plans/active/diary")
     public ResponseEntity<List<NutritionDiaryDTO>> viewActivePlanDiary(@PathVariable(value = "cuit") String clientCuit) {
         return new ResponseEntity<>(nutritionDiaryService.readByClientActivePlan(clientCuit), HttpStatus.OK);
     }
-*/
+
     // <<<<<<<<<<<<<<<<<<<< UTILS >>>>>>>>>>>>>>>>>>>> //
 
     private void newInfoLog(String description) {
