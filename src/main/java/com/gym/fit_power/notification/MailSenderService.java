@@ -1,10 +1,10 @@
 package com.gym.fit_power.notification;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
-@Service
+@Component
 public class MailSenderService {
 
     private final JavaMailSender mailSender;

@@ -1,10 +1,10 @@
 package com.gym.fit_power.notification;
 
-import com.gym.fit_power.notification.event.ClientCreatedEvent;
-import com.gym.fit_power.notification.event.Event;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import com.gym.fit_power.notification.event.Event;
 import org.springframework.kafka.annotation.KafkaListener;
+import com.gym.fit_power.notification.event.ClientCreatedEvent;
 
 @Slf4j
 @Component
@@ -18,7 +18,7 @@ public class ClientEventsNotification{
 
     @KafkaListener(topics = "${topic.client.name:clients}",
             containerFactory = "kafkaListenerContainerFactory", groupId = "group1")
-    public void consumer(Event<?> event) {
+    public void clientEventConsumer(Event<?> event) {
         if (event.getClass().isAssignableFrom(ClientCreatedEvent.class)) {
             ClientCreatedEvent createdEvent = (ClientCreatedEvent) event;
             log.info("Received created event for client with Id={}, data={}",
