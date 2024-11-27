@@ -51,7 +51,6 @@ public class Client {
     @NotNull
     private LocalDate birthDate;
 
-    @NotNull
     private Boolean enabled;
 
 }
