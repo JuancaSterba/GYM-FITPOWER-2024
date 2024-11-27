@@ -50,7 +50,7 @@ public class ClientController {
 
     // <<<<<<<<<<<<<<<<<<< CLIENTS >>>>>>>>>>>>>>>>>>> //
 
-    @PostMapping(value = "")
+    @PostMapping
     public ResponseEntity<ClientDTO> create(@RequestBody ClientDTO request) throws URISyntaxException {
         newInfoLog("Creating new client: " + request);
         ClientDTO response;
@@ -193,8 +193,8 @@ public class ClientController {
     public ResponseEntity<List<RoutineDiaryDTO>> viewActiveRoutineDiary(@PathVariable(value = "cuit") String clientCuit) {
         return new ResponseEntity<>(routineDiaryService.readByClientActiveRoutine(clientCuit), HttpStatus.OK);
     }
+    */
 
-    // <<<<<<<<<<<<<<< NUTRITION-PLANS >>>>>>>>>>>>>>> //
 
     @GetMapping(CUIT + "/nutrition_plans")
     public ResponseEntity<List<NutriPlanDTO>> viewNutritionPlans(@PathVariable(value = "cuit") String clientCuit) {
@@ -212,7 +212,8 @@ public class ClientController {
         return new ResponseEntity<>(nutritionPlanService.readPlanByClient(clientCuit, ID), HttpStatus.OK);
     }
 
-    // <<<<<<<<<<<<<<< NUTRITION-DIARY >>>>>>>>>>>>>>> //
+    /*
+    <<<<<<<<<<<<<<< NUTRITION-DIARY >>>>>>>>>>>>>>>
 
     @PostMapping(CUIT + "/nutrition_plans/active/diary")
     public ResponseEntity<NutritionDiaryDTO> createNutritionDiary(@PathVariable(value = "cuit") String clientCuit,
