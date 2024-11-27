@@ -80,3 +80,15 @@ INSERT INTO routines (goals, created_at, trainer_id, client_id, active) VALUES (
 INSERT INTO exercise_sets (reps, sets, rest_in_minutes, routine_id, exercise_id) VALUES (10, 3, 30, 5, 4);
 INSERT INTO exercise_sets (reps, sets, rest_in_minutes, routine_id, exercise_id) VALUES (12, 4, 45, 5, 10);
 INSERT INTO exercise_sets (reps, sets, rest_in_minutes, routine_id, exercise_id) VALUES (8, 2, 60, 5, 11);
+
+INSERT INTO training_diary (comentary, created_at, routine_id) VALUES ('Comentario 1', '2022-01-01 08:00:00', 1);
+INSERT INTO training_diary (comentary, created_at, routine_id) VALUES ('Comentario 2', '2022-01-02 09:30:00', 1);
+INSERT INTO training_diary (comentary, created_at, routine_id) VALUES ('Comentario 3', '2022-01-03 10:45:00', 1);
+INSERT INTO training_diary (comentary, created_at, routine_id) VALUES ('Comentario 4', '2022-01-04 12:15:00', 1);
+INSERT INTO training_diary (comentary, created_at, routine_id) VALUES ('Comentario 5', '2022-01-05 14:30:00', 1);
+
+INSERT INTO training_diary (comentary, created_at, routine_id) VALUES ('Comentario 1', '2022-01-01 08:00:00', 2);
+INSERT INTO training_diary (comentary, created_at, routine_id) VALUES ('Comentario 2', '2022-01-02 09:30:00', 2);
+INSERT INTO training_diary (comentary, created_at, routine_id) VALUES ('Comentario 3', '2022-01-03 10:45:00', 2);
+INSERT INTO training_diary (comentary, created_at, routine_id) VALUES ('Comentario 4', '2022-01-04 12:15:00', 2);
+INSERT INTO training_diary (comentary, created_at, routine_id) VALUES ('Comentario 5', '2022-01-05 14:30:00', 2);

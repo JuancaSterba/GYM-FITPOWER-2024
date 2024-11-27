@@ -29,7 +29,7 @@ import static com.gym.fit_power.constant.ClientConstants.*;
 public class ClientController {
 
     private final ClientServiceImpl clientService;
-    //private final RoutineServiceImpl routineService;
+    private final RoutineServiceImpl routineService;
     private final NutriPlanServiceImpl nutritionPlanService;
     //private final RoutineDiaryServiceImpl routineDiaryService;
     private final NutritionDiaryServiceImpl nutritionDiaryService;
@@ -39,10 +39,13 @@ public class ClientController {
     private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
 
     public ClientController(ClientServiceImpl clientService,
-                            NutriPlanServiceImpl nutritionPlanService, NutritionDiaryServiceImpl nutritionDiaryService/*,
-                            RoutineServiceImpl routineService, RoutineDiaryServiceImpl routineDiaryService*/) {
+                            NutriPlanServiceImpl nutritionPlanService,
+                            NutritionDiaryServiceImpl nutritionDiaryService,
+                            RoutineServiceImpl routineService
+//                            RoutineDiaryServiceImpl routineDiaryService
+    ) {
         this.clientService = clientService;
-        //this.routineService = routineService;
+        this.routineService = routineService;
         //this.routineDiaryService = routineDiaryService;
         this.nutritionPlanService = nutritionPlanService;
         this.nutritionDiaryService = nutritionDiaryService;
@@ -156,6 +159,12 @@ public class ClientController {
         newInfoLog("Client enabled");
         return ResponseEntity.ok().headers(newHeader("ENABLED", SUCCESSFUL)).body(response);
     }
+
+    @GetMapping(CUIT + "/routines")
+    public ResponseEntity<RoutineResponseDto> viewActiveRoutine(@PathVariable(value = "cuit") String clientCuit) {
+        return new ResponseEntity<>(routineService.findClientActiveRoutine(clientCuit), HttpStatus.OK);
+    }
+
 /*
     // <<<<<<<<<<<<<<<<<<< ROUTINES >>>>>>>>>>>>>>>>>>> //
 
