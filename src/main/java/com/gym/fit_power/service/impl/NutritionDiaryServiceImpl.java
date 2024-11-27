@@ -91,7 +91,6 @@ public class NutritionDiaryServiceImpl implements NutritionDiaryService{
         nutritionDiaryDTO.setSnacks(nutritionDiary.getSnacks());
         nutritionDiaryDTO.setDinner(nutritionDiary.getDinner());
         nutritionDiaryDTO.setActualWeight(nutritionDiary.getActualWeight());
-        nutritionDiaryDTO.setIdNutritionPlan(nutritionDiary.getNutritionPlan().getId());
         return nutritionDiaryDTO;
     }
 

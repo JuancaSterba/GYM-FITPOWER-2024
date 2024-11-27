@@ -28,9 +28,6 @@ public class NutritionistController {
     @PostMapping("/save")
     public ResponseEntity<ResponseNutri> saveNutritionist (@Valid @RequestBody RequestNutri requestNutri){
         logger.info(CREATE +"{}", requestNutri.getId());
-        if (service.readOne(requestNutri.getId()) != null){
-           return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
         ResponseNutri response = service.create(requestNutri);
         return new ResponseEntity<>(response,HttpStatus.CREATED);
     }

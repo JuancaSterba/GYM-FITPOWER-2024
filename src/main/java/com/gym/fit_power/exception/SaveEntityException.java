@@ -1,19 +1,20 @@
 package com.gym.fit_power.exception;
 
-import static com.gym.fit_power.constant.NutritinistConstants.SUCCESSFUL;
+import static com.gym.fit_power.constant.NutritinistConstants.ERROR_SAVE;
+
 
 public class SaveEntityException extends RuntimeException {
 
     public SaveEntityException() {
-        super(SUCCESSFUL);
+        super(ERROR_SAVE);
     }
 
     public SaveEntityException(String message, Throwable cause) {
-        super(SUCCESSFUL + ": " + message, cause);
+        super(ERROR_SAVE + ": " + message, cause);
     }
 
     public SaveEntityException(String message) {
-        super(SUCCESSFUL + ": " + message);
+        super(ERROR_SAVE + ": " + message);
     }
 
 }
