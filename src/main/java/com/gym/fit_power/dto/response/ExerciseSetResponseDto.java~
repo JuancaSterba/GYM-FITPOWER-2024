@@ -1,0 +1,12 @@
+package com.gym.fit_power.dto.response;
+
+public class ExerciseSetResponseDto {
+
+    private Long id;
+    private int reps;
+    private int sets;
+    private int restInMinutes;
+    private Long routineId;
+    private Long exerciseId;
+
+}

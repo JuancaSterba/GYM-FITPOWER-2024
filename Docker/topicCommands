@@ -1,0 +1,6 @@
+comandos para crear los tópicos kafka necesarios (canales de comunicación):
+
+docker exec -it kafka bash
+kafka-topics --bootstrap-server kafka:9092 --create --topic clients
+kafka-topics --bootstrap-server kafka:9092 --create --topic trainers
+kafka-topics --bootstrap-server kafka:9092 --create --topic nutritionists

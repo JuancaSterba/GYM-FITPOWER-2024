@@ -6,3 +6,5 @@ spring:
   output:
     ansi:
       enabled: always # permite ver el log como colores
+  jpa:
+    defer-datasource-initialization: true
