@@ -135,7 +135,6 @@ public class GymServiceImpl implements GymService {
         entity.setAddress(dto.getAddress());
         entity.setMail(dto.getMail());
         entity.setPhone(dto.getPhone());
-        entity.setEnabled(dto.getEnabled());
         return entity;
     }
 
@@ -147,7 +146,6 @@ public class GymServiceImpl implements GymService {
         entity.setAddress(gym.getAddress());
         entity.setMail(gym.getMail());
         entity.setPhone(gym.getPhone());
-        entity.setEnabled(gym.getEnabled());
         return entity;
     }
 

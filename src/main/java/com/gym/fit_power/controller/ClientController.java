@@ -56,42 +56,24 @@ public class ClientController {
     @PostMapping
     public ResponseEntity<ClientDTO> create(@RequestBody ClientDTO request) throws URISyntaxException {
         newInfoLog("Creating new client: " + request);
-        ClientDTO response;
-        if (clientService.readByCuit(request.getCuit()) != null) {
-            newErrorLog("creating", genericDescription(request.getCuit()) + " already exist");
-            return ResponseEntity.badRequest()
-                    .headers(newHeader("CREATE_ERROR", genericDescription(request.getCuit())
-                            + "already exist"))
-                    .body(request);
-        }
-        response = clientService.create(request);
-        URI uri = new URI("/api/clients/" + response.getCuit());
+        ClientDTO response = clientService.create(request);
         newInfoLog(WITH_CUIT + request.getCuit() + " is created");
-        return ResponseEntity.ok().headers(newHeader("CREATED", SUCCESSFUL)).location(uri).body(response);
+        return ResponseEntity.ok().headers(newHeader("CREATED", SUCCESSFUL)).
+                location(new URI("/api/clients/" + response.getCuit())).body(response);
     }
 
     @GetMapping(value = CUIT)
     public ResponseEntity<ClientDTO> readOne(@PathVariable(value = "cuit") String cuit) {
         newInfoLog("Get client with cuit: " + cuit);
         ClientDTO response = clientService.readByCuit(cuit);
-        if (response == null) {
-            errorSearch(notFoundDescription(cuit));
-            return ResponseEntity.badRequest().headers(newHeader(ERR404, notFoundDescription(cuit))).body(null);
-        }
         correctSearch();
         return ResponseEntity.ok().headers(newHeader(FOUND, SUCCESSFUL)).body(response);
     }
 
-    @GetMapping(value = "")
+    @GetMapping
     public ResponseEntity<List<ClientDTO>> readAll() {
         newInfoLog("Get all client");
         List<ClientDTO> response = new ArrayList<>(clientService.readAll());
-        if (response.isEmpty()) {
-            String message = "there are no clients in the database";
-            errorSearch(message);
-            return ResponseEntity.badRequest()
-                    .headers(newHeader(ERR404, message)).body(null);
-        }
         correctSearch();
         return ResponseEntity.ok().headers(newHeader(FOUND, SUCCESSFUL)).body(response);
     }
@@ -99,13 +81,8 @@ public class ClientController {
     @PutMapping(value = CUIT)
     public ResponseEntity<ClientDTO> update(@PathVariable(value = "cuit") String cuit, @RequestBody ClientDTO client) {
         newInfoLog("Update personal data of client with cuit: " + cuit);
-        ClientDTO oldClient = clientService.readByCuit(cuit);
-        if (oldClient == null) {
-            errorUpdateLog(notFoundDescription(cuit));
-            return ResponseEntity.badRequest().headers(newHeader(ERR404, notFoundDescription(cuit))).body(null);
-        }
-        ClientDTO response = clientService.update(oldClient.getId(), client);
-        newInfoLog(updatedDescription(cuit));
+        ClientDTO response = clientService.update(clientService.readByCuit(cuit).getId(), client);
+        newInfoLog(genericDescription(cuit) + "is updated");
         return ResponseEntity.ok().headers(newHeader("UPDATED", SUCCESSFUL)).body(response);
     }
 
@@ -113,10 +90,6 @@ public class ClientController {
     public ResponseEntity<ClientDTO> changeGym(@PathVariable(value = "cuit") String clientCuit,
                                                @PathVariable(value = "gymCode") String gymCode) {
         newInfoLog("Change the gym of the client " + clientCuit);
-        if (clientService.readByCuit(clientCuit) == null) {
-            newErrorLog("changing the gym", notFoundDescription(clientCuit));
-            return ResponseEntity.badRequest().headers(newHeader(ERR404, notFoundDescription(clientCuit))).body(null);
-        }
         ClientDTO response = clientService.changeGym(clientCuit, gymCode);
         newInfoLog("The gym of client " + clientCuit + " has changed successfully");
         return ResponseEntity.ok().headers(newHeader("GYM_CHANGED", SUCCESSFUL)).body(response);
@@ -125,18 +98,7 @@ public class ClientController {
     @DeleteMapping(value = CUIT)
     public ResponseEntity<ClientDTO> disable(@PathVariable(value = "cuit") String cuit) {
         newInfoLog("Disabling client with cuit: " + cuit);
-        ClientDTO client = clientService.readByCuit(cuit);
-        if (client == null) {
-            newErrorLog("disabling", notFoundDescription(cuit));
-            return ResponseEntity.badRequest().headers(newHeader(ERR404, notFoundDescription(cuit))).body(null);
-        } else if (Boolean.FALSE.equals(client.getEnabled())) {
-            newErrorLog("disabling", genericDescription(cuit) + "is already disabled");
-            return ResponseEntity.badRequest()
-                    .headers(newHeader("DISABLE_ERROR", genericDescription(cuit)
-                            + "is already disabled"))
-                    .body(client);
-        }
-        ClientDTO response = clientService.disable(client.getId());
+        ClientDTO response = clientService.disable(clientService.readByCuit(cuit).getId());
         newInfoLog("Client disabled");
         return ResponseEntity.ok().headers(newHeader("DISABLED", SUCCESSFUL)).body(response);
     }
@@ -144,18 +106,7 @@ public class ClientController {
     @PatchMapping(value = CUIT)
     public ResponseEntity<ClientDTO> enable(@PathVariable(value = "cuit") String cuit) {
         newInfoLog("Enabling client with cuit: " + cuit);
-        ClientDTO client = clientService.readByCuit(cuit);
-        if (client == null) {
-            newErrorLog("enabling", notFoundDescription(cuit));
-            return ResponseEntity.badRequest().headers(newHeader(ERR404, notFoundDescription(cuit))).body(null);
-        } else if (Boolean.TRUE.equals(client.getEnabled())) {
-            newErrorLog("enabling", genericDescription(cuit) + "is already enabled");
-            return ResponseEntity.badRequest()
-                    .headers(newHeader("ENABLE_ERROR", genericDescription(cuit)
-                            + "is already enabled"))
-                    .body(client);
-        }
-        ClientDTO response = clientService.enable(client.getId());
+        ClientDTO response = clientService.enable(clientService.readByCuit(cuit).getId());
         newInfoLog("Client enabled");
         return ResponseEntity.ok().headers(newHeader("ENABLED", SUCCESSFUL)).body(response);
     }
@@ -248,20 +199,8 @@ public class ClientController {
         logger.info(CONTROLLER, description);
     }
 
-    private void errorUpdateLog(String description) {
-        newErrorLog("updating", description);
-    }
-
-    private void newErrorLog(String task, String description) {
-        logger.error(ERROR_WHILE, task, description);
-    }
-
     private void correctSearch() {
         logger.info(SEARCH_CORRECT);
-    }
-
-    private void errorSearch(String error) {
-        logger.error(SEARCH_ERROR, error);
     }
 
     private HttpHeaders newHeader(String headerName, String description) {
@@ -272,14 +211,6 @@ public class ClientController {
 
     private String genericDescription(String cuit) {
         return WITH_CUIT + cuit + " ";
-    }
-
-    private String notFoundDescription(String cuit) {
-        return genericDescription(cuit) + "does not exist";
-    }
-
-    private String updatedDescription(String cuit) {
-        return genericDescription(cuit) + "is updated";
     }
 
 }
