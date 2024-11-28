@@ -3,13 +3,13 @@ package com.gym.fit_power.notification.event;
 import lombok.Data;
 import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
-@ToString
 @Data
-public abstract class Event <T> {
+@ToString
+public abstract class Event<E> {
     private String id;
-    private Date date;
+    private LocalDateTime date;
     private EventType type;
-    private T data;
+    private E entity;
 }
