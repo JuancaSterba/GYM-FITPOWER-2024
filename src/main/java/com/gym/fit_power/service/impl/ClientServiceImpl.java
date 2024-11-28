@@ -12,10 +12,10 @@ import com.gym.fit_power.repository.GymRepository;
 import org.springframework.dao.DataAccessException;
 import com.gym.fit_power.repository.ClientRepository;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import static com.gym.fit_power.constant.ClientConstants.*;
 
@@ -38,7 +38,7 @@ public class ClientServiceImpl implements ClientService {
             Client newClient = toEntity(clientDTO);
             newInfoLog("Save the new client: " + newClient.getCuit());
             newClient.setEnabled(true);
-            if(verifyGym(clientDTO.getAssignedGym()) == null) {
+            if (verifyGym(clientDTO.getAssignedGym()) == null) {
                 throw new Exception("no existe el gimnasio asignado.");//TODO manejo de excepciones
             }
             return toDTO(clientRepository.save(newClient));
@@ -91,7 +91,7 @@ public class ClientServiceImpl implements ClientService {
     public ClientDTO update(Long id, ClientDTO clientDTO) throws DataAccessException {
         try {
             newInfoLog("Updating client with cuit: " + clientDTO.getCuit());
-            if(verifyGym(clientDTO.getAssignedGym()) == null) {
+            if (verifyGym(clientDTO.getAssignedGym()) == null) {
                 throw new Exception("no existe el gimnasio asignado.");//TODO manejo de excepciones
             }
             Client oldClient = toEntity(readOne(id));
@@ -115,7 +115,7 @@ public class ClientServiceImpl implements ClientService {
             Client client = toEntity(readByCuit(clientCuit));
             if (client.getAssignedGym().getAddress().equals(gymAddress)) {
                 throw new Exception("no puede cambiarse al mismo gimnasio"); //TODO manejo de excepciones
-            } else if(verifyGym(client.getAssignedGym().getAddress()) == null) {
+            } else if (verifyGym(client.getAssignedGym().getAddress()) == null) {
                 throw new Exception("no existe el gimnasio asignado.");//TODO manejo de excepciones
             } else {
                 client.setAssignedGym(verifyGym(gymAddress));
