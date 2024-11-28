@@ -18,7 +18,7 @@ public class NutritionPlan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDate creatAt;
+    private LocalDate createdAt;
     private Float dailyCalories;
     private Float dailyCarbohydrates;
     private Float dailyProteins;

@@ -18,13 +18,13 @@ public class NutritionDiary {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime updateAt;
+    private LocalDateTime createdAt;
     private String breakfast;
     private String lunch;
     private String snacks;
     private String dinner;
     private Float actualWeight;
-    private String comentary;
+    private String commentary;
 
 
     @ManyToOne

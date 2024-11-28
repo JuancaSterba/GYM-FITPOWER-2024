@@ -9,14 +9,14 @@ import org.springframework.stereotype.Component;
 public class TrainingDiaryMapper {
     public static TrainingDiary toEntity(TrainingDiaryRequestDto dto) {
         TrainingDiary trainingDiary = new TrainingDiary();
-        trainingDiary.setComentary(dto.getComentary());
+        trainingDiary.setCommentary(dto.getComentary());
         return trainingDiary;
     }
 
     public static TrainingDiaryResponseDto toDto(TrainingDiary trainingDiary) {
         return TrainingDiaryResponseDto.builder()
                 .id(trainingDiary.getId())
-                .comentary(trainingDiary.getComentary())
+                .comentary(trainingDiary.getCommentary())
                 .createdAt(trainingDiary.getCreatedAt().toString())
                 .routineId(trainingDiary.getRoutine().getId())
                 .build();
