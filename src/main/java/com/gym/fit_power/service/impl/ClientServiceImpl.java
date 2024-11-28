@@ -1,5 +1,6 @@
 package com.gym.fit_power.service.impl;
 
+import com.gym.fit_power.notification.PublishClientEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -12,10 +13,10 @@ import com.gym.fit_power.repository.GymRepository;
 import org.springframework.dao.DataAccessException;
 import com.gym.fit_power.repository.ClientRepository;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import static com.gym.fit_power.constant.ClientConstants.*;
 
@@ -25,23 +26,28 @@ public class ClientServiceImpl implements ClientService {
 
     GymRepository gymRepository;
     ClientRepository clientRepository;
+    PublishClientEvents clientEventPublisher;
     protected static final Logger logger = LoggerFactory.getLogger(ClientServiceImpl.class);
 
-    public ClientServiceImpl(ClientRepository clientRepository, GymRepository gymRepository) {
+    public ClientServiceImpl(ClientRepository clientRepository, GymRepository gymRepository,
+                             PublishClientEvents clientEventPublisher) {
         this.gymRepository = gymRepository;
         this.clientRepository = clientRepository;
+        this.clientEventPublisher = clientEventPublisher;
     }
 
     @Override
     public ClientDTO create(ClientDTO clientDTO) throws DataAccessException {
         try {
-            Client newClient = toEntity(clientDTO);
-            newInfoLog("Save the new client: " + newClient.getCuit());
-            newClient.setEnabled(true);
-            if(verifyGym(clientDTO.getAssignedGym()) == null) {
+            newInfoLog("Save the new client: " + clientDTO.getCuit());
+            if (verifyGym(clientDTO.getAssignedGym()) == null) {
                 throw new Exception("no existe el gimnasio asignado.");//TODO manejo de excepciones
             }
-            return toDTO(clientRepository.save(newClient));
+            Client newClient = toEntity(clientDTO);
+            newClient.setEnabled(true);
+            Client created = clientRepository.save(newClient);
+            clientEventPublisher.publish(created);
+            return toDTO(created);
         } catch (Exception e) {
             clientCouldNotBE(clientDTO.getCuit(), "saved", e);
         }
@@ -91,7 +97,7 @@ public class ClientServiceImpl implements ClientService {
     public ClientDTO update(Long id, ClientDTO clientDTO) throws DataAccessException {
         try {
             newInfoLog("Updating client with cuit: " + clientDTO.getCuit());
-            if(verifyGym(clientDTO.getAssignedGym()) == null) {
+            if (verifyGym(clientDTO.getAssignedGym()) == null) {
                 throw new Exception("no existe el gimnasio asignado.");//TODO manejo de excepciones
             }
             Client oldClient = toEntity(readOne(id));
@@ -115,7 +121,7 @@ public class ClientServiceImpl implements ClientService {
             Client client = toEntity(readByCuit(clientCuit));
             if (client.getAssignedGym().getAddress().equals(gymAddress)) {
                 throw new Exception("no puede cambiarse al mismo gimnasio"); //TODO manejo de excepciones
-            } else if(verifyGym(client.getAssignedGym().getAddress()) == null) {
+            } else if (verifyGym(client.getAssignedGym().getAddress()) == null) {
                 throw new Exception("no existe el gimnasio asignado.");//TODO manejo de excepciones
             } else {
                 client.setAssignedGym(verifyGym(gymAddress));
