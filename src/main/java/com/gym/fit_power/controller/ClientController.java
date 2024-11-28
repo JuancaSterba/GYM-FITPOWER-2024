@@ -67,7 +67,7 @@ public class ClientController {
         return ResponseEntity.ok().headers(newHeader(FOUND, SUCCESSFUL)).body(response);
     }
 
-    @GetMapping(value = "")
+    @GetMapping
     public ResponseEntity<List<ClientDTO>> readAll() {
         newInfoLog("Get all client");
         List<ClientDTO> response = new ArrayList<>(clientService.readAll());

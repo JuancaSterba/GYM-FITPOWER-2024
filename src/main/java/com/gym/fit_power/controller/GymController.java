@@ -28,7 +28,7 @@ public class GymController {
         service = gymService;
     }
 
-    @PostMapping(value = "")
+    @PostMapping
     public ResponseEntity<GymDTO> create(@RequestBody GymDTO request) throws URISyntaxException {
         newInfoLog("Creating new gym: " + request);
         GymDTO response = service.create(request);
@@ -45,7 +45,7 @@ public class GymController {
         return ResponseEntity.ok().headers(newHeader("FOUND", SUCCESSFUL)).body(response);
     }
 
-    @GetMapping(value = "")
+    @GetMapping
     public ResponseEntity<List<GymDTO>> readAll() {
         newInfoLog("Get all gyms");
         List<GymDTO> response = service.readAll();
