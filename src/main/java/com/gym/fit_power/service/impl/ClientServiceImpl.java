@@ -1,5 +1,6 @@
 package com.gym.fit_power.service.impl;
 
+import com.gym.fit_power.notification.PublishClientEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -25,23 +26,28 @@ public class ClientServiceImpl implements ClientService {
 
     GymRepository gymRepository;
     ClientRepository clientRepository;
+    PublishClientEvents clientEventPublisher;
     protected static final Logger logger = LoggerFactory.getLogger(ClientServiceImpl.class);
 
-    public ClientServiceImpl(ClientRepository clientRepository, GymRepository gymRepository) {
+    public ClientServiceImpl(ClientRepository clientRepository, GymRepository gymRepository,
+                             PublishClientEvents clientEventPublisher) {
         this.gymRepository = gymRepository;
         this.clientRepository = clientRepository;
+        this.clientEventPublisher = clientEventPublisher;
     }
 
     @Override
     public ClientDTO create(ClientDTO clientDTO) throws DataAccessException {
         try {
-            Client newClient = toEntity(clientDTO);
-            newInfoLog("Save the new client: " + newClient.getCuit());
-            newClient.setEnabled(true);
+            newInfoLog("Save the new client: " + clientDTO.getCuit());
             if (verifyGym(clientDTO.getAssignedGym()) == null) {
                 throw new Exception("no existe el gimnasio asignado.");//TODO manejo de excepciones
             }
-            return toDTO(clientRepository.save(newClient));
+            Client newClient = toEntity(clientDTO);
+            newClient.setEnabled(true);
+            Client created = clientRepository.save(newClient);
+            clientEventPublisher.publish(created);
+            return toDTO(created);
         } catch (Exception e) {
             clientCouldNotBE(clientDTO.getCuit(), "saved", e);
         }
