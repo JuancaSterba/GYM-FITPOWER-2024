@@ -163,10 +163,3 @@ INSERT INTO nutrition_diary (created_at, breakfast, lunch, snacks, dinner, actua
 ('2022-01-04 08:00:00', 'Batido de proteínas con plátano y leche', 'Ensalada de atún con aguacate y huevo', 'Palitos de zanahoria con hummus', 'Cerdo a la plancha con puré de calabaza', 66.2, 'Me siento saciado después del desayuno', 1),
 ('2022-01-04 12:00:00', 'Tortilla de espinacas con tomate', 'Sopa de lentejas con pan integral', 'Frutas secas y nueces', 'Pollo al horno con patatas asadas', 66.5, 'Me siento con energía después del almuerzo', 1),
 ('2022-01-05 08:00:00', 'Avena con frutas y nueces', 'Ensalada de pollo con aguacate', 'Manzana y almendras', 'Salmón a la plancha con quinoa', 67.0, 'Me siento saciado después del desayuno', 1);
-
-INSERT INTO nutrition_diary (created_at, breakfast, lunch, snacks, dinner, actual_weight, commentary, nutrition_plan_id) VALUES
-('2022-01-06 08:00:00', 'Batido de proteínas con espinacas y banana', 'Ensalada de quinoa con pollo a la parrilla', 'Manzana y almendras', 'Bistec a la plancha con vegetales salteados', 74.8, 'Me siento con mucha energía hoy', 2),
-('2022-01-06 12:00:00', 'Huevos revueltos con champiñones', 'Sándwich de pavo en pan integral con aguacate', 'Yogur griego con frutos rojos', 'Salmón al horno con arroz integral', 75.0, '¡Logré mi peso objetivo!', 2),
-('2022-01-07 08:00:00', 'Avena con frutas y semillas de chía', 'Sopa de lentejas con pan integral', 'Zanahoria y hummus', 'Pollo al curry con arroz integral', 74.9, 'Me siento un poco pesado después del almuerzo', 2),
-('2022-01-07 12:00:00', 'Tortilla de verduras', 'Ensalada de atún con aguacate', 'Frutos secos mixtos', 'Cerdo a la plancha con puré de batata', 75.1, 'Estoy muy satisfecho con mi dieta', 2),
-('2022-01-08 08:00:00', 'Batido de proteínas con plátano y leche de almendras', 'Ensalada de pollo con quinoa', 'Manzana y almendras', 'Bistec a la plancha con vegetales salteados', 74.7, 'Me siento genial después del entrenamiento', 2);
