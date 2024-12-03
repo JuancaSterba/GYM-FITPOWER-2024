@@ -44,11 +44,11 @@ INSERT INTO nutritionists (cuit, name, lastname, email, phone, enabled, created_
 ('49023456789', 'Nut. Sofía', 'Alvarez', 'sofia.alvarez@outlook.com', '1567890123', TRUE, '2023-05-08');
 
 INSERT INTO routines (goals, created_at, trainer_id, client_id, active) VALUES
-('Perder 5 kg en 3 meses', '2022-01-01', 1, 1, TRUE),
-('Ganar masa muscular en 6 meses', '2022-01-15', 2, 2, TRUE),
-('Mejorar la resistencia cardiovascular en 2 meses', '2022-02-01', 3, 3, TRUE),
-('Reducir el porcentaje de grasa corporal en 4 meses', '2022-03-01', 4, 4, TRUE),
-('Aumentar la fuerza muscular en 5 meses', '2022-04-01', 5, 5, TRUE);
+('Perder 5 kg en 3 meses', '2022-01-01', 1, 1, FALSE),
+('Ganar masa muscular en 6 meses', '2022-01-15', 2, 2, FALSE),
+('Mejorar la resistencia cardiovascular en 2 meses', '2022-02-01', 3, 3, FALSE),
+('Reducir el porcentaje de grasa corporal en 4 meses', '2022-03-01', 4, 4, FALSE),
+('Aumentar la fuerza muscular en 5 meses', '2022-04-01', 5, 5, FALSE);
 
 INSERT INTO exercise_sets (reps, sets, rest_in_minutes, routine_id, exercise_id) VALUES
 (10, 3, 30, 1, 1),
@@ -63,11 +63,11 @@ INSERT INTO exercise_sets (reps, sets, rest_in_minutes, routine_id, exercise_id)
 (12, 4, 30, 5, 10);
 
 INSERT INTO routines (goals, created_at, trainer_id, client_id, active) VALUES
-('Aumentar la fuerza muscular en las piernas', '2022-02-01', 2, 2, TRUE),
-('Mejorar la resistencia cardiovascular en 3 meses', '2022-02-15', 3, 3, TRUE),
-('Reducir el porcentaje de grasa corporal en 4 meses', '2022-03-01', 4, 4, TRUE),
-('Aumentar la flexibilidad y movilidad en 2 meses', '2022-03-15', 5, 5, TRUE),
-('Mejorar la técnica de levantamiento de pesas', '2022-04-01', 1, 1, TRUE);
+('Aumentar la fuerza muscular en las piernas', '2022-02-01', 2, 2, FALSE),
+('Mejorar la resistencia cardiovascular en 3 meses', '2022-02-15', 3, 3, FALSE),
+('Reducir el porcentaje de grasa corporal en 4 meses', '2022-03-01', 4, 4, FALSE),
+('Aumentar la flexibilidad y movilidad en 2 meses', '2022-03-15', 5, 5, FALSE),
+('Mejorar la técnica de levantamiento de pesas', '2022-04-01', 1, 1, FALSE);
 
 INSERT INTO exercise_sets (reps, sets, rest_in_minutes, routine_id, exercise_id) VALUES
 (15, 5, 30, 2, 1),
@@ -82,11 +82,11 @@ INSERT INTO exercise_sets (reps, sets, rest_in_minutes, routine_id, exercise_id)
 (10, 3, 30, 1, 12);
 
 INSERT INTO routines (goals, created_at, trainer_id, client_id, active) VALUES
-('Mejorar la fuerza muscular en el pecho', '2022-03-01', 3, 3, TRUE),
-('Aumentar la resistencia cardiovascular en 4 meses', '2022-03-15', 4, 4, TRUE),
-('Reducir el porcentaje de grasa corporal en 5 meses', '2022-04-01', 5, 5, TRUE),
-('Aumentar la flexibilidad y movilidad en 3 meses', '2022-04-15', 1, 1, TRUE),
-('Mejorar la técnica de levantamiento de pesas en 2 meses', '2022-05-01', 2, 2, TRUE);
+('Mejorar la fuerza muscular en el pecho', '2022-03-01', 3, 3, FALSE),
+('Aumentar la resistencia cardiovascular en 4 meses', '2022-03-15', 4, 4, FALSE),
+('Reducir el porcentaje de grasa corporal en 5 meses', '2022-04-01', 5, 5, FALSE),
+('Aumentar la flexibilidad y movilidad en 3 meses', '2022-04-15', 1, 1, FALSE),
+('Mejorar la técnica de levantamiento de pesas en 2 meses', '2022-05-01', 2, 2, FALSE);
 
 INSERT INTO exercise_sets (reps, sets, rest_in_minutes, routine_id, exercise_id) VALUES
 (8, 2, 30, 3, 2),
@@ -101,11 +101,11 @@ INSERT INTO exercise_sets (reps, sets, rest_in_minutes, routine_id, exercise_id)
 (12, 4, 30, 2, 14);
 
 INSERT INTO routines (goals, created_at, trainer_id, client_id, active) VALUES
-('Aumentar la fuerza muscular en los brazos', '2022-04-01', 4, 4, TRUE),
-('Mejorar la resistencia cardiovascular en 5 meses', '2022-04-15', 5, 5, TRUE),
-('Reducir el porcentaje de grasa corporal en 6 meses', '2022-05-01', 1, 1, TRUE),
-('Aumentar la flexibilidad y movilidad en 4 meses', '2022-05-15', 2, 2, TRUE),
-('Mejorar la técnica de levantamiento de pesas en 3 meses', '2022-06-01', 3, 3, TRUE);
+('Aumentar la fuerza muscular en los brazos', '2022-04-01', 4, 4, FALSE),
+('Mejorar la resistencia cardiovascular en 5 meses', '2022-04-15', 5, 5, FALSE),
+('Reducir el porcentaje de grasa corporal en 6 meses', '2022-05-01', 1, 1, FALSE),
+('Aumentar la flexibilidad y movilidad en 4 meses', '2022-05-15', 2, 2, FALSE),
+('Mejorar la técnica de levantamiento de pesas en 3 meses', '2022-06-01', 3, 3, FALSE);
 
 INSERT INTO exercise_sets (reps, sets, rest_in_minutes, routine_id, exercise_id) VALUES
 (12, 4, 30, 4, 3),
@@ -120,11 +120,11 @@ INSERT INTO exercise_sets (reps, sets, rest_in_minutes, routine_id, exercise_id)
 (10, 3, 30, 3, 16);
 
 INSERT INTO routines (goals, created_at, trainer_id, client_id, active) VALUES
-('Aumentar la flexibilidad y movilidad en los hombros', '2022-05-01', 5, 5, TRUE),
-('Mejorar la resistencia cardiovascular en 6 meses', '2022-05-15', 1, 1, TRUE),
-('Reducir el porcentaje de grasa corporal en 7 meses', '2022-06-01', 2, 2, TRUE),
-('Aumentar la fuerza muscular en los glúteos', '2022-06-15', 3, 3, TRUE),
-('Mejorar la técnica de levantamiento de pesas en 4 meses', '2022-07-01', 4, 4, TRUE);
+('Aumentar la flexibilidad y movilidad en los hombros', '2022-05-01', 5, 5, FALSE),
+('Mejorar la resistencia cardiovascular en 6 meses', '2022-05-15', 1, 1, FALSE),
+('Reducir el porcentaje de grasa corporal en 7 meses', '2022-06-01', 2, 2, FALSE),
+('Aumentar la fuerza muscular en los glúteos', '2022-06-15', 3, 3, FALSE),
+('Mejorar la técnica de levantamiento de pesas en 4 meses', '2022-07-01', 4, 4, FALSE);
 
 INSERT INTO exercise_sets (reps, sets, rest_in_minutes, routine_id, exercise_id) VALUES
 (10, 3, 30, 5, 4),
@@ -163,3 +163,10 @@ INSERT INTO nutrition_diary (created_at, breakfast, lunch, snacks, dinner, actua
 ('2022-01-04 08:00:00', 'Batido de proteínas con plátano y leche', 'Ensalada de atún con aguacate y huevo', 'Palitos de zanahoria con hummus', 'Cerdo a la plancha con puré de calabaza', 66.2, 'Me siento saciado después del desayuno', 1),
 ('2022-01-04 12:00:00', 'Tortilla de espinacas con tomate', 'Sopa de lentejas con pan integral', 'Frutas secas y nueces', 'Pollo al horno con patatas asadas', 66.5, 'Me siento con energía después del almuerzo', 1),
 ('2022-01-05 08:00:00', 'Avena con frutas y nueces', 'Ensalada de pollo con aguacate', 'Manzana y almendras', 'Salmón a la plancha con quinoa', 67.0, 'Me siento saciado después del desayuno', 1);
+
+INSERT INTO nutrition_diary (created_at, breakfast, lunch, snacks, dinner, actual_weight, commentary, nutrition_plan_id) VALUES
+('2022-01-06 08:00:00', 'Batido de proteínas con espinacas y banana', 'Ensalada de quinoa con pollo a la parrilla', 'Manzana y almendras', 'Bistec a la plancha con vegetales salteados', 74.8, 'Me siento con mucha energía hoy', 2),
+('2022-01-06 12:00:00', 'Huevos revueltos con champiñones', 'Sándwich de pavo en pan integral con aguacate', 'Yogur griego con frutos rojos', 'Salmón al horno con arroz integral', 75.0, '¡Logré mi peso objetivo!', 2),
+('2022-01-07 08:00:00', 'Avena con frutas y semillas de chía', 'Sopa de lentejas con pan integral', 'Zanahoria y hummus', 'Pollo al curry con arroz integral', 74.9, 'Me siento un poco pesado después del almuerzo', 2),
+('2022-01-07 12:00:00', 'Tortilla de verduras', 'Ensalada de atún con aguacate', 'Frutos secos mixtos', 'Cerdo a la plancha con puré de batata', 75.1, 'Estoy muy satisfecho con mi dieta', 2),
+('2022-01-08 08:00:00', 'Batido de proteínas con plátano y leche de almendras', 'Ensalada de pollo con quinoa', 'Manzana y almendras', 'Bistec a la plancha con vegetales salteados', 74.7, 'Me siento genial después del entrenamiento', 2);

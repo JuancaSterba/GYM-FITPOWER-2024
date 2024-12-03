@@ -22,7 +22,10 @@ public class RoutineRequestDto {
     @Size(min = 10, max = 200, message = "{goals.size.invalid}")
     private String goals;
 
-    @Valid
+    @NotBlank(message = "{trainerCuit.notBlank}")
+    @Size(min = 11, max = 11, message = "{trainerCuit.size.invalid}")
+    private String trainerCuit;
+
     @NotEmpty(message = "{exerciseSets.notEmpty}")
     private List<ExerciseSetRequestDto> exerciseSets;
   

@@ -6,7 +6,7 @@ import com.gym.fit_power.dto.response.RoutineResponseDto;
 import java.util.List;
 
 public interface RoutineService {
-    RoutineResponseDto save(RoutineRequestDto routineRequestDto, String trainerCuit, String clientCuit);
+    RoutineResponseDto save(RoutineRequestDto routineRequestDto, String clientCuit);
     List<RoutineResponseDto> findByClient(String clientCuit);
     RoutineResponseDto findClientActiveRoutine(String clientCuit);
     void disableActiveRoutine(Long routineId);

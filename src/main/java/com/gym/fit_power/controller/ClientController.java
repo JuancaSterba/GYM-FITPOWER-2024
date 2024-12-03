@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import com.gym.fit_power.dto.NutriPlanDTO;
+import com.gym.fit_power.dto.request.RoutineRequestDto;
 import com.gym.fit_power.dto.response.RoutineResponseDto;
 import org.slf4j.Logger;
 
@@ -172,18 +173,12 @@ public class ClientController {
         return new ResponseEntity<>(routineService.findByClient(clientCuit), HttpStatus.OK);
     }
 
+    @PostMapping(CUIT + "/routine")
+    public ResponseEntity<RoutineResponseDto> createRoutine(@Valid @RequestBody RoutineRequestDto request, @PathVariable(value = "cuit") String clientCuit) {
+        return new ResponseEntity<>(routineService.save(request, clientCuit), HttpStatus.CREATED);
+    }
+
 /*
-
-    @GetMapping(CUIT + "/routines/active")
-    public ResponseEntity<RoutineResponseDto> viewActiveRoutine(@PathVariable(value = "cuit") String clientCuit) {
-        return new ResponseEntity<>(routineService.readRoutineActiveByClient(clientCuit), HttpStatus.OK);
-    }
-
-    @GetMapping(CUIT + "/routines/{ID}")
-    public ResponseEntity<RoutineResponseDto> viewOneRoutine(@PathVariable(value = "cuit") String clientCuit,
-                                                    @PathVariable(value = "ID") Long ID) {
-        return new ResponseEntity<>(routineService.readRoutineByClient(clientCuit, ID), HttpStatus.OK);
-    }
 
     // <<<<<<<<<<<<<<<< ROUTINE-DIARY >>>>>>>>>>>>>>>> //
 

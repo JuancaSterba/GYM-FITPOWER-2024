@@ -15,7 +15,6 @@ public class RoutineResponseDto {
     private Long id;
     private String goals;
     private String createdAt;
-    private boolean active;
     private String trainerCuit;
     private String clientCuit;
     private List<ExerciseSetResponseDto> exerciseSets;

@@ -44,11 +44,11 @@ INSERT INTO nutritionists (cuit, name, lastname, email, phone, enabled, created_
 ('49023456789', 'Nut. Sofía', 'Alvarez', 'sofia.alvarez@outlook.com', '1567890123', TRUE, '2023-05-08');
 
 INSERT INTO routines (goals, created_at, trainer_id, client_id, active) VALUES
-('Perder 5 kg en 3 meses', '2022-01-01', 1, 1, TRUE),
-('Ganar masa muscular en 6 meses', '2022-01-15', 2, 2, TRUE),
-('Mejorar la resistencia cardiovascular en 2 meses', '2022-02-01', 3, 3, TRUE),
-('Reducir el porcentaje de grasa corporal en 4 meses', '2022-03-01', 4, 4, TRUE),
-('Aumentar la fuerza muscular en 5 meses', '2022-04-01', 5, 5, TRUE);
+('Perder 5 kg en 3 meses', '2022-01-01', 1, 1, FALSE),
+('Ganar masa muscular en 6 meses', '2022-01-15', 2, 2, FALSE),
+('Mejorar la resistencia cardiovascular en 2 meses', '2022-02-01', 3, 3, FALSE),
+('Reducir el porcentaje de grasa corporal en 4 meses', '2022-03-01', 4, 4, FALSE),
+('Aumentar la fuerza muscular en 5 meses', '2022-04-01', 5, 5, FALSE);
 
 INSERT INTO exercise_sets (reps, sets, rest_in_minutes, routine_id, exercise_id) VALUES
 (10, 3, 30, 1, 1),
@@ -63,11 +63,11 @@ INSERT INTO exercise_sets (reps, sets, rest_in_minutes, routine_id, exercise_id)
 (12, 4, 30, 5, 10);
 
 INSERT INTO routines (goals, created_at, trainer_id, client_id, active) VALUES
-('Aumentar la fuerza muscular en las piernas', '2022-02-01', 2, 2, TRUE),
-('Mejorar la resistencia cardiovascular en 3 meses', '2022-02-15', 3, 3, TRUE),
-('Reducir el porcentaje de grasa corporal en 4 meses', '2022-03-01', 4, 4, TRUE),
-('Aumentar la flexibilidad y movilidad en 2 meses', '2022-03-15', 5, 5, TRUE),
-('Mejorar la técnica de levantamiento de pesas', '2022-04-01', 1, 1, TRUE);
+('Aumentar la fuerza muscular en las piernas', '2022-02-01', 2, 2, FALSE),
+('Mejorar la resistencia cardiovascular en 3 meses', '2022-02-15', 3, 3, FALSE),
+('Reducir el porcentaje de grasa corporal en 4 meses', '2022-03-01', 4, 4, FALSE),
+('Aumentar la flexibilidad y movilidad en 2 meses', '2022-03-15', 5, 5, FALSE),
+('Mejorar la técnica de levantamiento de pesas', '2022-04-01', 1, 1, FALSE);
 
 INSERT INTO exercise_sets (reps, sets, rest_in_minutes, routine_id, exercise_id) VALUES
 (15, 5, 30, 2, 1),
@@ -82,11 +82,11 @@ INSERT INTO exercise_sets (reps, sets, rest_in_minutes, routine_id, exercise_id)
 (10, 3, 30, 1, 12);
 
 INSERT INTO routines (goals, created_at, trainer_id, client_id, active) VALUES
-('Mejorar la fuerza muscular en el pecho', '2022-03-01', 3, 3, TRUE),
-('Aumentar la resistencia cardiovascular en 4 meses', '2022-03-15', 4, 4, TRUE),
-('Reducir el porcentaje de grasa corporal en 5 meses', '2022-04-01', 5, 5, TRUE),
-('Aumentar la flexibilidad y movilidad en 3 meses', '2022-04-15', 1, 1, TRUE),
-('Mejorar la técnica de levantamiento de pesas en 2 meses', '2022-05-01', 2, 2, TRUE);
+('Mejorar la fuerza muscular en el pecho', '2022-03-01', 3, 3, FALSE),
+('Aumentar la resistencia cardiovascular en 4 meses', '2022-03-15', 4, 4, FALSE),
+('Reducir el porcentaje de grasa corporal en 5 meses', '2022-04-01', 5, 5, FALSE),
+('Aumentar la flexibilidad y movilidad en 3 meses', '2022-04-15', 1, 1, FALSE),
+('Mejorar la técnica de levantamiento de pesas en 2 meses', '2022-05-01', 2, 2, FALSE);
 
 INSERT INTO exercise_sets (reps, sets, rest_in_minutes, routine_id, exercise_id) VALUES
 (8, 2, 30, 3, 2),
@@ -101,11 +101,11 @@ INSERT INTO exercise_sets (reps, sets, rest_in_minutes, routine_id, exercise_id)
 (12, 4, 30, 2, 14);
 
 INSERT INTO routines (goals, created_at, trainer_id, client_id, active) VALUES
-('Aumentar la fuerza muscular en los brazos', '2022-04-01', 4, 4, TRUE),
-('Mejorar la resistencia cardiovascular en 5 meses', '2022-04-15', 5, 5, TRUE),
-('Reducir el porcentaje de grasa corporal en 6 meses', '2022-05-01', 1, 1, TRUE),
-('Aumentar la flexibilidad y movilidad en 4 meses', '2022-05-15', 2, 2, TRUE),
-('Mejorar la técnica de levantamiento de pesas en 3 meses', '2022-06-01', 3, 3, TRUE);
+('Aumentar la fuerza muscular en los brazos', '2022-04-01', 4, 4, FALSE),
+('Mejorar la resistencia cardiovascular en 5 meses', '2022-04-15', 5, 5, FALSE),
+('Reducir el porcentaje de grasa corporal en 6 meses', '2022-05-01', 1, 1, FALSE),
+('Aumentar la flexibilidad y movilidad en 4 meses', '2022-05-15', 2, 2, FALSE),
+('Mejorar la técnica de levantamiento de pesas en 3 meses', '2022-06-01', 3, 3, FALSE);
 
 INSERT INTO exercise_sets (reps, sets, rest_in_minutes, routine_id, exercise_id) VALUES
 (12, 4, 30, 4, 3),

@@ -41,8 +41,8 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     @Override
-    public RoutineResponseDto save(RoutineRequestDto routineRequestDto, String clientCuit) {
-        var trainerCuit = routineRequestDto.getTrainerCuit();
+    public RoutineResponseDto save(RoutineRequestDto routineRequestDto, String trainerCuit, String clientCuit) {
+
         Optional<Trainer> trainer = trainerRepository.findByCuit(trainerCuit);
         if (trainer.isEmpty()) {
             throw new TrainerNotFoundException("Trainer with CUIT " + trainerCuit + " not found.");
