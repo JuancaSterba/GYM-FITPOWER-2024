@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class TrainingDiaryMapper {
     public static TrainingDiary toEntity(TrainingDiaryRequestDto dto) {
         TrainingDiary trainingDiary = new TrainingDiary();
-        trainingDiary.setCommentary(dto.getComentary());
+        trainingDiary.setCommentary(dto.getCommentary());
         return trainingDiary;
     }
 

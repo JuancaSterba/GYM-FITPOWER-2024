@@ -11,11 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TrainingDiaryRequestDto {
 
-    @NotBlank(message = "{comentary.notBlank}")
-    @Size(min = 3, max = 500, message = "{comentary.size.invalid}")
-    private String comentary;
-
-    @NotBlank(message = "{routineId.notBlank}")
-    private Long routineId;
+    @NotBlank(message = "{commentary.notBlank}")
+    @Size(min = 3, max = 500, message = "{commentary.size.invalid}")
+    private String commentary;
 
 }

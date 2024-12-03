@@ -7,6 +7,6 @@ import com.gym.fit_power.exception.RoutineNotFoundException;
 import java.util.List;
 
 public interface TrainingDiaryService {
-    TrainingDiaryResponseDto add(TrainingDiaryRequestDto trainingDiaryRequestDto, String clientCuit) throws RoutineNotFoundException;
+    TrainingDiaryResponseDto save(TrainingDiaryRequestDto trainingDiaryRequestDto) throws RoutineNotFoundException;
     List<TrainingDiaryResponseDto> findByRoutineId(Long routineId);
 }
