@@ -21,7 +21,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static com.gym.fit_power.constant.NutritinistConstants.ERROR_NUTRIPLAN;
 import static com.gym.fit_power.constant.NutritinistConstants.SUCCESSFUL;
@@ -116,7 +115,7 @@ public class NutriPlanServiceImpl implements NutriPlanService {
 
     private NutritionPlan toEntity(NutriPlanDTO request) {
         NutritionPlan nutriP = new NutritionPlan();
-        nutriP.setCreatAt(LocalDate.now());
+        nutriP.setCreatedAt(LocalDate.now());
         nutriP.setDailyCalories(request.getDailyCalories());
         nutriP.setDailyCarbohydrates(request.getDailyCarbohydrates());
         nutriP.setDailyFats(request.getDailyFats());

@@ -120,11 +120,11 @@ INSERT INTO exercise_sets (reps, sets, rest_in_minutes, routine_id, exercise_id)
 (10, 3, 30, 3, 16);
 
 INSERT INTO routines (goals, created_at, trainer_id, client_id, active) VALUES
-('Aumentar la flexibilidad y movilidad en los hombros', '2022-05-01', 5, 5, TRUE),
-('Mejorar la resistencia cardiovascular en 6 meses', '2022-05-15', 1, 1, TRUE),
-('Reducir el porcentaje de grasa corporal en 7 meses', '2022-06-01', 2, 2, TRUE),
-('Aumentar la fuerza muscular en los glúteos', '2022-06-15', 3, 3, TRUE),
-('Mejorar la técnica de levantamiento de pesas en 4 meses', '2022-07-01', 4, 4, TRUE);
+('Aumentar la flexibilidad y movilidad en los hombros', '2022-05-01', 5, 5, FALSE),
+('Mejorar la resistencia cardiovascular en 6 meses', '2022-05-15', 1, 1, FALSE),
+('Reducir el porcentaje de grasa corporal en 7 meses', '2022-06-01', 2, 2, FALSE),
+('Aumentar la fuerza muscular en los glúteos', '2022-06-15', 3, 3, FALSE),
+('Mejorar la técnica de levantamiento de pesas en 4 meses', '2022-07-01', 4, 4, FALSE);
 
 INSERT INTO exercise_sets (reps, sets, rest_in_minutes, routine_id, exercise_id) VALUES
 (10, 3, 30, 5, 4),

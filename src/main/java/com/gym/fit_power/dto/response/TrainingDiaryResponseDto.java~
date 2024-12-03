@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class TrainingDiaryResponseDto {
     private Long id;
-    private String commentary;
+    private String comentary;
     private String createdAt;
     private Long routineId;
 }

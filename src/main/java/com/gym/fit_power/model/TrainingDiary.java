@@ -23,7 +23,7 @@ public class TrainingDiary {
     @NotNull
     @NotEmpty
     @Size(min = 3, max = 500)
-    private String comentary;
+    private String commentary;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

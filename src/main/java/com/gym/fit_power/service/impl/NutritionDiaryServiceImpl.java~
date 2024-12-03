@@ -2,7 +2,9 @@ package com.gym.fit_power.service.impl;
 
 import com.gym.fit_power.dto.NutritionDiaryDTO;
 
+import com.gym.fit_power.exception.EntityNotFoundException;
 import com.gym.fit_power.exception.EntityUpdateException;
+import com.gym.fit_power.exception.SaveEntityException;
 import com.gym.fit_power.model.Client;
 import com.gym.fit_power.model.NutritionDiary;
 import com.gym.fit_power.model.NutritionPlan;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.gym.fit_power.constant.NutritinistConstants.*;
@@ -47,12 +50,12 @@ public class NutritionDiaryServiceImpl implements NutritionDiaryService {
                     .orElseThrow();
             //busca si existe un plan del dia de la fecha y si no existe lo crea
             NutritionDiary log = nutritionPlanActive.getLogNutri().stream()
-                    .filter(nd -> nd.getCreatedAt().toLocalDate().equals(LocalDate.now()))
+                    .filter(nd -> nd.getUpdateAt().toLocalDate().equals(LocalDate.now()))
                     .findFirst()
                     .orElse(new NutritionDiary());
             //setea los datos
             NutritionDiary nutritionDiaryUpdate = toEntity(request);
-            log.setCreatedAt(LocalDateTime.now());
+            log.setUpdateAt(LocalDateTime.now());
             log.setBreakfast(nutritionDiaryUpdate.getBreakfast());
             log.setLunch(nutritionDiaryUpdate.getLunch());
             log.setSnacks(nutritionDiaryUpdate.getSnacks());
@@ -93,7 +96,7 @@ public class NutritionDiaryServiceImpl implements NutritionDiaryService {
 
     private NutritionDiary toEntity(NutritionDiaryDTO request) {
         NutritionDiary nutritionDiary = new NutritionDiary();
-        nutritionDiary.setCreatedAt(LocalDateTime.now());
+        nutritionDiary.setUpdateAt(LocalDateTime.now());
         nutritionDiary.setBreakfast(request.getBreakfast());
         nutritionDiary.setLunch(request.getLunch());
         nutritionDiary.setSnacks(request.getSnacks());
@@ -111,7 +114,7 @@ public class NutritionDiaryServiceImpl implements NutritionDiaryService {
     private NutritionDiaryDTO toDto(NutritionDiary nutritionDiary) {
         NutritionDiaryDTO nutritionDiaryDTO = new NutritionDiaryDTO();
         nutritionDiaryDTO.setId(nutritionDiary.getId());
-        nutritionDiaryDTO.setUpdateAt(nutritionDiary.getCreatedAt().toString());
+        nutritionDiaryDTO.setUpdateAt(nutritionDiary.getUpdateAt().toString());
         nutritionDiaryDTO.setBreakfast(nutritionDiary.getBreakfast());
         nutritionDiaryDTO.setLunch(nutritionDiary.getLunch());
         nutritionDiaryDTO.setSnacks(nutritionDiary.getSnacks());

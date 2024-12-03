@@ -5,6 +5,9 @@ import com.gym.fit_power.dto.response.RoutineResponseDto;
 import com.gym.fit_power.model.Routine;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
+import java.util.stream.Collectors;
+
 @Component
 public class RoutineMapper {
 
@@ -21,11 +24,10 @@ public class RoutineMapper {
                         .map(ExerciseSetMapper::toDto)
                         .toList()
                 )
-                .trainingDiaries(routine.getTrainingDiaries()
+                .trainingDiaries((routine.getTrainingDiaries() != null) ? routine.getTrainingDiaries()
                         .stream()
                         .map(TrainingDiaryMapper::toDto)
-                        .toList()
-                )
+                        .collect(Collectors.toList()) : Collections.emptyList())
                 .build();
     }
 
