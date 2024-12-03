@@ -1,6 +1,7 @@
 package com.gym.fit_power.security.config;
 
-import com.prueba.seguridad.security.repository.UserRepository;
+
+import com.gym.fit_power.security.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

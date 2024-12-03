@@ -1,11 +1,12 @@
 package com.gym.fit_power.security.service;
 
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cglib.core.internal.Function;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -15,12 +16,14 @@ import java.util.Date;
 import java.util.HashMap;
 
 @Service
+@Slf4j
 public class JwtService {
 
     private static final String SECRET_KEY = "tuclavesecretalargayseguraparafirmarlostokens";
     public String getToken(UserDetails user) {
         return getToken(new HashMap<>(), user);
     }
+    protected static final Logger logger = LoggerFactory.getLogger(JwtService.class);
 
     private String getToken(HashMap<String,Object> extraClaims, UserDetails user) {
         return Jwts.builder()
@@ -47,12 +50,19 @@ public class JwtService {
     }
 
     private Claims getAllClaims ( String token){
-        return Jwts
-                .parser()
-                .setSigningKey(getKey())
-                .build()
-                .parseClaimsJws(token)
-                .getPayload();
+        try {
+            return Jwts
+                    .parser()
+                    .setSigningKey(getKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getPayload();
+
+        } catch (JwtException | IllegalArgumentException e) {
+            log.error("Error al validar el token JWT: {}", e.getMessage());
+            throw new SecurityException("Token inválido"); // O lanza una excepción personalizada
+        }
+
 
     }
     public <T> T getClaim(String token, Function<Claims,T> claimsResolver)
