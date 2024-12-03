@@ -1,3 +1,6 @@
+INSERT INTO usuario (username, password, name, lastname, cuit, role) VALUES ('admin', '$2a$10$nkjXuwh1Z5JpdvATkoFmLemrhM1h9FW1hJI//aWVmoTTOCJm4LB8C', 'admin', 'admin', '33672337629', 'ADMIN');
+INSERT INTO usuario (username, password, name, lastname, cuit, role) VALUES ('user', '$2a$10$Onmv6UyGj/0DUEay.wjIX.cyao/IQgsy8r8IqSh05D9C2IAi/yWfK', 'user', 'user', '30889977553', 'USER');
+
 INSERT INTO gyms (address, domain, mail, phone, enabled) VALUES ('Calle 123', 'gimnasio.com', 'gimnasio@example', '1234567890', TRUE);
 INSERT INTO gyms (address, domain, mail, phone, enabled) VALUES ('Calle 456', 'gimnasio2.com', 'gimnasio2@example', '9876543210', TRUE);
 INSERT INTO gyms (address, domain, mail, phone, enabled) VALUES ('Calle 789', 'gimnasio3.com', 'gimnasio3@example', '5555555555', TRUE);

@@ -19,11 +19,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "usuario", uniqueConstraints = @UniqueConstraint(columnNames = "cuit"))
+@Table(name = "usuario",uniqueConstraints = @UniqueConstraint(columnNames = "cuit"))
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+     Long id;
     private String username;
     private String password;
     private String name;

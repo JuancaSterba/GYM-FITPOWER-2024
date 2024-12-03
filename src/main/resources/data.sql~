@@ -1,3 +1,6 @@
+INSERT INTO usuario (username, password, name, lastname, cuit, role) VALUES ('admin', '$2a$10$nkjXuwh1Z5JpdvATkoFmLemrhM1h9FW1hJI//aWVmoTTOCJm4LB8C', 'admin', 'admin', '33672337629', 'ADMIN');
+--INSERT INTO usuario (username, password, name, lastname, cuit, role) VALUES ('user', 'user', 'user', 'user', '30889977553', 'USER');
+
 INSERT INTO gyms (address, domain, mail, phone, enabled) VALUES ('Calle 123', 'gimnasio.com', 'gimnasio@example', '1234567890', TRUE);
 INSERT INTO gyms (address, domain, mail, phone, enabled) VALUES ('Calle 456', 'gimnasio2.com', 'gimnasio2@example', '9876543210', TRUE);
 INSERT INTO gyms (address, domain, mail, phone, enabled) VALUES ('Calle 789', 'gimnasio3.com', 'gimnasio3@example', '5555555555', TRUE);
@@ -120,11 +123,11 @@ INSERT INTO exercise_sets (reps, sets, rest_in_minutes, routine_id, exercise_id)
 (10, 3, 30, 3, 16);
 
 INSERT INTO routines (goals, created_at, trainer_id, client_id, active) VALUES
-('Aumentar la flexibilidad y movilidad en los hombros', '2022-05-01', 5, 5, FALSE),
-('Mejorar la resistencia cardiovascular en 6 meses', '2022-05-15', 1, 1, FALSE),
-('Reducir el porcentaje de grasa corporal en 7 meses', '2022-06-01', 2, 2, FALSE),
-('Aumentar la fuerza muscular en los glúteos', '2022-06-15', 3, 3, FALSE),
-('Mejorar la técnica de levantamiento de pesas en 4 meses', '2022-07-01', 4, 4, FALSE);
+('Aumentar la flexibilidad y movilidad en los hombros', '2022-05-01', 5, 5, TRUE),
+('Mejorar la resistencia cardiovascular en 6 meses', '2022-05-15', 1, 1, TRUE),
+('Reducir el porcentaje de grasa corporal en 7 meses', '2022-06-01', 2, 2, TRUE),
+('Aumentar la fuerza muscular en los glúteos', '2022-06-15', 3, 3, TRUE),
+('Mejorar la técnica de levantamiento de pesas en 4 meses', '2022-07-01', 4, 4, TRUE);
 
 INSERT INTO exercise_sets (reps, sets, rest_in_minutes, routine_id, exercise_id) VALUES
 (10, 3, 30, 5, 4),
