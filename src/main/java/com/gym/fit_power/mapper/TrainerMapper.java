@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TrainerMapper {
+
     public static Trainer toEntity(TrainerRequestDto dto) {
         Trainer trainer = new Trainer();
         trainer.setCuit(dto.getCuit());
@@ -29,4 +30,5 @@ public class TrainerMapper {
                 .enabled(trainer.isEnabled())
                 .build();
     }
+    
 }
