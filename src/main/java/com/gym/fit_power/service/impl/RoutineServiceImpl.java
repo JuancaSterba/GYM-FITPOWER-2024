@@ -78,6 +78,21 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     @Override
+    public List<RoutineResponseDto> findByClient(String clientCuit) {
+        Optional<Client> client = clientRepository.findAll()
+                .stream()
+                .filter(c -> c.getCuit().equals(clientCuit))
+                .findFirst();
+        if (client.isEmpty()) {
+            throw new EntityNotFoundException("Client with CUIT " + clientCuit + " not found.");
+        }
+        List<Routine> routines = routineRepository.findByClient(client.get());
+        return routines.stream()
+                .map(RoutineMapper::toDto)
+                .toList();
+    }
+
+    @Override
     public RoutineResponseDto findClientActiveRoutine(String clientCuit) {
         Optional<Client> client = clientRepository.findAll()
                 .stream()

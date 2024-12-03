@@ -169,7 +169,7 @@ public class ClientController {
 
     @GetMapping(CUIT + "/routines")
     public ResponseEntity<List<RoutineResponseDto>> viewRoutines(@PathVariable(value = "cuit") String clientCuit) {
-        return new ResponseEntity<>(routineService.findByClient(clientCuit), HttpStatus.OK);
+        return new ResponseEntity<>(routineService.readByClient(clientCuit), HttpStatus.OK);
     }
 
 /*
