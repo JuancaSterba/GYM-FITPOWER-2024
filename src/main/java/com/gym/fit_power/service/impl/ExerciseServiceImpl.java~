@@ -5,6 +5,7 @@ import com.gym.fit_power.dto.response.ExerciseResponseDto;
 import com.gym.fit_power.exception.DuplicatedExerciseException;
 import com.gym.fit_power.exception.ExerciseNotFoundException;
 import com.gym.fit_power.exception.ExerciseUpdateException;
+import com.gym.fit_power.mapper.ExerciseMapper;
 import com.gym.fit_power.model.Exercise;
 import com.gym.fit_power.repository.ExerciseRepository;
 import com.gym.fit_power.service.ExerciseService;
@@ -18,9 +19,11 @@ import java.util.Optional;
 public class ExerciseServiceImpl implements ExerciseService {
 
     private final ExerciseRepository exerciseRepository;
+    private final ExerciseMapper exerciseMapper;
 
-    public ExerciseServiceImpl(ExerciseRepository exerciseRepository) {
+    public ExerciseServiceImpl(ExerciseRepository exerciseRepository, ExerciseMapper exerciseMapper) {
         this.exerciseRepository = exerciseRepository;
+        this.exerciseMapper = exerciseMapper;
     }
 
     @Override
@@ -29,7 +32,7 @@ public class ExerciseServiceImpl implements ExerciseService {
         return exerciseRepository
                 .findAll()
                 .stream()
-                .map(this::toDto)
+                .map(exerciseMapper::toDto)
                 .toList();
     }
 
@@ -37,14 +40,14 @@ public class ExerciseServiceImpl implements ExerciseService {
     @Transactional(readOnly = true)
     public ExerciseResponseDto findByName(String name) throws ExerciseNotFoundException {
         Optional<Exercise> exercise = exerciseRepository.findByName(name);
-        return exercise.map(this::toDto).orElseThrow(() -> new ExerciseNotFoundException("Exercise with name " + name + " not found."));
+        return exercise.map(exerciseMapper::toDto).orElseThrow(() -> new ExerciseNotFoundException("Exercise with name " + name + " not found."));
     }
 
     @Override
     @Transactional(readOnly = true)
     public ExerciseResponseDto findByMuscleGroup(String muscleGroup) throws ExerciseNotFoundException {
         Optional<Exercise> exercise = exerciseRepository.findByMuscleGroup(muscleGroup);
-        return exercise.map(this::toDto).orElseThrow(() -> new ExerciseNotFoundException("Exercise with muscle group " + muscleGroup + " not found."));
+        return exercise.map(exerciseMapper::toDto).orElseThrow(() -> new ExerciseNotFoundException("Exercise with muscle group " + muscleGroup + " not found."));
     }
 
     @Override
@@ -54,9 +57,9 @@ public class ExerciseServiceImpl implements ExerciseService {
                 .ifPresent(exercise -> {
                     throw new DuplicatedExerciseException("Exercise with name " + exerciseRequestDto.getName() + " already exists.");
                 });
-        Exercise newExercise = this.toEntity(exerciseRequestDto);
+        Exercise newExercise = ExerciseMapper.toEntity(exerciseRequestDto);
         newExercise = exerciseRepository.save(newExercise);
-        return this.toDto(newExercise);
+        return exerciseMapper.toDto(newExercise);
     }
 
     @Override
@@ -64,10 +67,10 @@ public class ExerciseServiceImpl implements ExerciseService {
     public ExerciseResponseDto update(String name, ExerciseRequestDto exerciseRequestDto) throws ExerciseUpdateException {
         Exercise exercise = exerciseRepository.findByName(name)
                 .orElseThrow(() -> new ExerciseUpdateException("Exercise with name " + name + " not found."));
-        Exercise updatedExercise = this.toEntity(exerciseRequestDto);
+        Exercise updatedExercise = ExerciseMapper.toEntity(exerciseRequestDto);
         updatedExercise.setId(exercise.getId());
         updatedExercise = exerciseRepository.save(updatedExercise);
-        return this.toDto(updatedExercise);
+        return exerciseMapper.toDto(updatedExercise);
     }
 
     @Override
@@ -78,23 +81,4 @@ public class ExerciseServiceImpl implements ExerciseService {
         exercise.setEnabled(false);
         exerciseRepository.save(exercise);
     }
-
-    private ExerciseResponseDto toDto(Exercise exercise) {
-        return ExerciseResponseDto.builder()
-                .id(exercise.getId())
-                .name(exercise.getName())
-                .description(exercise.getDescription())
-                .muscleGroup(exercise.getMuscleGroup())
-                .enabled(exercise.isEnabled())
-                .build();
-    }
-
-    private Exercise toEntity(ExerciseRequestDto exerciseRequestDto) {
-        return Exercise.builder()
-                .name(exerciseRequestDto.getName())
-                .description(exerciseRequestDto.getDescription())
-                .muscleGroup(exerciseRequestDto.getMuscleGroup())
-                .build();
-    }
-
 }
