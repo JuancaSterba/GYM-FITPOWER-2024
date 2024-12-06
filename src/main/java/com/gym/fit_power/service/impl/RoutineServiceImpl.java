@@ -6,7 +6,6 @@ import com.gym.fit_power.dto.response.RoutineResponseDto;
 import com.gym.fit_power.exception.EntityNotFoundException;
 import com.gym.fit_power.exception.RoutineNotFoundException;
 import com.gym.fit_power.exception.TrainerNotFoundException;
-import com.gym.fit_power.mapper.TrainingDiaryMapper;
 import com.gym.fit_power.model.*;
 import com.gym.fit_power.repository.*;
 import com.gym.fit_power.service.RoutineService;
@@ -28,6 +27,7 @@ public class RoutineServiceImpl implements RoutineService {
     private final TrainerRepository trainerRepository;
     private final ExerciseRepository exerciseRepository;
     private final ExerciseSetServiceImpl exerciseSetServiceImpl;
+    private final TrainingDiaryServiceImpl trainingDiaryServiceImpl;
 
     @Override
     public RoutineResponseDto save(RoutineRequestDto routineRequestDto, String clientCuit) {
@@ -121,7 +121,7 @@ public class RoutineServiceImpl implements RoutineService {
                 )
                 .trainingDiaries((routine.getTrainingDiaries() != null) ? routine.getTrainingDiaries()
                         .stream()
-                        .map(TrainingDiaryMapper::toDto)
+                        .map(trainingDiaryServiceImpl::toDto)
                         .collect(Collectors.toList()) : Collections.emptyList())
                 .build();
     }
