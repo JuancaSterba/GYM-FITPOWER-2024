@@ -17,13 +17,22 @@ public class PublishClientEvents {
         this.producer = producer;
     }
 
-    public void publish(Client client) {
+    public void publishCreate(Client client) {
         ClientCreatedEvent created = new ClientCreatedEvent();
         created.setId(UUID.randomUUID().toString());
         created.setDate(LocalDateTime.now());
         created.setType(EventType.CREATED);
         created.setEntity(client);
         this.producer.send("clients", created);
+    }
+
+    public void publishUpdate(Client client) {
+        ClientUpdatedEvent updated = new ClientUpdatedEvent();
+        updated.setId(UUID.randomUUID().toString());
+        updated.setDate(LocalDateTime.now());
+        updated.setType(EventType.CREATED);
+        updated.setEntity(client);
+        this.producer.send("clients", updated);
     }
 
 }

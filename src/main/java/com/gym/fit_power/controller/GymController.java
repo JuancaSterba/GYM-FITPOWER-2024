@@ -31,7 +31,7 @@ public class GymController {
     @PostMapping
     public ResponseEntity<GymDTO> create(@RequestBody GymDTO request) throws URISyntaxException {
         newInfoLog("Creating new gym: " + request);
-        GymDTO response = service.create(request);
+        GymDTO response = service.save(request);
         newInfoLog(request.getDomain() + " is created");
         return ResponseEntity.ok().headers(newHeader("CREATED", SUCCESSFUL)).
                 location(new URI("/api/gyms/" + response.getAddress())).body(response);
@@ -48,7 +48,7 @@ public class GymController {
     @GetMapping
     public ResponseEntity<List<GymDTO>> readAll() {
         newInfoLog("Get all gyms");
-        List<GymDTO> response = service.readAll();
+        List<GymDTO> response = service.findAll();
         correctSearch();
         return ResponseEntity.ok().headers(newHeader("FOUND", SUCCESSFUL)).body(response);
     }

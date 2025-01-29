@@ -32,5 +32,4 @@ public class NutritionPlanController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-
 }

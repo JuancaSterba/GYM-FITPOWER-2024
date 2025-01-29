@@ -14,5 +14,6 @@ public class ClientConstants {
     public static final String CLIENT_COULD_NOT_BE = "SERVICE -- The client {} could not be {}. Error: ";
     public static final String ERROR_WHILE = "CONTROLLER -- An error occurred while {} a client: {}";
     public static final String WITH_CUIT = "client with cuit ";
+    // esto no
 
 }

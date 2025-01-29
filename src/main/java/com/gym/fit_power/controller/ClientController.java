@@ -38,8 +38,7 @@ public class ClientController {
     private final NutritionDiaryServiceImpl nutritionDiaryService;
 
     public static final String CUIT = "/{cuit}";
-    public static final String RESOURCE = "/api/clients";
-    private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
+    public static final String RESOURCE = "/api/v1/clients";
 
     public ClientController(ClientServiceImpl clientService,
                             NutriPlanServiceImpl nutritionPlanService,
@@ -58,7 +57,7 @@ public class ClientController {
     @PostMapping
     public ResponseEntity<ClientDTO> create(@RequestBody ClientDTO request) throws URISyntaxException {
         newInfoLog("Creating new client: " + request);
-        ClientDTO response = clientService.create(request);
+        ClientDTO response = clientService.save(request);
         newInfoLog(WITH_CUIT + request.getCuit() + " is created");
         return ResponseEntity.ok().headers(newHeader("CREATED", SUCCESSFUL)).
                 location(new URI("/api/clients/" + response.getCuit())).body(response);
@@ -75,7 +74,7 @@ public class ClientController {
     @GetMapping
     public ResponseEntity<List<ClientDTO>> readAll() {
         newInfoLog("Get all client");
-        List<ClientDTO> response = new ArrayList<>(clientService.readAll());
+        List<ClientDTO> response = new ArrayList<>(clientService.findAll());
         correctSearch();
         return ResponseEntity.ok().headers(newHeader(FOUND, SUCCESSFUL)).body(response);
     }
