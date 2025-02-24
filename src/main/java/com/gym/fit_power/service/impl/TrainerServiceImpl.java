@@ -3,7 +3,7 @@ package com.gym.fit_power.service.impl;
 import com.gym.fit_power.dto.request.TrainerRequestDto;
 import com.gym.fit_power.dto.response.TrainerResponseDto;
 import com.gym.fit_power.exception.DuplicatedTrainerException;
-import com.gym.fit_power.exception.TrainerNotFoundException;
+import com.gym.fit_power.exception.EntityNotFoundException;
 import com.gym.fit_power.exception.TrainerUpdateException;
 import com.gym.fit_power.model.Trainer;
 import com.gym.fit_power.repository.TrainerRepository;
@@ -35,10 +35,10 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     @Transactional(readOnly = true)
-    public TrainerResponseDto findByCuit(String cuit) throws TrainerNotFoundException {
+    public TrainerResponseDto findByCuit(String cuit) throws EntityNotFoundException {
         Optional<Trainer> trainer = trainerRepository.findByCuit(cuit);
         return trainer.map(this::toDto)
-                .orElseThrow(() -> new TrainerNotFoundException("Trainer with CUIT " + cuit + " not found."));
+                .orElseThrow(() -> new EntityNotFoundException("Trainer with CUIT " + cuit + " not found."));
     }
 
     @Override
@@ -70,9 +70,9 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     @Transactional
-    public void delete(String cuit) throws TrainerNotFoundException {
+    public void delete(String cuit) throws EntityNotFoundException {
         Trainer trainer = trainerRepository.findByCuit(cuit)
-                .orElseThrow(() -> new TrainerNotFoundException("No trainer found with DNI " + cuit + " for deletion."));
+                .orElseThrow(() -> new EntityNotFoundException("No trainer found with DNI " + cuit + " for deletion."));
         trainer.setEnabled(false);
         trainerRepository.save(trainer);
     }

@@ -11,8 +11,8 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(TrainerNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleTrainerNotFound(TrainerNotFoundException e) {
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleTrainerNotFound(EntityNotFoundException e) {
         return createErrorResponse(HttpStatus.NOT_FOUND, e.getMessage());
     }
 
