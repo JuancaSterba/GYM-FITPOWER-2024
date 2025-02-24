@@ -4,7 +4,7 @@ package com.gym.fit_power.service.impl;
 import com.gym.fit_power.dto.request.RequestNutri;
 import com.gym.fit_power.dto.response.ResponseNutri;
 import com.gym.fit_power.exception.EntityNotFoundException;
-import com.gym.fit_power.exception.SaveEntityException;
+import com.gym.fit_power.exception.EntitySavedException;
 import com.gym.fit_power.model.Nutritionist;
 import com.gym.fit_power.repository.NutriRepository;
 import com.gym.fit_power.service.NutriService;
@@ -42,7 +42,7 @@ public class NutriServiceImpl implements NutriService {
             response = toDTO(nutriRepository.save(toEntity(requestNutri)));
             logger.info(CREATE_SUCCESFULLY, "{}" + requestNutri.getName());
         } catch (Exception e) {
-            throw new SaveEntityException("Failed to save entity");
+            throw new EntitySavedException("Failed to save entity");
         }
         return response;
     }

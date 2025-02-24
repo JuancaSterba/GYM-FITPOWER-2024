@@ -2,7 +2,7 @@ package com.gym.fit_power.service.impl;
 
 import com.gym.fit_power.dto.request.ExerciseSetRequestDto;
 import com.gym.fit_power.dto.response.ExerciseSetResponseDto;
-import com.gym.fit_power.exception.ExerciseSetException;
+import com.gym.fit_power.exception.EntitySavedException;
 import com.gym.fit_power.exception.ExerciseSetNotFoundException;
 import com.gym.fit_power.model.Exercise;
 import com.gym.fit_power.model.ExerciseSet;
@@ -41,9 +41,9 @@ public class ExerciseSetServiceImpl implements ExerciseSetService {
 
     @Override
     @Transactional
-    public void save(Long routineId, Long exerciseId, ExerciseSetRequestDto exerciseSetRequestDto) throws ExerciseSetException {
-        Routine routine = routineRepository.findById(routineId).orElseThrow(() -> new ExerciseSetException("Routine not found"));
-        Exercise exercise = exerciseRepository.findById(exerciseId).orElseThrow(() -> new ExerciseSetException("Exercise not found"));
+    public void save(Long routineId, Long exerciseId, ExerciseSetRequestDto exerciseSetRequestDto) throws EntitySavedException {
+        Routine routine = routineRepository.findById(routineId).orElseThrow(() -> new EntitySavedException("Routine not found"));
+        Exercise exercise = exerciseRepository.findById(exerciseId).orElseThrow(() -> new EntitySavedException("Exercise not found"));
         exerciseSetRepository.save(this.toEntity(exerciseSetRequestDto, routine, exercise));
     }
 
