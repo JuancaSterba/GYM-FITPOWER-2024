@@ -2,7 +2,7 @@ package com.gym.fit_power.service.impl;
 
 import com.gym.fit_power.dto.request.TrainerRequestDto;
 import com.gym.fit_power.dto.response.TrainerResponseDto;
-import com.gym.fit_power.exception.DuplicatedTrainerException;
+import com.gym.fit_power.exception.DuplicatedEntityException;
 import com.gym.fit_power.exception.EntityNotFoundException;
 import com.gym.fit_power.exception.TrainerUpdateException;
 import com.gym.fit_power.model.Trainer;
@@ -43,10 +43,10 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     @Transactional
-    public TrainerResponseDto save(TrainerRequestDto trainerRequestDto) throws DuplicatedTrainerException {
+    public TrainerResponseDto save(TrainerRequestDto trainerRequestDto) throws DuplicatedEntityException {
         trainerRepository.findByCuit(trainerRequestDto.getCuit())
                 .ifPresent(trainer -> {
-                    throw new DuplicatedTrainerException("Trainer with CUIT " + trainerRequestDto.getCuit() + " already exists.");
+                    throw new DuplicatedEntityException("Trainer with CUIT " + trainerRequestDto.getCuit() + " already exists.");
                 });
         Trainer newTrainer = this.toEntity(trainerRequestDto);
         newTrainer = trainerRepository.save(newTrainer);
