@@ -3,8 +3,8 @@ package com.gym.fit_power.service.impl;
 import com.gym.fit_power.dto.request.ExerciseRequestDto;
 import com.gym.fit_power.dto.response.ExerciseResponseDto;
 import com.gym.fit_power.exception.EntityDuplicatedException;
+import com.gym.fit_power.exception.EntityUpdateException;
 import com.gym.fit_power.exception.ExerciseNotFoundException;
-import com.gym.fit_power.exception.ExerciseUpdateException;
 import com.gym.fit_power.model.Exercise;
 import com.gym.fit_power.repository.ExerciseRepository;
 import com.gym.fit_power.service.ExerciseService;
@@ -61,9 +61,9 @@ public class ExerciseServiceImpl implements ExerciseService {
 
     @Override
     @Transactional
-    public ExerciseResponseDto update(String name, ExerciseRequestDto exerciseRequestDto) throws ExerciseUpdateException {
+    public ExerciseResponseDto update(String name, ExerciseRequestDto exerciseRequestDto) throws EntityUpdateException {
         Exercise exercise = exerciseRepository.findByName(name)
-                .orElseThrow(() -> new ExerciseUpdateException("Exercise with name " + name + " not found."));
+                .orElseThrow(() -> new EntityUpdateException("Exercise with name " + name + " not found."));
         Exercise updatedExercise = this.toEntity(exerciseRequestDto);
         updatedExercise.setId(exercise.getId());
         updatedExercise = exerciseRepository.save(updatedExercise);

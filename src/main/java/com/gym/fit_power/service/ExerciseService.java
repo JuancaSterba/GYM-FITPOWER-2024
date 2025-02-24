@@ -3,8 +3,8 @@ package com.gym.fit_power.service;
 import com.gym.fit_power.dto.request.ExerciseRequestDto;
 import com.gym.fit_power.dto.response.ExerciseResponseDto;
 import com.gym.fit_power.exception.EntityDuplicatedException;
+import com.gym.fit_power.exception.EntityUpdateException;
 import com.gym.fit_power.exception.ExerciseNotFoundException;
-import com.gym.fit_power.exception.ExerciseUpdateException;
 
 import java.util.List;
 
@@ -13,6 +13,6 @@ public interface ExerciseService {
     ExerciseResponseDto findByName(String name) throws ExerciseNotFoundException;
     ExerciseResponseDto findByMuscleGroup(String muscleGroup) throws ExerciseNotFoundException;
     ExerciseResponseDto save(ExerciseRequestDto exerciseRequestDto) throws EntityDuplicatedException;
-    ExerciseResponseDto update(String name, ExerciseRequestDto exerciseRequestDto) throws ExerciseUpdateException;
+    ExerciseResponseDto update(String name, ExerciseRequestDto exerciseRequestDto) throws EntityUpdateException;
     void delete(String name) throws ExerciseNotFoundException;
 }
