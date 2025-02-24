@@ -16,13 +16,13 @@ public class GlobalExceptionHandler {
         return createErrorResponse(HttpStatus.NOT_FOUND, e.getMessage());
     }
 
-    @ExceptionHandler(DuplicatedEntityException.class)
-    public ResponseEntity<Map<String, String>> handleDuplicatedTrainer(DuplicatedEntityException e) {
+    @ExceptionHandler(EntityDuplicatedException.class)
+    public ResponseEntity<Map<String, String>> handleDuplicatedTrainer(EntityDuplicatedException e) {
         return createErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
-    @ExceptionHandler(TrainerUpdateException.class)
-    public ResponseEntity<Map<String, String>> handleTrainerUpdate(TrainerUpdateException e) {
+    @ExceptionHandler(EntityUpdateException.class)
+    public ResponseEntity<Map<String, String>> handleTrainerUpdate(EntityUpdateException e) {
         return createErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 

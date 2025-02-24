@@ -2,9 +2,9 @@ package com.gym.fit_power.service.impl;
 
 import com.gym.fit_power.dto.request.TrainerRequestDto;
 import com.gym.fit_power.dto.response.TrainerResponseDto;
-import com.gym.fit_power.exception.DuplicatedEntityException;
+import com.gym.fit_power.exception.EntityDuplicatedException;
 import com.gym.fit_power.exception.EntityNotFoundException;
-import com.gym.fit_power.exception.TrainerUpdateException;
+import com.gym.fit_power.exception.EntityUpdateException;
 import com.gym.fit_power.model.Trainer;
 import com.gym.fit_power.repository.TrainerRepository;
 import com.gym.fit_power.service.TrainerService;
@@ -43,10 +43,10 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     @Transactional
-    public TrainerResponseDto save(TrainerRequestDto trainerRequestDto) throws DuplicatedEntityException {
+    public TrainerResponseDto save(TrainerRequestDto trainerRequestDto) throws EntityDuplicatedException {
         trainerRepository.findByCuit(trainerRequestDto.getCuit())
                 .ifPresent(trainer -> {
-                    throw new DuplicatedEntityException("Trainer with CUIT " + trainerRequestDto.getCuit() + " already exists.");
+                    throw new EntityDuplicatedException("Trainer with CUIT " + trainerRequestDto.getCuit() + " already exists.");
                 });
         Trainer newTrainer = this.toEntity(trainerRequestDto);
         newTrainer = trainerRepository.save(newTrainer);
@@ -55,9 +55,9 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     @Transactional
-    public TrainerResponseDto update(String cuit, TrainerRequestDto trainerRequestDto) throws TrainerUpdateException {
+    public TrainerResponseDto update(String cuit, TrainerRequestDto trainerRequestDto) throws EntityUpdateException {
         Trainer trainer = trainerRepository.findByCuit(cuit)
-                .orElseThrow(() -> new TrainerUpdateException("No trainer found with CUIT " + cuit + " for update."));
+                .orElseThrow(() -> new EntityUpdateException("No trainer found with CUIT " + cuit + " for update."));
 
         Trainer updatedTrainer = this.toEntity(trainerRequestDto);
         updatedTrainer.setCuit(cuit);
