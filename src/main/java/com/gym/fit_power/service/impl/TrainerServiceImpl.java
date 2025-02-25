@@ -4,7 +4,6 @@ import com.gym.fit_power.dto.request.TrainerRequestDto;
 import com.gym.fit_power.dto.response.TrainerResponseDto;
 import com.gym.fit_power.exception.EntityNotFoundException;
 import com.gym.fit_power.exception.EntitySaveException;
-import com.gym.fit_power.exception.EntityUpdateException;
 import com.gym.fit_power.model.Trainer;
 import com.gym.fit_power.repository.TrainerRepository;
 import com.gym.fit_power.service.TrainerService;
@@ -55,9 +54,9 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     @Transactional
-    public TrainerResponseDto update(String cuit, TrainerRequestDto trainerRequestDto) throws EntityUpdateException {
+    public TrainerResponseDto update(String cuit, TrainerRequestDto trainerRequestDto) throws EntitySaveException {
         Trainer trainer = trainerRepository.findByCuit(cuit)
-                .orElseThrow(() -> new EntityUpdateException("No trainer found with CUIT " + cuit + " for update."));
+                .orElseThrow(() -> new EntitySaveException("No trainer found with CUIT " + cuit + " for update."));
 
         Trainer updatedTrainer = this.toEntity(trainerRequestDto);
         updatedTrainer.setCuit(cuit);

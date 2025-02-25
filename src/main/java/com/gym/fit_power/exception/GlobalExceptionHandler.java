@@ -16,11 +16,6 @@ public class GlobalExceptionHandler {
         return createErrorResponse(HttpStatus.NOT_FOUND, e.getMessage());
     }
 
-    @ExceptionHandler(EntityUpdateException.class)
-    public ResponseEntity<Map<String, String>> handleEntityUpdate(EntityUpdateException e) {
-        return createErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
-    }
-
     @ExceptionHandler(EntitySaveException.class)
     public ResponseEntity<Map<String, String>> handleEntitySave(EntitySaveException e) {
         return createErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());

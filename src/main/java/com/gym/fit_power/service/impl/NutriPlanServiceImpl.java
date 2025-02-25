@@ -65,7 +65,7 @@ public class NutriPlanServiceImpl implements NutriPlanService {
     @Transactional
     public NutriPlanDTO readOne(Long id) {
         Optional<NutritionPlan> nutritionPlanOptional = repository.findById(id);
-        NutritionPlan nutritionPlan = nutritionPlanOptional.orElseThrow(EntityNotFoundException::new);
+        NutritionPlan nutritionPlan = nutritionPlanOptional.orElseThrow();
         return toDTO(nutritionPlan);
     }
 
