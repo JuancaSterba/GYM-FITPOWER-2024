@@ -2,7 +2,7 @@ package com.gym.fit_power.service.impl;
 
 import com.gym.fit_power.dto.NutriPlanDTO;
 import com.gym.fit_power.exception.EntityNotFoundException;
-import com.gym.fit_power.exception.EntitySavedException;
+import com.gym.fit_power.exception.EntitySaveException;
 import com.gym.fit_power.model.Client;
 import com.gym.fit_power.model.NutritionPlan;
 import com.gym.fit_power.model.Nutritionist;
@@ -55,7 +55,7 @@ public class NutriPlanServiceImpl implements NutriPlanService {
             logger.info(SUCCESSFUL);
 
         } catch (RuntimeException e) {
-            throw new EntitySavedException(e.getMessage());
+            throw new EntitySaveException(e.getMessage());
         }
 
         return response;

@@ -12,17 +12,22 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleTrainerNotFound(EntityNotFoundException e) {
+    public ResponseEntity<Map<String, String>> handleEntityNotFound(EntityNotFoundException e) {
         return createErrorResponse(HttpStatus.NOT_FOUND, e.getMessage());
     }
 
     @ExceptionHandler(EntityDuplicatedException.class)
-    public ResponseEntity<Map<String, String>> handleDuplicatedTrainer(EntityDuplicatedException e) {
+    public ResponseEntity<Map<String, String>> handleEntityDuplicated(EntityDuplicatedException e) {
         return createErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
     @ExceptionHandler(EntityUpdateException.class)
-    public ResponseEntity<Map<String, String>> handleTrainerUpdate(EntityUpdateException e) {
+    public ResponseEntity<Map<String, String>> handleEntityUpdate(EntityUpdateException e) {
+        return createErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+
+    @ExceptionHandler(EntitySaveException.class)
+    public ResponseEntity<Map<String, String>> handleEntitySave(EntitySaveException e) {
         return createErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
