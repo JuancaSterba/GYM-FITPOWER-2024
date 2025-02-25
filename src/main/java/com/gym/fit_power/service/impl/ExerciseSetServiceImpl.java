@@ -2,8 +2,8 @@ package com.gym.fit_power.service.impl;
 
 import com.gym.fit_power.dto.request.ExerciseSetRequestDto;
 import com.gym.fit_power.dto.response.ExerciseSetResponseDto;
+import com.gym.fit_power.exception.EntityNotFoundException;
 import com.gym.fit_power.exception.EntitySavedException;
-import com.gym.fit_power.exception.ExerciseSetNotFoundException;
 import com.gym.fit_power.model.Exercise;
 import com.gym.fit_power.model.ExerciseSet;
 import com.gym.fit_power.model.Routine;
@@ -49,9 +49,9 @@ public class ExerciseSetServiceImpl implements ExerciseSetService {
 
     @Override
     @Transactional
-    public void update(Long routineId, Long exerciseId, ExerciseSetRequestDto exerciseSetRequestDto) throws ExerciseSetNotFoundException {
+    public void update(Long routineId, Long exerciseId, ExerciseSetRequestDto exerciseSetRequestDto) throws EntityNotFoundException {
         ExerciseSet exerciseSet = exerciseSetRepository.findByRoutineIdAndExerciseId(routineId, exerciseId)
-                .orElseThrow(() -> new ExerciseSetNotFoundException("ExerciseSet not found"));
+                .orElseThrow(() -> new EntityNotFoundException("ExerciseSet not found"));
         ExerciseSet updatedExerciseSet = this.toEntity(exerciseSetRequestDto, exerciseSet.getRoutine(), exerciseSet.getExercise());
         updatedExerciseSet.setId(exerciseSet.getId());
         exerciseSetRepository.save(updatedExerciseSet);
@@ -59,9 +59,9 @@ public class ExerciseSetServiceImpl implements ExerciseSetService {
 
     @Override
     @Transactional
-    public void delete(Long routineId, Long exerciseId, ExerciseSetRequestDto exerciseSetRequestDto) throws ExerciseSetNotFoundException {
+    public void delete(Long routineId, Long exerciseId, ExerciseSetRequestDto exerciseSetRequestDto) throws EntityNotFoundException {
         ExerciseSet exerciseSet = exerciseSetRepository.findByRoutineIdAndExerciseId(routineId, exerciseId)
-                .orElseThrow(() -> new ExerciseSetNotFoundException("ExerciseSet not found"));
+                .orElseThrow(() -> new EntityNotFoundException("ExerciseSet not found"));
         exerciseSetRepository.delete(exerciseSet);
     }
 
