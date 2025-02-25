@@ -3,7 +3,6 @@ package com.gym.fit_power.service.impl;
 import com.gym.fit_power.dto.request.TrainingDiaryRequestDto;
 import com.gym.fit_power.dto.response.TrainingDiaryResponseDto;
 import com.gym.fit_power.exception.EntityNotFoundException;
-import com.gym.fit_power.exception.RoutineNotFoundException;
 import com.gym.fit_power.model.Routine;
 import com.gym.fit_power.model.TrainingDiary;
 import com.gym.fit_power.repository.ClientRepository;
@@ -36,7 +35,7 @@ public class TrainingDiaryServiceImpl implements TrainingDiaryService {
         }
         Optional<Routine> routine = routineRepository.findByClientAndActiveTrue(client);
         if (routine.isEmpty()) {
-            throw new RoutineNotFoundException("Rutina no encontrada para el cliente con CUIT: " + clientCuit);
+            throw new EntityNotFoundException("Rutina no encontrada para el cliente con CUIT: " + clientCuit);
         }
         TrainingDiary trainingDiary = this.toEntity(trainingDiaryRequestDto);
         trainingDiary.setRoutine(routine.get()); // Asigna el ID de la rutina al objeto TrainingDiary

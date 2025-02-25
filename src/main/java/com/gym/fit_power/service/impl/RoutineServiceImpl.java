@@ -4,7 +4,6 @@ import com.gym.fit_power.dto.request.ExerciseSetRequestDto;
 import com.gym.fit_power.dto.request.RoutineRequestDto;
 import com.gym.fit_power.dto.response.RoutineResponseDto;
 import com.gym.fit_power.exception.EntityNotFoundException;
-import com.gym.fit_power.exception.RoutineNotFoundException;
 import com.gym.fit_power.model.*;
 import com.gym.fit_power.repository.*;
 import com.gym.fit_power.service.RoutineService;
@@ -91,7 +90,7 @@ public class RoutineServiceImpl implements RoutineService {
         }
         Optional<Routine> routine = routineRepository.findByClientAndActiveTrue(client.get());
         if (routine.isEmpty()) {
-            throw new RoutineNotFoundException("Routine not found.");
+            throw new EntityNotFoundException("Routine not found.");
         }
         return this.toDto(routine.get());
     }
