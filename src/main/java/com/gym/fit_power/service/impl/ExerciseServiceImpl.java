@@ -2,8 +2,8 @@ package com.gym.fit_power.service.impl;
 
 import com.gym.fit_power.dto.request.ExerciseRequestDto;
 import com.gym.fit_power.dto.response.ExerciseResponseDto;
-import com.gym.fit_power.exception.EntityDuplicatedException;
 import com.gym.fit_power.exception.EntityNotFoundException;
+import com.gym.fit_power.exception.EntitySaveException;
 import com.gym.fit_power.exception.EntityUpdateException;
 import com.gym.fit_power.model.Exercise;
 import com.gym.fit_power.repository.ExerciseRepository;
@@ -49,10 +49,10 @@ public class ExerciseServiceImpl implements ExerciseService {
 
     @Override
     @Transactional
-    public ExerciseResponseDto save(ExerciseRequestDto exerciseRequestDto) throws EntityDuplicatedException {
+    public ExerciseResponseDto save(ExerciseRequestDto exerciseRequestDto) throws EntitySaveException {
         exerciseRepository.findByName(exerciseRequestDto.getName())
                 .ifPresent(exercise -> {
-                    throw new EntityDuplicatedException("Exercise with name " + exerciseRequestDto.getName() + " already exists.");
+                    throw new EntitySaveException("Exercise with name " + exerciseRequestDto.getName() + " already exists.");
                 });
         Exercise newExercise = this.toEntity(exerciseRequestDto);
         newExercise = exerciseRepository.save(newExercise);

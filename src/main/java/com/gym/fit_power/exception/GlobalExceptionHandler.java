@@ -16,11 +16,6 @@ public class GlobalExceptionHandler {
         return createErrorResponse(HttpStatus.NOT_FOUND, e.getMessage());
     }
 
-    @ExceptionHandler(EntityDuplicatedException.class)
-    public ResponseEntity<Map<String, String>> handleEntityDuplicated(EntityDuplicatedException e) {
-        return createErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
-    }
-
     @ExceptionHandler(EntityUpdateException.class)
     public ResponseEntity<Map<String, String>> handleEntityUpdate(EntityUpdateException e) {
         return createErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
