@@ -11,18 +11,13 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(TrainerNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleTrainerNotFound(TrainerNotFoundException e) {
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleEntityNotFound(EntityNotFoundException e) {
         return createErrorResponse(HttpStatus.NOT_FOUND, e.getMessage());
     }
 
-    @ExceptionHandler(DuplicatedTrainerException.class)
-    public ResponseEntity<Map<String, String>> handleDuplicatedTrainer(DuplicatedTrainerException e) {
-        return createErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
-    }
-
-    @ExceptionHandler(TrainerUpdateException.class)
-    public ResponseEntity<Map<String, String>> handleTrainerUpdate(TrainerUpdateException e) {
+    @ExceptionHandler(EntitySaveException.class)
+    public ResponseEntity<Map<String, String>> handleEntitySave(EntitySaveException e) {
         return createErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 

@@ -4,8 +4,6 @@ import com.gym.fit_power.dto.request.ExerciseSetRequestDto;
 import com.gym.fit_power.dto.request.RoutineRequestDto;
 import com.gym.fit_power.dto.response.RoutineResponseDto;
 import com.gym.fit_power.exception.EntityNotFoundException;
-import com.gym.fit_power.exception.RoutineNotFoundException;
-import com.gym.fit_power.exception.TrainerNotFoundException;
 import com.gym.fit_power.model.*;
 import com.gym.fit_power.repository.*;
 import com.gym.fit_power.service.RoutineService;
@@ -34,14 +32,14 @@ public class RoutineServiceImpl implements RoutineService {
         var trainerCuit = routineRequestDto.getTrainerCuit();
         Optional<Trainer> trainer = trainerRepository.findByCuit(trainerCuit);
         if (trainer.isEmpty()) {
-            throw new TrainerNotFoundException("Trainer with CUIT " + trainerCuit + " not found.");
+            throw new EntityNotFoundException("Trainer with CUIT " + trainerCuit + " not found.");
         }
         Optional<Client> client = clientRepository.findAll()
                 .stream()
                 .filter(c -> c.getCuit().equals(clientCuit))
                 .findFirst();
         if (client.isEmpty()) {
-            throw new TrainerNotFoundException("Client with CUIT " + clientCuit + " not found.");
+            throw new EntityNotFoundException("Client with CUIT " + clientCuit + " not found.");
         }
         Routine routine = this.toEntity(routineRequestDto);
         routine.setTrainer(trainer.get());
@@ -92,7 +90,7 @@ public class RoutineServiceImpl implements RoutineService {
         }
         Optional<Routine> routine = routineRepository.findByClientAndActiveTrue(client.get());
         if (routine.isEmpty()) {
-            throw new RoutineNotFoundException("Routine not found.");
+            throw new EntityNotFoundException("Routine not found.");
         }
         return this.toDto(routine.get());
     }

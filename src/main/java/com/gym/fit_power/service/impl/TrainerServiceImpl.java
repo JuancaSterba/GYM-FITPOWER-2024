@@ -2,9 +2,8 @@ package com.gym.fit_power.service.impl;
 
 import com.gym.fit_power.dto.request.TrainerRequestDto;
 import com.gym.fit_power.dto.response.TrainerResponseDto;
-import com.gym.fit_power.exception.DuplicatedTrainerException;
-import com.gym.fit_power.exception.TrainerNotFoundException;
-import com.gym.fit_power.exception.TrainerUpdateException;
+import com.gym.fit_power.exception.EntityNotFoundException;
+import com.gym.fit_power.exception.EntitySaveException;
 import com.gym.fit_power.model.Trainer;
 import com.gym.fit_power.repository.TrainerRepository;
 import com.gym.fit_power.service.TrainerService;
@@ -35,18 +34,18 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     @Transactional(readOnly = true)
-    public TrainerResponseDto findByCuit(String cuit) throws TrainerNotFoundException {
+    public TrainerResponseDto findByCuit(String cuit) throws EntityNotFoundException {
         Optional<Trainer> trainer = trainerRepository.findByCuit(cuit);
         return trainer.map(this::toDto)
-                .orElseThrow(() -> new TrainerNotFoundException("Trainer with CUIT " + cuit + " not found."));
+                .orElseThrow(() -> new EntityNotFoundException("Trainer with CUIT " + cuit + " not found."));
     }
 
     @Override
     @Transactional
-    public TrainerResponseDto save(TrainerRequestDto trainerRequestDto) throws DuplicatedTrainerException {
+    public TrainerResponseDto save(TrainerRequestDto trainerRequestDto) throws EntitySaveException {
         trainerRepository.findByCuit(trainerRequestDto.getCuit())
                 .ifPresent(trainer -> {
-                    throw new DuplicatedTrainerException("Trainer with CUIT " + trainerRequestDto.getCuit() + " already exists.");
+                    throw new EntitySaveException("Trainer with CUIT " + trainerRequestDto.getCuit() + " already exists.");
                 });
         Trainer newTrainer = this.toEntity(trainerRequestDto);
         newTrainer = trainerRepository.save(newTrainer);
@@ -55,9 +54,9 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     @Transactional
-    public TrainerResponseDto update(String cuit, TrainerRequestDto trainerRequestDto) throws TrainerUpdateException {
+    public TrainerResponseDto update(String cuit, TrainerRequestDto trainerRequestDto) throws EntitySaveException {
         Trainer trainer = trainerRepository.findByCuit(cuit)
-                .orElseThrow(() -> new TrainerUpdateException("No trainer found with CUIT " + cuit + " for update."));
+                .orElseThrow(() -> new EntitySaveException("No trainer found with CUIT " + cuit + " for update."));
 
         Trainer updatedTrainer = this.toEntity(trainerRequestDto);
         updatedTrainer.setCuit(cuit);
@@ -70,9 +69,9 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     @Transactional
-    public void delete(String cuit) throws TrainerNotFoundException {
+    public void delete(String cuit) throws EntityNotFoundException {
         Trainer trainer = trainerRepository.findByCuit(cuit)
-                .orElseThrow(() -> new TrainerNotFoundException("No trainer found with DNI " + cuit + " for deletion."));
+                .orElseThrow(() -> new EntityNotFoundException("No trainer found with DNI " + cuit + " for deletion."));
         trainer.setEnabled(false);
         trainerRepository.save(trainer);
     }

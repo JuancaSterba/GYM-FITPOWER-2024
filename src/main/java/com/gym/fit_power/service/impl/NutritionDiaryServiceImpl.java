@@ -2,7 +2,7 @@ package com.gym.fit_power.service.impl;
 
 import com.gym.fit_power.dto.NutritionDiaryDTO;
 
-import com.gym.fit_power.exception.EntityUpdateException;
+import com.gym.fit_power.exception.EntitySaveException;
 import com.gym.fit_power.model.Client;
 import com.gym.fit_power.model.NutritionDiary;
 import com.gym.fit_power.model.NutritionPlan;
@@ -63,7 +63,7 @@ public class NutritionDiaryServiceImpl implements NutritionDiaryService {
             logger.info(SUCESSFULLY_UPDATE);
             return toDto(log);
         } catch (Exception e) {
-            throw new EntityUpdateException(e.getMessage());
+            throw new EntitySaveException(e.getMessage());
         }
     }
 
