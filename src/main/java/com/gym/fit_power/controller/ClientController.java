@@ -56,59 +56,59 @@ public class ClientController {
 
     @PostMapping
     public ResponseEntity<ClientDTO> create(@RequestBody ClientDTO request) throws URISyntaxException {
-        newInfoLog("Creating new client: " + request);
-        ClientDTO response = clientService.save(request);
-        newInfoLog(WITH_CUIT + request.getCuit() + " is created");
+        log.info("Creating new client: " + request);
+        ClientDTO response = clientService.create(request);
+        log.info(WITH_CUIT + request.getCuit() + " is created");
         return ResponseEntity.ok().headers(newHeader("CREATED", SUCCESSFUL)).
                 location(new URI("/api/clients/" + response.getCuit())).body(response);
     }
 
     @GetMapping(value = CUIT)
     public ResponseEntity<ClientDTO> readOne(@PathVariable(value = "cuit") String cuit) {
-        newInfoLog("Get client with cuit: " + cuit);
+        log.info("Get client with cuit: " + cuit);
         ClientDTO response = clientService.readByCuit(cuit);
-        correctSearch();
+//        correctSearch();
         return ResponseEntity.ok().headers(newHeader(FOUND, SUCCESSFUL)).body(response);
     }
 
     @GetMapping
     public ResponseEntity<List<ClientDTO>> readAll() {
-        newInfoLog("Get all client");
-        List<ClientDTO> response = new ArrayList<>(clientService.findAll());
-        correctSearch();
+        log.info("Get all client");
+        List<ClientDTO> response = new ArrayList<>(clientService.readAll());
+//        correctSearch();
         return ResponseEntity.ok().headers(newHeader(FOUND, SUCCESSFUL)).body(response);
     }
 
     @PutMapping(value = CUIT)
     public ResponseEntity<ClientDTO> update(@PathVariable(value = "cuit") String cuit, @RequestBody ClientDTO client) {
-        newInfoLog("Update personal data of client with cuit: " + cuit);
+        log.info("Update personal data of client with cuit: " + cuit);
         ClientDTO response = clientService.update(clientService.readByCuit(cuit).getId(), client);
-        newInfoLog(genericDescription(cuit) + "is updated");
+        log.info(genericDescription(cuit) + "is updated");
         return ResponseEntity.ok().headers(newHeader("UPDATED", SUCCESSFUL)).body(response);
     }
 
     @PutMapping(value = CUIT + "/{gymCode}")
     public ResponseEntity<ClientDTO> changeGym(@PathVariable(value = "cuit") String clientCuit,
                                                @PathVariable(value = "gymCode") String gymCode) {
-        newInfoLog("Change the gym of the client " + clientCuit);
+        log.info("Change the gym of the client " + clientCuit);
         ClientDTO response = clientService.changeGym(clientCuit, gymCode);
-        newInfoLog("The gym of client " + clientCuit + " has changed successfully");
+        log.info("The gym of client " + clientCuit + " has changed successfully");
         return ResponseEntity.ok().headers(newHeader("GYM_CHANGED", SUCCESSFUL)).body(response);
     }
 
     @DeleteMapping(value = CUIT)
     public ResponseEntity<ClientDTO> disable(@PathVariable(value = "cuit") String cuit) {
-        newInfoLog("Disabling client with cuit: " + cuit);
+        log.info("Disabling client with cuit: " + cuit);
         ClientDTO response = clientService.disable(clientService.readByCuit(cuit).getId());
-        newInfoLog("Client disabled");
+        log.info("Client disabled");
         return ResponseEntity.ok().headers(newHeader("DISABLED", SUCCESSFUL)).body(response);
     }
 
     @PatchMapping(value = CUIT)
     public ResponseEntity<ClientDTO> enable(@PathVariable(value = "cuit") String cuit) {
-        newInfoLog("Enabling client with cuit: " + cuit);
+        log.info("Enabling client with cuit: " + cuit);
         ClientDTO response = clientService.enable(clientService.readByCuit(cuit).getId());
-        newInfoLog("Client enabled");
+        log.info("Client enabled");
         return ResponseEntity.ok().headers(newHeader("ENABLED", SUCCESSFUL)).body(response);
     }
 
@@ -192,13 +192,13 @@ public class ClientController {
 
     // <<<<<<<<<<<<<<<<<<<< UTILS >>>>>>>>>>>>>>>>>>>> //
 
-    private void newInfoLog(String description) {
-        logger.info(CONTROLLER, description);
-    }
-
-    private void correctSearch() {
-        logger.info(SEARCH_CORRECT);
-    }
+//    private void newInfoLog(String description) {
+//        logger.info(CONTROLLER, description);
+//    }
+//
+//    private void correctSearch() {
+//        logger.info(SEARCH_CORRECT);
+//    }
 
     private HttpHeaders newHeader(String headerName, String description) {
         HttpHeaders headers = new HttpHeaders();

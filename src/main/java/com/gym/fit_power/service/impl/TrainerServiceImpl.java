@@ -7,6 +7,7 @@ import com.gym.fit_power.exception.EntitySaveException;
 import com.gym.fit_power.model.Trainer;
 import com.gym.fit_power.repository.TrainerRepository;
 import com.gym.fit_power.service.TrainerService;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,9 +18,11 @@ import java.util.Optional;
 public class TrainerServiceImpl implements TrainerService {
 
     private final TrainerRepository trainerRepository;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public TrainerServiceImpl(TrainerRepository trainerRepository) {
+    public TrainerServiceImpl(TrainerRepository trainerRepository, KafkaTemplate<String, String> kafkaTemplate) {
         this.trainerRepository = trainerRepository;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
     @Override
@@ -49,6 +52,10 @@ public class TrainerServiceImpl implements TrainerService {
                 });
         Trainer newTrainer = this.toEntity(trainerRequestDto);
         newTrainer = trainerRepository.save(newTrainer);
+
+        //TODO: send message via kafka to trainer topic
+        this.kafkaTemplate.send("trainer-topic", newTrainer.getCuit());
+
         return this.toDto(newTrainer);
     }
 

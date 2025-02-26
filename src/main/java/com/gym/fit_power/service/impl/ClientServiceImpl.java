@@ -46,7 +46,7 @@ public class ClientServiceImpl implements ClientService {
             Client newClient = toEntity(clientDTO);
             newClient.setEnabled(true);
             Client created = clientRepository.save(newClient);
-            clientEventPublisher.publish(created);
+//            clientEventPublisher.publish(created);
             return toDTO(created);
         } catch (Exception e) {
             clientCouldNotBE(clientDTO.getCuit(), "saved", e);
@@ -176,7 +176,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ClientDTO toDTO(Client entity) {
         ClientDTO dto = new ClientDTO();
-        dto.setId(entity.getId());
+//        dto.setId(entity.getId());
         dto.setCuit(entity.getCuit());
         dto.setAssignedGym(entity.getAssignedGym().getAddress());
         dto.setName(entity.getName());
