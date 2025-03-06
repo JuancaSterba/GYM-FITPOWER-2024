@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 @Repository
 public interface GymRepository extends JpaRepository<Gym, Long>{
-
+    Gym findByAddress(String address);
 }
