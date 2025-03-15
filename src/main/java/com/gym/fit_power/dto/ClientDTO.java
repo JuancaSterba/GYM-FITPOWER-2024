@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @NoArgsConstructor
 public class ClientDTO {
 
+    @JsonIgnore
+    private Long id;
     private String cuit;
     private String assignedGym;
     private String name;
